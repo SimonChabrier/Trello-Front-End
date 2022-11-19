@@ -7,13 +7,13 @@ init:()=> {
 
 trelloListeners:()=> {
 
-  document.getElementById('create_row').addEventListener('click', () => { 
+  document.getElementById('create_row_btn').addEventListener('click', () => { 
     app.handleCreateColumn()
     app.dragAndDrop();
     app.handleDeleteRow();
   });
 
-document.getElementById('create_card').addEventListener('click', () => { 
+document.getElementById('create_card_btn').addEventListener('click', () => { 
     app.handleCreateCard()
     app.dragAndDrop();
     app.handleDeleteCard();
@@ -41,7 +41,7 @@ handleDeleteCard:() => {
 },
 
 handleCreateColumn:() => {
-  const row = app.createElement('div', 'dropzone', '');
+  const row = app.createElement('div', 'cards_dropzone', '');
   row.appendChild(app.createInputElement('input', null, 'Column name'));
   app.appendElementToSelector(row,'.columns--container');
   const btn = app.createElement('button', 'delete_row', 'X');
@@ -49,7 +49,7 @@ handleCreateColumn:() => {
 },
 
 handleCreateCard:() => {
-  const card = app.createElement('div', 'draggable', null);
+  const card = app.createElement('div', 'draggable--card', null);
   card.setAttribute('draggable', 'true');
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
   card.appendChild(app.setCardContent());
@@ -84,24 +84,22 @@ appendElementToSelector:(element, querySelector) => {
 },
 
 countNewCard:()=> {
-  console.log('countNewCard');
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
-    const count = card.querySelectorAll('.draggable').length;
-    console.log(count);
+    const count = card.querySelectorAll('.draggable--card').length;
     card.querySelector('.card--count').innerHTML = `${count} New Cards`;
   });
 },
 
 dragAndDrop: ()=> {
 
-  const draggables = document.querySelectorAll('.draggable');
-  const columns = document.querySelectorAll('.dropzone');
+  const draggables = document.querySelectorAll('.draggable--card');
+  const columns = document.querySelectorAll('.cards_dropzone');
 
 
   draggables.forEach(draggable => {
-      draggable.addEventListener('dragstart', () => {
-      draggable.classList.add('dragging');
+      draggable.addEventListener('dragstart', (event) => {
+      event.target.classList.add('dragging');
       app.countNewCard();
     });
         draggable.addEventListener('dragend', () => {
@@ -131,7 +129,7 @@ dragAndDrop: ()=> {
 // positionne l'élément déplacé au dessous ou au dessus du plus proche élément de la liste
 getDragAfterElement:(column, y_position) => {
 
-  const draggableElements = [...column.querySelectorAll('.draggable:not(.dragging)')];
+  const draggableElements = [...column.querySelectorAll('.draggable--card:not(.dragging)')];
 
   return draggableElements.reduce((closest, child) => {
     const box = child.getBoundingClientRect();

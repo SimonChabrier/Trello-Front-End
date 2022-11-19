@@ -38,14 +38,16 @@ body {
     position: absolute;
     top: 15px;
     right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    background-color: #f5f5f5;
-    color: #200e0e;
+    background-color: whitesmoke;
+    color: #3c636c;
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    text-align: center;
-    border: none;
+    border-radius: 3px;
+    border: 1px solid #3c636c2d;
     transition: all 0.3s ease;
 }
 
@@ -55,13 +57,15 @@ body {
 }
 
 .delete_card {
-    background-color: #f5f5f5;
-    color: #200e0e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3c636c;
+    color: whitesmoke;
+    border: 1px solid rgba(245, 245, 245, 0.3);
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    text-align: center;
-    border: none;
+    border-radius: 3px;
     transition: all 0.3s ease;
 }
 
@@ -95,7 +99,7 @@ body {
     height: 100%;
 }
 
-.dropzone {
+.cards_dropzone {
     position: relative;
     border: 1px solid #d3d3d3;
     border-radius: 5px;
@@ -106,20 +110,37 @@ body {
     gap: 15px;
 }
 
-.draggable {
+.draggable--card {
     position: relative;
     padding: 10px;
-    cursor: pointer;
-    background-color: rgb(255, 145, 0);
+    cursor: grab;
+    background-color: #608b7e;
     display: flex;
     flex-direction: column;
     padding-bottom: 38px;
     border-radius: 5px;
+    /* transition: all 0.2s ease; */
 }
 
+.draggable--card:active {
+    cursor: grabbing;
+}
+
+/* 1 Je prélève = > état de la carte à l'endroit où elle a été 
+prévlvée cet état est visible tout au long du déplacement */
 .dragging:active {
-    opacity: 0.5;
+    opacity: 0.1;
     rotate: -5deg;
+    cursor: grabbing;
+    background-color: #f00;
+}
+
+/* 2 Je déplace => état de la carte qui apparait dans l'emplacement de destination
+ juste avant de la déposer */
+.dragging {
+    opacity: 0.2;
+    rotate: -5deg;
+    background-color: #f00;
 }
 
 .delete_card {

@@ -14,12 +14,16 @@
 <body>
 <div class="page">
     <div class="header">
-        <button id="create_row" class="header--button">Add Column</button>
-        <button id="create_card" class="header--button">New Card</button>
+        <button id="create_row_btn" class="header--button">Add Column</button>
+        <button id="create_card_btn" class="header--button">New Card</button>
     </div>
     <div class="main">
-        <section class="new--card--section dropzone" draggable="true"><p class="card--count">New Cards</p></section>
-        <section class="columns--container"></section>
+        <section class="new--card--section cards_dropzone" draggable="true">
+            <p class="card--count">New Cards</p>
+        </section>
+        <section class="columns--container columns_dropzone">
+            <!-- insert created columns here -->
+        </section>
     </div>
 </div>
 </body>
