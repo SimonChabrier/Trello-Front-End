@@ -7,13 +7,13 @@ init:()=> {
 
 trelloListeners:()=> {
 
-  document.getElementById('create_row').addEventListener('click', () => { 
+  document.getElementById('create_row_btn').addEventListener('click', () => { 
     app.handleCreateColumn()
     app.dragAndDrop();
     app.handleDeleteRow();
   });
 
-document.getElementById('create_card').addEventListener('click', () => { 
+document.getElementById('create_card_btn').addEventListener('click', () => { 
     app.handleCreateCard()
     app.dragAndDrop();
     app.handleDeleteCard();
