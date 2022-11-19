@@ -84,11 +84,9 @@ appendElementToSelector:(element, querySelector) => {
 },
 
 countNewCard:()=> {
-  console.log('countNewCard');
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
-    console.log(count);
     card.querySelector('.card--count').innerHTML = `${count} New Cards`;
   });
 },
