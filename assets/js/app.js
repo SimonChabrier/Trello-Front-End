@@ -8,9 +8,9 @@ init:()=> {
 trelloListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
-    app.handleCreateColumn()
-    app.handleDragAndDrop();
-    app.handleDeleteColumn();
+      app.handleCreateColumn()
+      app.handleDragAndDrop();
+      app.handleDeleteColumn();
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
