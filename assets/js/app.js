@@ -18,6 +18,7 @@ document.getElementById('create_card_btn').addEventListener('click', () => {
     app.dragAndDrop();
     app.handleDeleteCard();
     app.countNewCard();
+    app.changeCardColor();
   });
 },
 
@@ -42,7 +43,7 @@ handleDeleteCard:() => {
 
 handleCreateColumn:() => {
   const row = app.createElement('div', 'cards_dropzone', '');
-  row.appendChild(app.createInputElement('input', null, 'Column name'));
+  row.appendChild(app.createInputElement('input', 'input--column--name', 'Column name'));
   app.appendElementToSelector(row,'.columns--container');
   const btn = app.createElement('button', 'delete_row', 'X');
   row.appendChild(btn);
@@ -51,22 +52,45 @@ handleCreateColumn:() => {
 handleCreateCard:() => {
   const card = app.createElement('div', 'draggable--card', null);
   card.setAttribute('draggable', 'true');
+  card.appendChild(app.headerCardColors());
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
   card.appendChild(app.setCardContent());
   app.appendElementToSelector(card,'.new--card--section');
 },
 
 setCardContent:() => {
-  const cardContent = app.createElement('div', 'card_content', null);  
-  cardContent.appendChild(app.createInputElement('input', null, 'Title'));
-  cardContent.appendChild(app.createInputElement('textarea', null, 'Description'));
+  const cardContent = app.createElement('section', 'card_content', null); 
+  // cardContent.appendChild(app.headerCardColors()); 
+  cardContent.appendChild(app.createInputElement('input', 'card--title', 'Title'));
+  cardContent.appendChild(app.createInputElement('textarea', 'card--text', 'Description'));
+  
   return cardContent;
 },
 
-createElement:(tag, className, content) => {
+headerCardColors:() => {
+  section = app.createElement('section', 'card--colors', null);
+  section.appendChild(app.createElement('button', 'card--color--default', null));
+  section.appendChild(app.createElement('button', 'card--color--red', null));
+  section.appendChild(app.createElement('button', 'card--color--green', null));
+  section.appendChild(app.createElement('button', 'card--color--blue', null));
+  
+  return section;
+},
+
+changeCardColor:() => {
+  document.querySelectorAll('.card--color--red, .card--color--green, .card--color--blue, .card--color--default').forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.target.closest('div').className = '';
+      event.target.closest('div').classList.add('draggable--card');
+      event.target.closest('div').classList.add(event.target.className);
+    });
+  });
+},
+
+createElement:(tag, className, textContent) => {
   const element = document.createElement(tag);
   element.classList.add(className);
-  element.innerHTML = content;
+  element.innerHTML = textContent;
   return element;
 },
 
