@@ -5,3 +5,5 @@
 - Add column title
 - Add cards content
 - Drag and drop cards
+
+![Todo](assets/media/fullTodo.png)
