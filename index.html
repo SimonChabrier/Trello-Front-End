@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/switch.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <script src="assets/js/app.js"></script>
     <title>Js Trello</title>
@@ -14,12 +15,20 @@
 <body>
 <div class="page">
     <div class="header">
-        <button id="create_row_btn" class="header--button">Add Column</button>
+        <button id="create_column_btn" class="header--button">Add Column</button>
         <button id="create_card_btn" class="header--button">New Card</button>
+        
+        <section class="fullscreen--switch--section">
+            <p class="fullscreen--text">FullScreen</p>
+            <label class="switch">
+            <input type="checkbox" id="fullscreen_switch">
+                <span class="slider round"></span>
+            </label>
+        </section>
     </div>
     <div class="main">
         <section class="new--card--section cards_dropzone" draggable="true">
-            <p class="card--count">New Cards</p>
+            <p class="card--count">BACKLOG CARDS</p>
         </section>
         <section class="columns--container columns_dropzone">
             <!-- insert created columns here -->

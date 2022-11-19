@@ -7,23 +7,28 @@ init:()=> {
 
 trelloListeners:()=> {
 
-  document.getElementById('create_row_btn').addEventListener('click', () => { 
+  document.getElementById('create_column_btn').addEventListener('click', () => { 
     app.handleCreateColumn()
     app.dragAndDrop();
-    app.handleDeleteRow();
+    app.handleDeleteColumn();
   });
 
-document.getElementById('create_card_btn').addEventListener('click', () => { 
-    app.handleCreateCard()
-    app.dragAndDrop();
-    app.handleDeleteCard();
-    app.countNewCard();
-    app.changeCardColor();
+  document.getElementById('create_card_btn').addEventListener('click', () => { 
+      app.handleCreateCard()
+      app.dragAndDrop();
+      app.handleDeleteCard();
+      app.countNewCard();
+      app.changeCardColor();
+      app.handleTaskDone();
+    });
+
+  document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
+    app.toggleFullScreenMode(event);
   });
 },
 
-handleDeleteRow:()=> {
-  const buttons = document.querySelectorAll('.delete_row');
+handleDeleteColumn:()=> {
+  const buttons = document.querySelectorAll('.delete_column');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
@@ -42,11 +47,11 @@ handleDeleteCard:() => {
 },
 
 handleCreateColumn:() => {
-  const row = app.createElement('div', 'cards_dropzone', '');
-  row.appendChild(app.createInputElement('input', 'input--column--name', 'Column name'));
-  app.appendElementToSelector(row,'.columns--container');
-  const btn = app.createElement('button', 'delete_row', 'X');
-  row.appendChild(btn);
+  const column = app.createElement('div', 'cards_dropzone', '');
+  column.appendChild(app.createInputElement('input','input', 'input--column--name', 'input--column--name', 'todo'));
+  app.appendElementToSelector(column,'.columns--container');
+  const btn = app.createElement('button', 'delete_column', 'X');
+  column.appendChild(btn);
 },
 
 handleCreateCard:() => {
@@ -58,11 +63,36 @@ handleCreateCard:() => {
   app.appendElementToSelector(card,'.new--card--section');
 },
 
+handleTaskDone:() => {
+  const checkboxes = document.querySelectorAll('.card--checkox');
+  
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        event.target.closest('div').classList.add('task--done');
+        const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
+        inputs.forEach(input => {
+          input.setAttribute('disabled', true);
+        });
+
+      } else {
+        event.target.closest('div').classList.remove('task--done');
+        const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
+        inputs.forEach(input => {
+          input.removeAttribute('disabled', true);
+        });
+
+      }
+    });
+  });
+
+},
+
 setCardContent:() => {
-  const cardContent = app.createElement('section', 'card_content', null); 
-  // cardContent.appendChild(app.headerCardColors()); 
-  cardContent.appendChild(app.createInputElement('input', 'card--title', 'Title'));
-  cardContent.appendChild(app.createInputElement('textarea', 'card--text', 'Description'));
+  const cardContent = app.createElement('section', 'card_content', ''); 
+  cardContent.appendChild(app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title'));
+  cardContent.appendChild(app.createInputElement('textarea', '', 'task_content', 'card--text', 'Description'));
+  cardContent.appendChild(app.createInputElement('input', 'checkbox', 'task_status', 'card--checkox', ''));
   
   return cardContent;
 },
@@ -71,14 +101,14 @@ headerCardColors:() => {
   section = app.createElement('section', 'card--colors', null);
   section.appendChild(app.createElement('button', 'card--color--default', null));
   section.appendChild(app.createElement('button', 'card--color--red', null));
-  section.appendChild(app.createElement('button', 'card--color--green', null));
+  section.appendChild(app.createElement('button', 'card--color--orange', null));
   section.appendChild(app.createElement('button', 'card--color--blue', null));
   
   return section;
 },
 
 changeCardColor:() => {
-  document.querySelectorAll('.card--color--red, .card--color--green, .card--color--blue, .card--color--default').forEach(button => {
+  document.querySelectorAll('.card--color--red, .card--color--orange, .card--color--blue, .card--color--default').forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').className = '';
       event.target.closest('div').classList.add('draggable--card');
@@ -94,8 +124,10 @@ createElement:(tag, className, textContent) => {
   return element;
 },
 
-createInputElement:(inputType, className, placeHolder) => {
+createInputElement:(inputType, atribute, name, className, placeHolder) => {
   const element = document.createElement(inputType);
+  element.setAttribute('type', atribute);
+  element.setAttribute('name', name);
   element.classList.add(className);
   element.placeholder = placeHolder;
   return element;
@@ -111,7 +143,7 @@ countNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
-    card.querySelector('.card--count').innerHTML = `${count} New Cards`;
+    count > 1 ? card.querySelector('.card--count').innerHTML = `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerHTML = `${count} CARD IN BACKLOG`;
   });
 },
 
@@ -147,6 +179,25 @@ dragAndDrop: ()=> {
       });
     }
   );
+},
+
+toggleFullScreenMode:(event) => {
+  
+  const element = document.documentElement
+
+  if(event.target.checked == true)
+  {
+    
+    event.target.setAttribute('checked', 'true');
+    setTimeout(() => {
+    element.requestFullscreen();
+    }, 500);
+  } else {
+    event.target.removeAttribute('checked');
+    setTimeout(() => {
+    document.exitFullscreen();
+    }, 500); 
+  }
 },
 
 // y c'est la position de l'élment déplacé sur l'axe horizontal
