@@ -9,16 +9,16 @@ trelloListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
     app.handleCreateColumn()
-    app.dragAndDrop();
+    app.handleDragAndDrop();
     app.handleDeleteColumn();
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
       app.handleCreateCard()
-      app.dragAndDrop();
+      app.handleDragAndDrop();
       app.handleDeleteCard();
-      app.countNewCard();
-      app.changeCardColor();
+      app.handleCountNewCard();
+      app.handleChangeCardColor();
       app.handleTaskDone();
     });
 
@@ -41,7 +41,7 @@ handleDeleteCard:() => {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
-      app.countNewCard();
+      app.handleCountNewCard();
     });
   });
 },
@@ -68,24 +68,24 @@ handleTaskDone:() => {
   
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-      if (event.target.checked) {
+      
+      if (event.target.checked) 
+      {
         event.target.closest('div').classList.add('task--done');
         const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
         inputs.forEach(input => {
           input.setAttribute('disabled', true);
         });
-
       } else {
         event.target.closest('div').classList.remove('task--done');
         const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
         inputs.forEach(input => {
           input.removeAttribute('disabled', true);
         });
-
       }
+
     });
   });
-
 },
 
 setCardContent:() => {
@@ -107,7 +107,7 @@ headerCardColors:() => {
   return section;
 },
 
-changeCardColor:() => {
+handleChangeCardColor:() => {
   document.querySelectorAll('.card--color--red, .card--color--orange, .card--color--blue, .card--color--default').forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').className = '';
@@ -139,7 +139,7 @@ appendElementToSelector:(element, querySelector) => {
   return appendTo;
 },
 
-countNewCard:()=> {
+handleCountNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
@@ -147,27 +147,26 @@ countNewCard:()=> {
   });
 },
 
-dragAndDrop: ()=> {
+handleDragAndDrop: ()=> {
 
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards_dropzone');
 
-
   draggables.forEach(draggable => {
       draggable.addEventListener('dragstart', (event) => {
       event.target.classList.add('dragging');
-      app.countNewCard();
+      app.handleCountNewCard();
     });
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
-        app.countNewCard();
+        app.handleCountNewCard();
     });
   });
 
   columns.forEach(column => {
     
     column.addEventListener('dragover', (event) => {
-      event.preventDefault();
+    event.preventDefault();
 
       const afterElement = app.getDragAfterElement(column, event.clientY);
       const draggable = document.querySelector('.dragging');
