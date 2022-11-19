@@ -41,7 +41,7 @@ handleDeleteCard:() => {
 },
 
 handleCreateColumn:() => {
-  const row = app.createElement('div', 'dropzone', '');
+  const row = app.createElement('div', 'cards_dropzone', '');
   row.appendChild(app.createInputElement('input', null, 'Column name'));
   app.appendElementToSelector(row,'.columns--container');
   const btn = app.createElement('button', 'delete_row', 'X');
@@ -96,7 +96,7 @@ countNewCard:()=> {
 dragAndDrop: ()=> {
 
   const draggables = document.querySelectorAll('.draggable');
-  const columns = document.querySelectorAll('.dropzone');
+  const columns = document.querySelectorAll('.cards_dropzone');
 
 
   draggables.forEach(draggable => {

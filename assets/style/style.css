@@ -95,7 +95,7 @@ body {
     height: 100%;
 }
 
-.dropzone {
+.cards_dropzone {
     position: relative;
     border: 1px solid #d3d3d3;
     border-radius: 5px;
