@@ -113,22 +113,23 @@ body {
 .draggable--card {
     position: relative;
     padding: 10px;
-    cursor: pointer;
+    cursor: grab;
     background-color: #608b7e;
     display: flex;
     flex-direction: column;
     padding-bottom: 38px;
     border-radius: 5px;
-    transition: all 0.5s ease;
+    /* transition: all 0.2s ease; */
 }
 
 /* 1 Je prélève = > état de la carte à l'endroit où elle a été 
 prévlvée cet état est visible tout au long du déplacement */
-/* .dragging:active {
+.dragging:active {
     opacity: 0.1;
     rotate: -5deg;
+    cursor: grabbing;
     background-color: #f00;
-} */
+}
 
 /* 2 Je déplace => état de la carte qui apparait dans l'emplacement de destination
  juste avant de la déposer */

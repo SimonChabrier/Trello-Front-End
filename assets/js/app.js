@@ -100,8 +100,8 @@ dragAndDrop: ()=> {
 
 
   draggables.forEach(draggable => {
-      draggable.addEventListener('dragstart', () => {
-      draggable.classList.add('dragging');
+      draggable.addEventListener('dragstart', (event) => {
+      event.target.classList.add('dragging');
       app.countNewCard();
     });
         draggable.addEventListener('dragend', () => {
