@@ -143,7 +143,7 @@ countNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
-    card.querySelector('.card--count').innerHTML = `${count} New Cards`;
+    count > 1 ? card.querySelector('.card--count').innerHTML = `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerHTML = `${count} CARD IN BACKLOG`;
   });
 },
 

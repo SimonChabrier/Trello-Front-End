@@ -105,7 +105,7 @@ textarea:focus {
     position: relative;
     background-color: lightgrey;
     color: white;
-    background-color: #413F3F;
+    background-color: #073d39b0;
     border: 1px solid #d3d3d3;
     border-radius: 5px;
     padding: 25px;
@@ -131,6 +131,11 @@ textarea:focus {
     text-transform: uppercase;
     font-weight: 400;
     color: #ffffff;
+}
+
+.input--column--name:focus {
+    background-color: transparent;
+    color: white;
 }
 
 .new--card--section{
@@ -291,11 +296,16 @@ button.card--color--blue:hover {
 }
 
 .card--title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
     background-color: #dedcdc;
     margin-bottom: 10px;
+    overflow-x: auto;
 }
+
+.card--title{
+    text-transform: capitalize!important;
+  }
 
 .card--text {
     font-size: 1rem;
