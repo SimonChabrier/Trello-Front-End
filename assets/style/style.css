@@ -8,13 +8,37 @@ body {
     min-width: fit-content;
 }
 
+.main {
+    display: flex;
+}
+
 .header{
     padding: 20px 0;
     margin: 10px;
     background: #413f3f;
     border-radius: 10px 10px 0 0;
 }
+
+.header--button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    color: #200e0e;
+    border-radius: 5px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.header--button:hover {
+    background-color: rgb(255 145 0);
+    color: #fff;
+}
+
 .delete_row {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
     background-color: #f5f5f5;
     color: #200e0e;
     width: 20px;
@@ -45,26 +69,6 @@ body {
     background-color: #f00;
     color: #fff;
 }
-
-.header--button {
-    margin-left: 10px;
-    padding: 10px;
-    background-color: #f5f5f5;
-    color: #200e0e;
-    border-radius: 5px;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.header--button:hover {
-    background-color: rgb(255 145 0);
-    color: #fff;
-}
-
-.main {
-    display: flex;
-}
-
 
 .new--card--section {
     position: relative;
@@ -102,13 +106,6 @@ body {
     gap: 15px;
 }
 
-.delete_row {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-}
-
 .draggable {
     position: relative;
     padding: 10px;
@@ -118,11 +115,6 @@ body {
     flex-direction: column;
     padding-bottom: 38px;
     border-radius: 5px;
-}
-
-.draggable:active {
-    opacity: 0.8;
-    /* rotate: -2deg; */  
 }
 
 .dragging:active {
