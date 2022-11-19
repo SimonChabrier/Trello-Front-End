@@ -122,6 +122,10 @@ body {
     /* transition: all 0.2s ease; */
 }
 
+.draggable--card:active {
+    cursor: grabbing;
+}
+
 /* 1 Je prélève = > état de la carte à l'endroit où elle a été 
 prévlvée cet état est visible tout au long du déplacement */
 .dragging:active {
