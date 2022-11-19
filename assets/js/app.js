@@ -7,23 +7,27 @@ init:()=> {
 
 trelloListeners:()=> {
 
-  document.getElementById('create_row_btn').addEventListener('click', () => { 
+  document.getElementById('create_column_btn').addEventListener('click', () => { 
     app.handleCreateColumn()
     app.dragAndDrop();
-    app.handleDeleteRow();
+    app.handleDeleteColumn();
   });
 
-document.getElementById('create_card_btn').addEventListener('click', () => { 
-    app.handleCreateCard()
-    app.dragAndDrop();
-    app.handleDeleteCard();
-    app.countNewCard();
-    app.changeCardColor();
+  document.getElementById('create_card_btn').addEventListener('click', () => { 
+      app.handleCreateCard()
+      app.dragAndDrop();
+      app.handleDeleteCard();
+      app.countNewCard();
+      app.changeCardColor();
+    });
+
+  document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
+    app.toggleFullScreenMode(event);
   });
 },
 
-handleDeleteRow:()=> {
-  const buttons = document.querySelectorAll('.delete_row');
+handleDeleteColumn:()=> {
+  const buttons = document.querySelectorAll('.delete_column');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
@@ -42,11 +46,11 @@ handleDeleteCard:() => {
 },
 
 handleCreateColumn:() => {
-  const row = app.createElement('div', 'cards_dropzone', '');
-  row.appendChild(app.createInputElement('input', 'input--column--name', 'Column name'));
-  app.appendElementToSelector(row,'.columns--container');
-  const btn = app.createElement('button', 'delete_row', 'X');
-  row.appendChild(btn);
+  const column = app.createElement('div', 'cards_dropzone', '');
+  column.appendChild(app.createInputElement('input', 'input--column--name', 'Column name'));
+  app.appendElementToSelector(column,'.columns--container');
+  const btn = app.createElement('button', 'delete_column', 'X');
+  column.appendChild(btn);
 },
 
 handleCreateCard:() => {
@@ -60,7 +64,6 @@ handleCreateCard:() => {
 
 setCardContent:() => {
   const cardContent = app.createElement('section', 'card_content', null); 
-  // cardContent.appendChild(app.headerCardColors()); 
   cardContent.appendChild(app.createInputElement('input', 'card--title', 'Title'));
   cardContent.appendChild(app.createInputElement('textarea', 'card--text', 'Description'));
   
@@ -147,6 +150,20 @@ dragAndDrop: ()=> {
       });
     }
   );
+},
+
+toggleFullScreenMode:(event) => {
+  
+  const element = document.documentElement
+
+  if(event.target.checked == true)
+  {
+    element.requestFullscreen();
+    event.target.setAttribute('checked', 'true');
+  } else {
+    event.target.removeAttribute('checked');
+    document.exitFullscreen();
+  }
 },
 
 // y c'est la position de l'élment déplacé sur l'axe horizontal
