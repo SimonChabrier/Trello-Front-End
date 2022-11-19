@@ -158,11 +158,16 @@ toggleFullScreenMode:(event) => {
 
   if(event.target.checked == true)
   {
-    element.requestFullscreen();
+    
     event.target.setAttribute('checked', 'true');
+    setTimeout(() => {
+    element.requestFullscreen();
+    }, 500);
   } else {
     event.target.removeAttribute('checked');
+    setTimeout(() => {
     document.exitFullscreen();
+    }, 500); 
   }
 },
 
