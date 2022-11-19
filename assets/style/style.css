@@ -1,0 +1,165 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: azure;
+}
+
+.page {
+    width: 100%;
+    min-width: fit-content;
+}
+
+.header{
+    padding: 20px 0;
+    margin: 10px;
+    background: #413f3f;
+    border-radius: 10px 10px 0 0;
+}
+.delete_row {
+    background-color: #f5f5f5;
+    color: #200e0e;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.delete_row:hover {
+    background-color: #f00;
+    color: #fff;
+}
+
+.delete_card {
+    background-color: #f5f5f5;
+    color: #200e0e;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.delete_card:hover {
+    background-color: #f00;
+    color: #fff;
+}
+
+.header--button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    color: #200e0e;
+    border-radius: 5px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.header--button:hover {
+    background-color: rgb(255 145 0);
+    color: #fff;
+}
+
+.main {
+    display: flex;
+}
+
+
+.new--card--section {
+    position: relative;
+    background-color: lightgrey;
+    color: white;
+    background-color: #413F3F;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    padding: 25px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.columns--container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+.dropzone {
+    position: relative;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    padding: 25px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.delete_row {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.draggable {
+    position: relative;
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgb(255, 145, 0);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 38px;
+    border-radius: 5px;
+}
+
+.draggable:active {
+    opacity: 0.8;
+    /* rotate: -2deg; */  
+}
+
+.dragging:active {
+    opacity: 0.5;
+    rotate: -5deg;
+}
+
+.delete_card {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.card_content {
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    top: 25px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    background: papayawhip;
+    margin-top: 10px;
+}
+
+input, textarea {
+    padding: 10px;
+    width: 240px;
+    resize: vertical;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #d3d3d3;
+    outline: none;
+    overflow: auto;
+    font-family: 'Roboto', sans-serif;
+}
+
