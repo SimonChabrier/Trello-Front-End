@@ -7,8 +7,22 @@ input:focus {
     background-color: #fff;
 }
 
+.card--checkox {
+width: 20px;
+height: 20px;
+resize: none;
+border: none!important;
+}
+
+
 textarea:focus {
     background-color: #fff;
+}
+
+.task--done {
+    text-decoration: line-through!important;
+    background-color: #60bb3e!important;
+    color: #200e0e;
 }
 
 .page {
@@ -195,19 +209,19 @@ button.card--color--red {
     height: 15px;
     border-radius: 50%;
     border: none;
-    background-color: red;
+    background-color: #b72a2a;;
     box-shadow: -1px 5px 9px 1px #515050;
     transition: all 0.3s ease;
     transform: translate(0%, -50%);
 }
 
-button.card--color--green {
+button.card--color--orange {
     cursor: pointer;
     width: 15px;
     height: 15px;
     border-radius: 50%;
     border: none;
-    background-color: green;
+    background-color: #d38800;;
     box-shadow: -1px 5px 9px 1px #515050;
     transition: all 0.3s ease;
     /* use this to set the center used to referer on on hover size transition 
@@ -221,7 +235,7 @@ button.card--color--blue {
     height: 15px;
     border-radius: 50%;
     border: none;
-    background-color: blue;
+    background-color: #5151b9;;
     box-shadow: -1px 5px 9px 1px #515050;
     transition: all 0.3s ease;
     transform: translate(0%, -50%);
@@ -248,15 +262,15 @@ button.card--color--blue:hover {
 }
 
 .card--color--red {
-    background-color: #f00;
+    background-color: #b72a2a;;
 }
 
-.card--color--green {
-    background-color: green;
+.card--color--orange {
+    background-color: #d38800;;
 }
 
 .card--color--blue {
-    background-color: blue;
+    background-color: #5151b9;;
 }
 
 .card--color--default {
@@ -266,7 +280,7 @@ button.card--color--blue:hover {
 .card_content {
     position: relative;
     border-radius: 5px 5px 0 0;
-    top: 25px;
+    top: 15px;
     width: 100%;
     height: 100%;
     display: flex;
