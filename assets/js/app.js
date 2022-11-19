@@ -23,7 +23,7 @@ trelloListeners:()=> {
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
-    app.toggleFullScreenMode(event);
+      app.toggleFullScreenMode(event);
   });
 },
 
@@ -83,7 +83,6 @@ handleTaskDone:() => {
           input.removeAttribute('disabled', true);
         });
       }
-
     });
   });
 },
@@ -121,6 +120,7 @@ createElement:(tag, className, textContent) => {
   const element = document.createElement(tag);
   element.classList.add(className);
   element.innerHTML = textContent;
+
   return element;
 },
 
@@ -130,12 +130,14 @@ createInputElement:(inputType, atribute, name, className, placeHolder) => {
   element.setAttribute('name', name);
   element.classList.add(className);
   element.placeholder = placeHolder;
+
   return element;
 },
 
 appendElementToSelector:(element, querySelector) => {
   const appendTo = document.querySelector(querySelector);
   appendTo.appendChild(element);
+
   return appendTo;
 },
 
