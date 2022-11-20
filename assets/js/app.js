@@ -159,12 +159,14 @@ handleNewCardSetNumber:() => {
   }
 },
 
-handleRecalculateCardNumber:() => {
+updateCardNumberOnDragEnd:() => {
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
     const cards = column.querySelectorAll('.draggable--card');
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
+      cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      cards[i].innerHTML = cards[i].getAttribute('column_number') + '.' + cards[i].getAttribute('card_number');
     }
   });
 },
@@ -190,7 +192,7 @@ handleDragAndDrop: ()=> {
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
         app.handleCountNewCard();
-        app.handleRecalculateCardNumber();
+        app.updateCardNumberOnDragEnd();
     });
   });
 
