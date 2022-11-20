@@ -18,7 +18,7 @@ trelloListeners:()=> {
       app.handleCreateCard()
       app.handleDragAndDrop();
       app.handleDeleteCard();
-      app.handleCountNewCard();
+      app.handleCountBackLogCards();
       app.handleChangeCardColor();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
@@ -44,7 +44,8 @@ handleDeleteCard:() => {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
-      app.handleCountNewCard();
+      app.handleCountBackLogCards();
+      app.updateAllCardsNumber();
     });
   });
 },
@@ -60,6 +61,7 @@ handleCreateColumn:() => {
 handleCreateCard:() => {
   const card = app.createElement('div', 'draggable--card', null);
   card.setAttribute('draggable', 'true');
+  card.setAttribute('column_number', '0');
   card.appendChild(app.headerCardColors());
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
   card.appendChild(app.createElement('span', 'card--number', 'N°'));
@@ -116,6 +118,7 @@ handleChangeCardColor:() => {
       event.target.closest('div').className = '';
       event.target.closest('div').classList.add('draggable--card');
       event.target.closest('div').classList.add(event.target.className);
+      event.target.closest('div').setAttribute('card_color', event.target.className);
     });
   });
 },
@@ -162,7 +165,7 @@ handleNewCardSetNumber:() => {
   }
 },
 
-updateCardNumberOnDragEnd:() => {
+updateAllCardsNumber:() => {
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
     const cards = column.querySelectorAll('.draggable--card');
@@ -182,7 +185,7 @@ updateCardNumberOnDragEnd:() => {
   });
 },
 
-handleCountNewCard:()=> {
+handleCountBackLogCards:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
@@ -198,12 +201,12 @@ handleDragAndDrop: ()=> {
   draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', (event) => {
         event.target.classList.add('dragging');
-        app.handleCountNewCard();
+        app.handleCountBackLogCards();
     });
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
-        app.handleCountNewCard();
-        app.updateCardNumberOnDragEnd();
+        app.handleCountBackLogCards();
+        app.updateAllCardsNumber();
     });
   });
 
