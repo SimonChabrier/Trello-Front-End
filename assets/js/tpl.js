@@ -12,7 +12,8 @@ init: () => {
 setColumnTemplate: (cards) => {
 },
 
-
+// TODO GERER LES VALEUR DES TEXTAREA
+// TODO VOIR BUG SI CLIC SUR CARTE 2
 // * CARDS TEMPLATES A ASSOCIER AUX COLUMNS A TESTER
 
 setCardTemplate: (cards) => {   
@@ -23,15 +24,15 @@ setCardTemplate: (cards) => {
         cardTemplate.querySelector('.draggable--card').setAttribute('column_number', card.column_number);
         cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
         
-        if(card.task_done == 'true'){
+        if (card.task_done == 'true') {
             cardTemplate.querySelector('.draggable--card').classList.add('task--done');
             cardTemplate.querySelector('.draggable--card').setAttribute('task_done', card.task_done);
             cardTemplate.querySelector('.card--checkox').setAttribute('checked', 'checked');
         }
         
-        if(card.card_color !== 'card--color--default') {
-        cardTemplate.querySelector('.draggable--card').setAttribute('card_color', card.card_color);
-        cardTemplate.querySelector('.draggable--card').classList.add(card.card_color);
+        if (card.card_color !== 'card--color--default') {
+            cardTemplate.querySelector('.draggable--card').setAttribute('card_color', card.card_color);
+            cardTemplate.querySelector('.draggable--card').classList.add(card.card_color);
         }
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
