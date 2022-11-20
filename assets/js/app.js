@@ -1,7 +1,7 @@
 const app = {
 
 init:()=> {
-  console.log('Trello strated success !');
+  console.log('Trello start success !');
   app.trelloListeners(); 
 },
 
@@ -11,6 +11,8 @@ trelloListeners:()=> {
       app.handleCreateColumn()
       app.handleDragAndDrop();
       app.handleDeleteColumn();
+      app.handleNewColumnSetNumber();
+      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -20,6 +22,7 @@ trelloListeners:()=> {
       app.handleCountNewCard();
       app.handleChangeCardColor();
       app.handleTaskDone();
+      app.handleNewCardSetNumber();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -32,6 +35,7 @@ handleDeleteColumn:()=> {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
+      app.handleNewColumnSetNumber();
     });
   });
 },
@@ -141,6 +145,30 @@ appendElementToSelector:(element, querySelector) => {
   return appendTo;
 },
 
+handleNewColumnSetNumber:() => {
+  const columns = document.querySelector('.columns--container');
+  for(let i = 0; i < columns.children.length; i++) {
+    columns.children[i].setAttribute('column_number', i + 1);
+  }
+},
+
+handleNewCardSetNumber:() => {
+  const draggables = document.querySelectorAll('.draggable--card');  
+  for(let i = 0; i < draggables.length; i++) {
+    draggables[i].setAttribute('card_number', i + 1);
+  }
+},
+
+handleRecalculateCardNumber:() => {
+  const columns = document.querySelectorAll('.cards_dropzone');
+  columns.forEach(column => {
+    const cards = column.querySelectorAll('.draggable--card');
+    for(let i = 0; i < cards.length; i++) {
+      cards[i].setAttribute('card_number', i + 1);
+    }
+  });
+},
+
 handleCountNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
@@ -155,13 +183,14 @@ handleDragAndDrop: ()=> {
   const columns = document.querySelectorAll('.cards_dropzone');
 
   draggables.forEach(draggable => {
-      draggable.addEventListener('dragstart', (event) => {
-      event.target.classList.add('dragging');
-      app.handleCountNewCard();
+        draggable.addEventListener('dragstart', (event) => {
+        event.target.classList.add('dragging');
+        app.handleCountNewCard();
     });
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
         app.handleCountNewCard();
+        app.handleRecalculateCardNumber();
     });
   });
 
@@ -180,25 +209,6 @@ handleDragAndDrop: ()=> {
       });
     }
   );
-},
-
-toggleFullScreenMode:(event) => {
-  
-  const element = document.documentElement
-
-  if(event.target.checked == true)
-  {
-    
-    event.target.setAttribute('checked', 'true');
-    setTimeout(() => {
-    element.requestFullscreen();
-    }, 500);
-  } else {
-    event.target.removeAttribute('checked');
-    setTimeout(() => {
-    document.exitFullscreen();
-    }, 500); 
-  }
 },
 
 // y c'est la position de l'élment déplacé sur l'axe horizontal
@@ -220,6 +230,25 @@ getDragAfterElement:(column, y_position) => {
         return closest;
       }
   }, {offset: Number.NEGATIVE_INFINITY}).element;
+},
+
+toggleFullScreenMode:(event) => {
+  
+  const element = document.documentElement
+
+  if(event.target.checked == true)
+  {
+    
+    event.target.setAttribute('checked', 'true');
+    setTimeout(() => {
+    element.requestFullscreen();
+    }, 500);
+  } else {
+    event.target.removeAttribute('checked');
+    setTimeout(() => {
+    document.exitFullscreen();
+    }, 500); 
+  }
 },
 
 };
