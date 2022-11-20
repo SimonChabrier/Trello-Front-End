@@ -1,7 +1,7 @@
 const app = {
 
 init:()=> {
-  console.log('Trello strated success !');
+  console.log('Trello start success !');
   app.trelloListeners(); 
 },
 
@@ -11,6 +11,8 @@ trelloListeners:()=> {
       app.handleCreateColumn()
       app.handleDragAndDrop();
       app.handleDeleteColumn();
+      app.handleColumnSettings();
+      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -20,6 +22,7 @@ trelloListeners:()=> {
       app.handleCountNewCard();
       app.handleChangeCardColor();
       app.handleTaskDone();
+      app.handleCardsSettings();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -32,6 +35,7 @@ handleDeleteColumn:()=> {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
+      app.handleColumnSettings();
     });
   });
 },
@@ -139,6 +143,27 @@ appendElementToSelector:(element, querySelector) => {
   appendTo.appendChild(element);
 
   return appendTo;
+},
+
+handleColumnSettings:() => {
+  const columns = document.querySelector('.columns--container');
+
+  for(let i = 0; i < columns.children.length; i++) {
+    columns.children[i].setAttribute('column_number', i);
+  }
+  
+  // gérer la taille des colonnnes en auto
+  // const columnsArray = Array.from(columns.children);
+  // const columnsArrayLength = columnsArray.length;
+  // const columnsWidth = 100 / columnsArrayLength;
+  // columnsArray.forEach(column => {
+  //   column.style.width = `${columnsWidth}%`;
+  // });
+},
+
+handleCardsSettings:() => {
+  //const cards = document.querySelector('.cards_dropzone').querySelector('.draggable--card');
+
 },
 
 handleCountNewCard:()=> {
