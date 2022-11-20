@@ -155,8 +155,10 @@ handleNewColumnSetNumber:() => {
 handleNewCardSetNumber:() => {
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
-    draggables[i].setAttribute('card_number', i + 1);
-    draggables[i].querySelector('.card--number').innerText = `Backlog Card N° ${draggables[i].getAttribute('card_number')}`;
+    if (draggables[i].parentElement.classList.contains('new--card--section')) {
+      draggables[i].setAttribute('card_number', i + 1);
+      draggables[i].querySelector('.card--number').innerText = `Backlog Card N° ${draggables[i].getAttribute('card_number')}`;
+    }
   }
 },
 
@@ -167,10 +169,14 @@ updateCardNumberOnDragEnd:() => {
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      
       if(cards[i].parentElement.classList.contains('new--card--section')){
         cards[i].querySelector('.card--number').innerText = `Backlog Card N° ${cards[i].getAttribute('card_number')}`;
       } else {
-      cards[i].querySelector('.card--number').innerText = `Card N° ${cards[i].getAttribute('card_number')}`;
+        cards[i].parentElement.firstChild.value != '' ? cards[i].querySelector('.card--number').innerText = 
+          `${cards[i].parentElement.firstChild.value} Card N° ${cards[i].getAttribute('card_number')}` : 
+        cards[i].querySelector('.card--number').innerText = 
+          `${cards[i].parentElement.firstChild.getAttribute('placeholder')} Card N° ${cards[i].getAttribute('card_number')}`
       }
     }
   });
