@@ -78,6 +78,7 @@ handleTaskDone:() => {
       if (event.target.checked) 
       {
         event.target.closest('div').classList.add('task--done');
+        event.target.closest('div').setAttribute('task_done', 'true');
         const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
         inputs.forEach(input => {
           input.setAttribute('disabled', true);
