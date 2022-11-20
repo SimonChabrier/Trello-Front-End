@@ -168,6 +168,7 @@ handleCardsSettings:() => {
 
 handleCountNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
+  console.log(newCard);
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
     count > 1 ? card.querySelector('.card--count').innerHTML = `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerHTML = `${count} CARD IN BACKLOG`;
