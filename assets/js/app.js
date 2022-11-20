@@ -159,6 +159,16 @@ handleNewCardSetNumber:() => {
   }
 },
 
+handleRecalculateCardNumber:() => {
+  const columns = document.querySelectorAll('.cards_dropzone');
+  columns.forEach(column => {
+    const cards = column.querySelectorAll('.draggable--card');
+    for(let i = 0; i < cards.length; i++) {
+      cards[i].setAttribute('card_number', i + 1);
+    }
+  });
+},
+
 handleCountNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
@@ -174,13 +184,13 @@ handleDragAndDrop: ()=> {
 
   draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', (event) => {
-        //TODO ICI RECALCULER LES ATTRIBUTS DES ELEMENTS
         event.target.classList.add('dragging');
         app.handleCountNewCard();
     });
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
         app.handleCountNewCard();
+        app.handleRecalculateCardNumber();
     });
   });
 
