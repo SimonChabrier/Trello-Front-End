@@ -3,6 +3,15 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.trelloListeners(); 
+
+  // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
+  app.handleDragAndDrop();
+  app.handleDeleteCard();
+  app.handleCountBackLogCards();
+  app.handleChangeCardColor();
+  app.handleTaskDone();
+  app.handleNewCardSetNumber();
+  //app.handleGetCardInputValue();
 },
 
 trelloListeners:()=> {
@@ -22,10 +31,25 @@ trelloListeners:()=> {
       app.handleChangeCardColor();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
+      app.handleGetCardInputValue();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
+  });
+},
+
+handleGetCardInputValue:()=> {
+  const inputs = document.querySelectorAll('input, textarea');
+  inputs.forEach(input => {
+    if(!input.classList.contains('is-fullscreen_switch')) {
+      input.addEventListener('change', (event) => {
+        console.log(event.target.closest('div').getAttribute('card_number'));
+        console.log(event.target.closest('div').getAttribute('column_number'));
+        console.log(event.target.name);
+        console.log(event.target.value);
+      });
+    }
   });
 },
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/switch.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script src="assets/js/cards_fixtures.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/tpl.js"></script>
     <script src="assets/js/app.js"></script>
     <title>Js Trello</title>
 </head>
@@ -27,7 +30,7 @@
         </section>
     </div>
     <div class="main">
-        <section class="new--card--section cards_dropzone" draggable="true" column_number="0">
+        <section class="new--card--section cards_dropzone" draggable="true" column_number="0" id="backlog_column">
             <p class="card--count">BACKLOG CARDS</p>
         </section>
         <section class="columns--container columns_dropzone">
@@ -35,5 +38,34 @@
         </section>
     </div>
 </div>
+
+<!-- balise template pour cloner une carte -->
+<template id="card_template">
+    <div class="draggable--card" draggable="true" column_number="0" card_number="1">
+        <section class="card--colors">
+            <button class="card--color--default"></button>
+            <button class="card--color--red"></button>
+            <button class="card--color--orange"></button>
+            <button class="card--color--blue"></button>
+        </section>
+            <button class="delete_card">X</button>
+            <span class="card--number">Backlog Card N° 1</span>
+        <section class="card_content">
+            <input type="text" name="task_title" class="card--title" placeholder="Title">
+            <textarea type="" name="task_content" class="card--text" placeholder="Description"></textarea>
+            <input type="checkbox" name="task_status" class="card--checkox">
+        </section>
+    </div>
+</template>
+
+<!-- balise colonne pour cloner une colonne -->
+<template id="column_template">
+    <div class="cards_dropzone" column_number="1">
+        <input type="input" name="input--column--name" class="input--column--name" placeholder="todo">
+        <button class="delete_column">X</button>
+    </div>
+</template>
+
+
 </body>
 </html>
