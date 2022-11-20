@@ -12,7 +12,6 @@ trelloListeners:()=> {
       app.handleDragAndDrop();
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
-      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -63,6 +62,7 @@ handleCreateCard:() => {
   card.setAttribute('draggable', 'true');
   card.appendChild(app.headerCardColors());
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
+  card.appendChild(app.createElement('span', 'card--number', 'N°'));
   card.appendChild(app.setCardContent());
   app.appendElementToSelector(card,'.new--card--section');
 },
@@ -155,16 +155,29 @@ handleNewColumnSetNumber:() => {
 handleNewCardSetNumber:() => {
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
-    draggables[i].setAttribute('card_number', i + 1);
+    if (draggables[i].parentElement.classList.contains('new--card--section')) {
+      draggables[i].setAttribute('card_number', i + 1);
+      draggables[i].querySelector('.card--number').innerText = `Backlog Card N° ${draggables[i].getAttribute('card_number')}`;
+    }
   }
 },
 
-handleRecalculateCardNumber:() => {
+updateCardNumberOnDragEnd:() => {
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
     const cards = column.querySelectorAll('.draggable--card');
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
+      cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      
+      if(cards[i].parentElement.classList.contains('new--card--section')){
+        cards[i].querySelector('.card--number').innerText = `Backlog Card N° ${cards[i].getAttribute('card_number')}`;
+      } else {
+        cards[i].parentElement.firstChild.value != '' ? cards[i].querySelector('.card--number').innerText = 
+          `${cards[i].parentElement.firstChild.value} Card N° ${cards[i].getAttribute('card_number')}` : 
+        cards[i].querySelector('.card--number').innerText = 
+          `${cards[i].parentElement.firstChild.getAttribute('placeholder')} Card N° ${cards[i].getAttribute('card_number')}`
+      }
     }
   });
 },
@@ -190,7 +203,7 @@ handleDragAndDrop: ()=> {
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
         app.handleCountNewCard();
-        app.handleRecalculateCardNumber();
+        app.updateCardNumberOnDragEnd();
     });
   });
 
