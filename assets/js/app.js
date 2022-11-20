@@ -147,9 +147,10 @@ appendElementToSelector:(element, querySelector) => {
 
 handleColumnSettings:() => {
   const columns = document.querySelector('.columns--container');
-
+  console.log(columns);
   for(let i = 0; i < columns.children.length; i++) {
-    columns.children[i].setAttribute('column_number', i);
+    console.log(columns.children[i]);
+    columns.children[i].setAttribute('column_number', i + 1);
   }
   
   // gérer la taille des colonnnes en auto
@@ -168,7 +169,6 @@ handleCardsSettings:() => {
 
 handleCountNewCard:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
-  console.log(newCard);
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
     count > 1 ? card.querySelector('.card--count').innerHTML = `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerHTML = `${count} CARD IN BACKLOG`;
@@ -181,9 +181,10 @@ handleDragAndDrop: ()=> {
   const columns = document.querySelectorAll('.cards_dropzone');
 
   draggables.forEach(draggable => {
-      draggable.addEventListener('dragstart', (event) => {
-      event.target.classList.add('dragging');
-      app.handleCountNewCard();
+        draggable.addEventListener('dragstart', (event) => {
+        //TODO ICI RECALCULER LES ATTRIBUTS DES ELEMENTS
+        event.target.classList.add('dragging');
+        app.handleCountNewCard();
     });
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
@@ -208,25 +209,6 @@ handleDragAndDrop: ()=> {
   );
 },
 
-toggleFullScreenMode:(event) => {
-  
-  const element = document.documentElement
-
-  if(event.target.checked == true)
-  {
-    
-    event.target.setAttribute('checked', 'true');
-    setTimeout(() => {
-    element.requestFullscreen();
-    }, 500);
-  } else {
-    event.target.removeAttribute('checked');
-    setTimeout(() => {
-    document.exitFullscreen();
-    }, 500); 
-  }
-},
-
 // y c'est la position de l'élment déplacé sur l'axe horizontal
 // positionne l'élément déplacé au dessous ou au dessus du plus proche élément de la liste
 getDragAfterElement:(column, y_position) => {
@@ -246,6 +228,25 @@ getDragAfterElement:(column, y_position) => {
         return closest;
       }
   }, {offset: Number.NEGATIVE_INFINITY}).element;
+},
+
+toggleFullScreenMode:(event) => {
+  
+  const element = document.documentElement
+
+  if(event.target.checked == true)
+  {
+    
+    event.target.setAttribute('checked', 'true');
+    setTimeout(() => {
+    element.requestFullscreen();
+    }, 500);
+  } else {
+    event.target.removeAttribute('checked');
+    setTimeout(() => {
+    document.exitFullscreen();
+    }, 500); 
+  }
 },
 
 };
