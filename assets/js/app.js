@@ -12,7 +12,6 @@ trelloListeners:()=> {
       app.handleDragAndDrop();
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
-      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -63,6 +62,7 @@ handleCreateCard:() => {
   card.setAttribute('draggable', 'true');
   card.appendChild(app.headerCardColors());
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
+  card.appendChild(app.createElement('span', 'card--number', 'N°'));
   card.appendChild(app.setCardContent());
   app.appendElementToSelector(card,'.new--card--section');
 },
@@ -156,6 +156,7 @@ handleNewCardSetNumber:() => {
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
     draggables[i].setAttribute('card_number', i + 1);
+    draggables[i].querySelector('.card--number').innerText = `Backlog Card N° ${draggables[i].getAttribute('card_number')}`;
   }
 },
 
@@ -166,7 +167,11 @@ updateCardNumberOnDragEnd:() => {
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
-      cards[i].innerHTML = cards[i].getAttribute('column_number') + '.' + cards[i].getAttribute('card_number');
+      if(cards[i].parentElement.classList.contains('new--card--section')){
+        cards[i].querySelector('.card--number').innerText = `Backlog Card N° ${cards[i].getAttribute('card_number')}`;
+      } else {
+      cards[i].querySelector('.card--number').innerText = `Card N° ${cards[i].getAttribute('card_number')}`;
+      }
     }
   });
 },
