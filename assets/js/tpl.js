@@ -12,7 +12,6 @@ init: () => {
 setColumnTemplate: (cards) => {
 },
 
-// TODO GERER LES VALEUR DES TEXTAREA
 // TODO VOIR BUG SI CLIC SUR CARTE 2
 // * CARDS TEMPLATES A ASSOCIER AUX COLUMNS A TESTER
 
@@ -36,7 +35,7 @@ setCardTemplate: (cards) => {
         }
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
-        cardTemplate.querySelector('.card--text').setAttribute('value', card.task_content);
+        cardTemplate.querySelector('.card--text').innerHTML = card.task_content;
 
         target.appendChild(cardTemplate);
     });
