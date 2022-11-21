@@ -30,8 +30,8 @@ setCardTemplate: (cards) => {
         }
         
         if (card.card_color !== 'card--color--default') {
-            cardTemplate.querySelector('.draggable--card').setAttribute('card_color', card.card_color);
             cardTemplate.querySelector('.draggable--card').classList.add(card.card_color);
+            cardTemplate.querySelector('.draggable--card').setAttribute('card_color',  card.card_color);
         }
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);

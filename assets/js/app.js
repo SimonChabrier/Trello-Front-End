@@ -11,7 +11,8 @@ init:()=> {
   app.handleChangeCardColor();
   app.handleTaskDone();
   app.handleNewCardSetNumber();
-  //app.handleGetCardInputValue();
+  app.handleGetCardInputValue();
+  
 },
 
 trelloListeners:()=> {
@@ -76,7 +77,7 @@ handleDeleteCard:() => {
 
 handleCreateColumn:() => {
   const column = app.createElement('div', 'cards_dropzone', '');
-  column.appendChild(app.createInputElement('input','input', 'input--column--name', 'input--column--name', 'todo'));
+  column.appendChild(app.createInputElement('input','input', 'input_column_name', 'input--column--name', 'todo'));
   app.appendElementToSelector(column,'.columns--container');
   const btn = app.createElement('button', 'delete_column', 'X');
   column.appendChild(btn);
@@ -119,7 +120,7 @@ handleTaskDone:() => {
 },
 
 setCardContent:() => {
-  const cardContent = app.createElement('section', 'card_content', ''); 
+  const cardContent = app.createElement('section', 'card--content', ''); 
   cardContent.appendChild(app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title'));
   cardContent.appendChild(app.createInputElement('textarea', '', 'task_content', 'card--text', 'Description'));
   cardContent.appendChild(app.createInputElement('input', 'checkbox', 'task_status', 'card--checkox', ''));
@@ -129,19 +130,19 @@ setCardContent:() => {
 
 headerCardColors:() => {
   section = app.createElement('section', 'card--colors', null);
-  section.appendChild(app.createElement('button', 'card--color--default', null));
-  section.appendChild(app.createElement('button', 'card--color--red', null));
-  section.appendChild(app.createElement('button', 'card--color--orange', null));
-  section.appendChild(app.createElement('button', 'card--color--blue', null));
+  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--default' ,''));
+  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--red' ,''));
+  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--orange' ,''));
+  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--blue' ,''));
   
   return section;
 },
 
 handleChangeCardColor:() => {
-  document.querySelectorAll('.card--color--red, .card--color--orange, .card--color--blue, .card--color--default').forEach(button => {
+    document.getElementsByName('color_button').forEach(button => {
     button.addEventListener('click', (event) => {
-      event.target.closest('div').className = '';
-      event.target.closest('div').classList.add('draggable--card');
+      event.target.closest('div').classList = '';
+      event.target.closest('div').classList.add('draggable--card');    
       event.target.closest('div').classList.add(event.target.className);
       event.target.closest('div').setAttribute('card_color', event.target.className);
     });
@@ -219,7 +220,8 @@ handleCountBackLogCards:()=> {
 },
 
 handleDragAndDrop: ()=> {
-
+  
+  console.log('handleDragAndDrop');
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards_dropzone');
 
