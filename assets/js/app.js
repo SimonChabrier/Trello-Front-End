@@ -9,11 +9,12 @@ init:()=> {
   app.handleDeleteCard();
   app.handleCountBackLogCards();
   app.handleChangeCardColor();
+  app.handleToggleEnableCheckBoxOnEmptyCard();
   app.handleTaskDone();
   app.handleNewCardSetNumber();
-  app.handleGetCardInputValue();
-  
 },
+
+//TODO désactiver le changement de couleur si la carte est DONE
 
 trelloListeners:()=> {
 
@@ -22,6 +23,7 @@ trelloListeners:()=> {
       app.handleDragAndDrop();
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
+      app.handleGetColumnName();
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -30,27 +32,13 @@ trelloListeners:()=> {
       app.handleDeleteCard();
       app.handleCountBackLogCards();
       app.handleChangeCardColor();
+      app.handleToggleEnableCheckBoxOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
-      app.handleGetCardInputValue();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
-  });
-},
-
-handleGetCardInputValue:()=> {
-  const inputs = document.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    if(!input.classList.contains('is-fullscreen_switch')) {
-      input.addEventListener('change', (event) => {
-        console.log(event.target.closest('div').getAttribute('card_number'));
-        console.log(event.target.closest('div').getAttribute('column_number'));
-        console.log(event.target.name);
-        console.log(event.target.value);
-      });
-    }
   });
 },
 
@@ -70,7 +58,7 @@ handleDeleteCard:() => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
       app.handleCountBackLogCards();
-      app.updateAllCardsNumber();
+      app.updateAllCardsNumberAndColumnName();
     });
   });
 },
@@ -115,6 +103,32 @@ handleTaskDone:() => {
           input.removeAttribute('disabled', true);
         });
       }
+    });
+  });
+},
+
+handleToggleEnableCheckBoxOnEmptyCard:() => {
+  const cards = document.querySelectorAll('.draggable--card');
+  cards.forEach(card => {
+    const inputs = card.querySelectorAll('.card--text, .card--title');
+
+      inputs.forEach(input => {
+        if(input.value === '') {
+            card.querySelector('.card--checkox').setAttribute('disabled', true);
+        } else {
+            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+        }
+      });
+
+      inputs.forEach(input => {
+        input.addEventListener('input', (event) => {
+          if(event.target.value === '') {
+            card.querySelector('.card--checkox').setAttribute('disabled', true);
+          } else {
+            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+          }
+        }
+      );
     });
   });
 },
@@ -182,16 +196,27 @@ handleNewColumnSetNumber:() => {
 },
 
 handleNewCardSetNumber:() => {
+  console.log('handleNewCardSetNumber');
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
     if (draggables[i].parentElement.classList.contains('new--card--section')) {
       draggables[i].setAttribute('card_number', i + 1);
-      draggables[i].querySelector('.card--number').innerText = `Backlog Card N° ${draggables[i].getAttribute('card_number')}`;
+      draggables[i].querySelector('.card--number').innerText = `Backlog Card - N° ${draggables[i].getAttribute('card_number')}`;
     }
   }
 },
 
-updateAllCardsNumber:() => {
+handleGetColumnName:() => {
+  const columns = document.querySelectorAll('.input--column--name');
+  columns.forEach(column => {
+    column.addEventListener('input', (event) => {
+      event.target.closest('div').setAttribute('placeholder', event.target.value);
+      app.updateAllCardsNumberAndColumnName();
+    });
+  });
+},
+
+updateAllCardsNumberAndColumnName:() => {
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
     const cards = column.querySelectorAll('.draggable--card');
@@ -200,12 +225,12 @@ updateAllCardsNumber:() => {
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
       
       if(cards[i].parentElement.classList.contains('new--card--section')){
-        cards[i].querySelector('.card--number').innerText = `Backlog Card N° ${cards[i].getAttribute('card_number')}`;
+        cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
       } else {
         cards[i].parentElement.firstChild.value != '' ? cards[i].querySelector('.card--number').innerText = 
-          `${cards[i].parentElement.firstChild.value} Card N° ${cards[i].getAttribute('card_number')}` : 
+          `${cards[i].parentElement.firstChild.value} - Card N° ${cards[i].getAttribute('card_number')}` : 
         cards[i].querySelector('.card--number').innerText = 
-          `${cards[i].parentElement.firstChild.getAttribute('placeholder')} Card N° ${cards[i].getAttribute('card_number')}`
+          `${cards[i].parentElement.firstChild.getAttribute('placeholder')} - Card N° ${cards[i].getAttribute('card_number')}`
       }
     }
   });
@@ -233,7 +258,7 @@ handleDragAndDrop: ()=> {
         draggable.addEventListener('dragend', () => {
         draggable.classList.remove('dragging');
         app.handleCountBackLogCards();
-        app.updateAllCardsNumber();
+        app.updateAllCardsNumberAndColumnName();
     });
   });
 
