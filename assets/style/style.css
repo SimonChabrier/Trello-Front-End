@@ -261,7 +261,8 @@ button.card--color--default {
 button.card--color--default:hover ,
 button.card--color--red:hover ,
 button.card--color--green:hover ,
-button.card--color--blue:hover {
+button.card--color--blue:hover,
+button.card--color--orange:hover {
     width: 25px;
     height: 25px;
 }
@@ -292,7 +293,7 @@ button.card--color--blue:hover {
     text-transform: uppercase;
 }
 
-.card_content {
+.card--content {
     position: relative;
     border-radius: 5px 5px 0 0;
     top: 15px;

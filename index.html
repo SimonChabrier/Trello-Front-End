@@ -43,14 +43,14 @@
 <template id="card_template">
     <div class="draggable--card" draggable="true" column_number="" card_number="">
         <section class="card--colors">
-            <button class="card--color--default"></button>
-            <button class="card--color--red"></button>
-            <button class="card--color--orange"></button>
-            <button class="card--color--blue"></button>
+            <button type="submit" name="color_button" class="card--color--default"></button>
+            <button type="submit" name="color_button" class="card--color--red"></button>
+            <button type="submit" name="color_button" class="card--color--orange"></button>
+            <button type="submit" name="color_button" class="card--color--blue"></button>
         </section>
             <button class="delete_card">X</button>
             <span class="card--number">Backlog Card N° 1</span>
-        <section class="card_content">
+        <section class="card--content">
             <input type="text" name="task_title" class="card--title" placeholder="Title">
             <textarea type="" name="task_content" class="card--text" placeholder="Description"></textarea>
             <input type="checkbox" name="task_status" class="card--checkox">
@@ -61,7 +61,7 @@
 <!-- balise colonne pour cloner une colonne -->
 <template id="column_template">
     <div class="cards_dropzone" column_number="1">
-        <input type="input" name="input--column--name" class="input--column--name" placeholder="todo">
+        <input type="input" name="input_column_name" class="input--column--name" placeholder="todo">
         <button class="delete_column">X</button>
     </div>
 </template>
