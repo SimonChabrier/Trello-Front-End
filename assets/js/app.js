@@ -9,9 +9,10 @@ init:()=> {
   app.handleDeleteCard();
   app.handleCountBackLogCards();
   app.handleChangeCardColor();
+  app.handleDisableSetTackDoneOnEmptyCard();
   app.handleTaskDone();
   app.handleNewCardSetNumber();
-  app.handleGetCardInputValue();
+  //app.handleGetCardInputValue();
 
 },
 
@@ -31,9 +32,10 @@ trelloListeners:()=> {
       app.handleDeleteCard();
       app.handleCountBackLogCards();
       app.handleChangeCardColor();
+      app.handleDisableSetTackDoneOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
-      app.handleGetCardInputValue();
+      //app.handleGetCardInputValue();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -41,19 +43,19 @@ trelloListeners:()=> {
   });
 },
 
-handleGetCardInputValue:()=> {
-  const inputs = document.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    if(!input.classList.contains('is-fullscreen_switch')) {
-      input.addEventListener('change', (event) => {
-        console.log(event.target.closest('div').getAttribute('card_number'));
-        console.log(event.target.closest('div').getAttribute('column_number'));
-        console.log(event.target.name);
-        console.log(event.target.value);
-      });
-    }
-  });
-},
+// handleGetCardInputValue:()=> {
+//   const inputs = document.querySelectorAll('input, textarea');
+//   inputs.forEach(input => {
+//     if(!input.classList.contains('is-fullscreen_switch')) {
+//       input.addEventListener('change', (event) => {
+//         console.log(event.target.closest('div').getAttribute('card_number'));
+//         console.log(event.target.closest('div').getAttribute('column_number'));
+//         console.log(event.target.name);
+//         console.log(event.target.value);
+//       });
+//     }
+//   });
+// },
 
 handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete_column');
@@ -119,6 +121,21 @@ handleTaskDone:() => {
     });
   });
 },
+
+handleDisableSetTackDoneOnEmptyCard:() => {
+  const cards = document.querySelectorAll('.draggable--card');
+  cards.forEach(card => {
+    const inputs = card.querySelectorAll('.card--text, .card--title');
+      inputs.forEach(input => {
+        if(input.value === '') {
+            card.querySelector('.card--checkox').setAttribute('disabled', true);
+        } else {
+            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+        }
+    });
+  });
+},
+
 
 setCardContent:() => {
   const cardContent = app.createElement('section', 'card--content', ''); 
