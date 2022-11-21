@@ -9,10 +9,12 @@ init:()=> {
   app.handleDeleteCard();
   app.handleCountBackLogCards();
   app.handleChangeCardColor();
-  app.handleDisableSetTackDoneOnEmptyCard();
+  app.handleToggleEnableCheckBoxOnEmptyCard();
   app.handleTaskDone();
   app.handleNewCardSetNumber();
 },
+
+//TODO désactiver le changement de couleur si la carte est DONE
 
 trelloListeners:()=> {
 
@@ -30,8 +32,7 @@ trelloListeners:()=> {
       app.handleDeleteCard();
       app.handleCountBackLogCards();
       app.handleChangeCardColor();
-      app.handleDisableSetTackDoneOnEmptyCard();
-      app.handleEnableSetTackDoneOnCard();
+      app.handleToggleEnableCheckBoxOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
     });
@@ -106,24 +107,19 @@ handleTaskDone:() => {
   });
 },
 
-handleDisableSetTackDoneOnEmptyCard:() => {
+handleToggleEnableCheckBoxOnEmptyCard:() => {
   const cards = document.querySelectorAll('.draggable--card');
   cards.forEach(card => {
     const inputs = card.querySelectorAll('.card--text, .card--title');
+
       inputs.forEach(input => {
         if(input.value === '') {
             card.querySelector('.card--checkox').setAttribute('disabled', true);
         } else {
             card.querySelector('.card--checkox').removeAttribute('disabled', true);
         }
-    });
-  });
-},
+      });
 
-handleEnableSetTackDoneOnCard:() => {
-  const cards = document.querySelectorAll('.draggable--card');
-  cards.forEach(card => {
-    const inputs = card.querySelectorAll('.card--text, .card--title');
       inputs.forEach(input => {
         input.addEventListener('input', (event) => {
           if(event.target.value === '') {
