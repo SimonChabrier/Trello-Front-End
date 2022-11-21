@@ -12,8 +12,6 @@ init:()=> {
   app.handleDisableSetTackDoneOnEmptyCard();
   app.handleTaskDone();
   app.handleNewCardSetNumber();
-  //app.handleGetCardInputValue();
-
 },
 
 trelloListeners:()=> {
@@ -33,29 +31,15 @@ trelloListeners:()=> {
       app.handleCountBackLogCards();
       app.handleChangeCardColor();
       app.handleDisableSetTackDoneOnEmptyCard();
+      app.handleEnableSetTackDoneOnCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
-      //app.handleGetCardInputValue();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
   });
 },
-
-// handleGetCardInputValue:()=> {
-//   const inputs = document.querySelectorAll('input, textarea');
-//   inputs.forEach(input => {
-//     if(!input.classList.contains('is-fullscreen_switch')) {
-//       input.addEventListener('change', (event) => {
-//         console.log(event.target.closest('div').getAttribute('card_number'));
-//         console.log(event.target.closest('div').getAttribute('column_number'));
-//         console.log(event.target.name);
-//         console.log(event.target.value);
-//       });
-//     }
-//   });
-// },
 
 handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete_column');
@@ -136,6 +120,22 @@ handleDisableSetTackDoneOnEmptyCard:() => {
   });
 },
 
+handleEnableSetTackDoneOnCard:() => {
+  const cards = document.querySelectorAll('.draggable--card');
+  cards.forEach(card => {
+    const inputs = card.querySelectorAll('.card--text, .card--title');
+      inputs.forEach(input => {
+        input.addEventListener('input', (event) => {
+          if(event.target.value === '') {
+            card.querySelector('.card--checkox').setAttribute('disabled', true);
+          } else {
+            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+          }
+        }
+      );
+    });
+  });
+},
 
 setCardContent:() => {
   const cardContent = app.createElement('section', 'card--content', ''); 
