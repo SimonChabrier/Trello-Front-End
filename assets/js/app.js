@@ -28,7 +28,7 @@ trelloListeners:()=> {
       app.handleToggleEnableCheckBoxOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
-      app.handleDisableDragOnInputS();
+      app.handleDisableDragOnActiveInputs();
     });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -41,38 +41,43 @@ trelloListeners:()=> {
       app.handleToggleEnableCheckBoxOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
-      app.handleDisableDragOnInputS();
+      app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
-  });
+    });
 },
 
-handleDisableDragOnInputS:()=> {
+handleDisableDragOnActiveInputs:()=> {
+
   const inputs = document.querySelectorAll('.card--title, .card--text');
   const cards = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
+  
   inputs.forEach(input => {
+
     input.addEventListener('focus', () => {
-            cards.forEach(card => {
-                card.setAttribute('draggable', 'false');
-            });
-            columns.forEach(column => {
-                column.setAttribute('draggable', 'false');
-            });
-        });
-        input.addEventListener('blur', () => {
-          cards.forEach(card => {
-            card.setAttribute('draggable', 'true');
-          });
-          columns.forEach(column => {
-            column.setAttribute('draggable', 'true');
-        });
+      cards.forEach(card => {
+        card.setAttribute('draggable', 'false');
       });
+      columns.forEach(column => {
+        column.setAttribute('draggable', 'false');
+      });
+    });
+
+    input.addEventListener('blur', () => {
+      cards.forEach(card => {
+        card.setAttribute('draggable', 'true');
+      });
+      columns.forEach(column => {
+        column.setAttribute('draggable', 'true');
+      });
+    });
   });
 },
 
 handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete_column');
+  
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
