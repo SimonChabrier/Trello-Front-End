@@ -29,7 +29,7 @@ trelloListeners:()=> {
       app.handleTaskDone();
       app.handleNewCardSetNumber();
       app.handleDisableDragOnActiveInputs();
-    });
+  });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
@@ -44,7 +44,7 @@ trelloListeners:()=> {
       app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
-    });
+  });
 },
 
 handleDisableDragOnActiveInputs:()=> {
@@ -77,7 +77,7 @@ handleDisableDragOnActiveInputs:()=> {
 
 handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete_column');
-  
+
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
