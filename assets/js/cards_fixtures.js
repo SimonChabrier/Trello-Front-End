@@ -22,7 +22,7 @@ const cards = [
         id : '2',
         task_title : 'Titre de la carte 2',
         task_content : 'Contenu de la carte 2',
-        task_done : 'false',
+        task_done : 'true',
         column_number : '0',
         card_number : '100',
         card_color : 'card--color--red',

@@ -3,16 +3,7 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.trelloListeners(); 
-
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
-  app.handleDragAndDrop();
-  app.handleDeleteCard();
-  app.handleCountBackLogCards();
-  app.handleChangeCardColor();
-  app.handleToggleEnableCheckBoxOnEmptyCard();
-  app.handleTaskDone();
-  app.handleNewCardSetNumber();
-  app.handleDisableDragOnInputS();
 },
 
 //TODO désactiver le changement de couleur si la carte est DONE
@@ -42,6 +33,17 @@ trelloListeners:()=> {
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
+  });
+
+  window.addEventListener('load', () => {
+      app.handleCountBackLogCards();
+      app.handleChangeCardColor();
+      app.handleToggleEnableCheckBoxOnEmptyCard();
+      app.handleTaskDone();
+      app.handleNewCardSetNumber();
+      app.handleDisableDragOnInputS();
+      app.handleOnLoadCheckIfTaskDone();
+      app.handleHideColorsBtnsOnDoneCards();
   });
 },
 
@@ -109,30 +111,40 @@ handleCreateCard:() => {
   app.appendElementToSelector(card,'.new--card--section');
 },
 
+handleOnLoadCheckIfTaskDone:()=> {
+  document.querySelectorAll('.card--checkox').forEach(checkBox => {
+      if (checkBox.checked) {
+        checkBox.parentElement.querySelectorAll('.card--title, .card--text').forEach(input => {
+          input.setAttribute('disabled', 'true');
+          input.disabled = true;
+        });
+      };
+  });
+},
+
 handleTaskDone:() => {
-  console.log('handleTaskDone');
-  const checkboxes = document.querySelectorAll('.card--checkox');
-  
-  checkboxes.forEach(checkbox => {
+  document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-      
-      if (event.target.checked) 
-      {
+      if (event.target.checked){ 
+        // hide colors btns on check action
+        app.handleHideColorsBtnsOnDoneCards();
         event.target.closest('div').classList.add('task--done');
         event.target.closest('div').setAttribute('task_done', 'true');
-        const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
-        inputs.forEach(input => {
+
+          event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
           input.setAttribute('disabled', true);
           input.disabled = true;
         });
       } else {
-        event.target.closest('div').classList.remove('task--done');
-        const inputs = event.target.closest('section').querySelectorAll('.card--text, .card--title');
-        inputs.forEach(input => {
+          event.target.closest('div').classList.remove('task--done');
+          event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
           input.removeAttribute('disabled', true);
           input.disabled = false;
-        });
-      }
+          });
+          event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
+          btn.style.display = 'block';
+          });
+        }
     });
   });
 },
@@ -307,6 +319,19 @@ handleDragAndDrop: ()=> {
       });
     }
   );
+},
+
+handleHideColorsBtnsOnDoneCards:() => {
+  const checkBox = document.querySelectorAll('input[type=checkbox]');
+
+  checkBox.forEach(checkBox => {
+  if (checkBox.checked) {
+    const colorBtns = checkBox.closest('div').querySelectorAll('[name=color_button]');
+      colorBtns.forEach(btn => {
+        btn.style.display = 'none';
+      });
+    } 
+  });
 },
 
 // y c'est la position de l'élment déplacé sur l'axe horizontal
