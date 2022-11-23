@@ -6,8 +6,7 @@ init:()=> {
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
-//TODO désactiver le changement de couleur si la carte est DONE
-//TODO vérouille les inputs si la carte est déjà DONE au chargement de la page voir dans handleTaskDone
+//TODO récupèrer l'état du style height du textarea de chaque carte
 
 trelloListeners:()=> {
 
@@ -54,8 +53,8 @@ handleDisableDragOnActiveInputs:()=> {
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
   
   inputs.forEach(input => {
-
-    input.addEventListener('focus', () => {
+    
+    input.addEventListener('focus', (e) => {
       cards.forEach(card => {
         card.setAttribute('draggable', 'false');
       });
