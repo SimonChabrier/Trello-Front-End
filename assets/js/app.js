@@ -44,6 +44,7 @@ trelloListeners:()=> {
       app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
+      app.getTextAreaHeight();
   });
 },
 
@@ -54,8 +55,8 @@ handleDisableDragOnActiveInputs:()=> {
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
   
   inputs.forEach(input => {
-
-    input.addEventListener('focus', () => {
+    
+    input.addEventListener('focus', (e) => {
       cards.forEach(card => {
         card.setAttribute('draggable', 'false');
       });
@@ -377,6 +378,19 @@ toggleFullScreenMode:(event) => {
     document.exitFullscreen();
     }, 500); 
   }
+},
+
+getTextAreaHeight:() => {
+  console.log('getTextAreaHeight');
+  const inputs = document.querySelectorAll('.card--text');
+  inputs.forEach(input => {
+    input.addEventListener('input', (event) => {
+      event.target.style.height = 'auto';
+      event.target.style.height = event.target.scrollHeight + 'px';
+      console.log(event.target.style.height);
+    });
+  });
+    
 },
 
 };
