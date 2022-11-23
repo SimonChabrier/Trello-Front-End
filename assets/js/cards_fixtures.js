@@ -9,6 +9,7 @@ const cards = [
         column_number : '0',
         card_number : '1',
         card_color : 'card--color--blue',
+        textarea_height : '100px',
         // techno : 
         //     [{
         //         1 : 'PHP', 
@@ -26,6 +27,7 @@ const cards = [
         column_number : '0',
         card_number : '100',
         card_color : 'card--color--red',
+        textarea_height : '200px',
         // techno : 
         //     [{
         //         1 : 'PHP', 

@@ -12,7 +12,7 @@ init: () => {
 setColumnTemplate: (cards) => {
 },
 
-// TODO VOIR BUG SI CLIC SUR CARTE 2
+
 // * CARDS TEMPLATES A ASSOCIER AUX COLUMNS A TESTER
 
 setCardTemplate: (cards) => {   
@@ -36,6 +36,7 @@ setCardTemplate: (cards) => {
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
         cardTemplate.querySelector('.card--text').innerHTML = card.task_content;
+        cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
 
         target.appendChild(cardTemplate);
     });

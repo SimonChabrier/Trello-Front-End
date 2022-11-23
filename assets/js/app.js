@@ -6,8 +6,7 @@ init:()=> {
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
-//TODO désactiver le changement de couleur si la carte est DONE
-//TODO vérouille les inputs si la carte est déjà DONE au chargement de la page voir dans handleTaskDone
+//TODO récupèrer l'état du style height du textarea de chaque carte
 
 trelloListeners:()=> {
 
@@ -44,7 +43,6 @@ trelloListeners:()=> {
       app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
-      app.getTextAreaHeight();
   });
 },
 
@@ -378,19 +376,6 @@ toggleFullScreenMode:(event) => {
     document.exitFullscreen();
     }, 500); 
   }
-},
-
-getTextAreaHeight:() => {
-  console.log('getTextAreaHeight');
-  const inputs = document.querySelectorAll('.card--text');
-  inputs.forEach(input => {
-    input.addEventListener('input', (event) => {
-      event.target.style.height = 'auto';
-      event.target.style.height = event.target.scrollHeight + 'px';
-      console.log(event.target.style.height);
-    });
-  });
-    
 },
 
 };
