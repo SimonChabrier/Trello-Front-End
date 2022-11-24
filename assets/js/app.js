@@ -43,6 +43,7 @@ trelloListeners:()=> {
       app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
+      app.handleDeleteCard();
   });
 },
 
