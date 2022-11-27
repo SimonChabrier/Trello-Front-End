@@ -270,6 +270,7 @@ handleGetColumnName:() => {
   });
 },
 
+// TODO gérer ici la mise à jour du nom de colonne pour les cartes déjà existantes en BDD
 updateAllCardsNumberAndColumnName:() => {
   console.log('updateAllCardsNumberAndColumnName');
 

@@ -19,9 +19,12 @@ setColumnTemplate: (columns) => {
         columnTemplate.querySelector('.input--column--name').value = column.placeholder;
 
         target.appendChild(columnTemplate); 
+
+        app.handleDeleteColumn();
+        app.handleNewColumnSetNumber();
+        app.handleGetColumnName();
         // Je passe les carte à setCardTemplate
         tpl.setCardTemplate(column.cards, column.placeholder);
-        app.handleDeleteColumn();  
     }); 
 },
 
