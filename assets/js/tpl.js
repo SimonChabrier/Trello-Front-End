@@ -44,6 +44,10 @@ setColumnTemplate: (columns) => {
         
         columnTemplate.querySelector('.cards_dropzone').setAttribute('column_number', column.column_number);
         columnTemplate.querySelector('.input--column--name').value = column.placeholder;
+
+        // vérouiller l'ordre des colonnes via le style
+        // columnTemplate.querySelector('.cards_dropzone').style.order = column.column_number;
+
         target.appendChild(columnTemplate); 
         // Je passe les carte à setCardTemplate
         tpl.setCardTemplate(column.cards);  
@@ -76,15 +80,17 @@ setCardTemplate: (cards) => {
         cardTemplate.querySelector('.card--text').innerHTML = card.task_content;
         cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
 
-        // time out pour que le DOM soit chargé
+        // vérouiller l'ordre des cartes via le style
+        // cardTemplate.querySelector('.draggable--card').style.order = card.card_number;
+
+        // time out pour que le DOM soit chargé avant de faire le appendChild
         setTimeout(() => {
-        // si la carte a le numéro de colonne 1 alors je l'ajoute à la colonne 1
         let newColumns = document.querySelectorAll('.cards_dropzone');
-        newColumns?.forEach(newColumn => {
-            if (newColumn.getAttribute('column_number') == card.column_number) {
-                newColumn.appendChild(cardTemplate);
-            }
-        });
+            newColumns?.forEach(newColumn => {
+                if (newColumn.getAttribute('column_number') == card.column_number) {
+                    newColumn.appendChild(cardTemplate);
+                }
+            });
         }, 100);
     });
 },
