@@ -7,6 +7,7 @@ init:()=> {
 },
 
 //TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
+//TODO voir comment récupérer le nom de la colonne dans la carte au chargement de la page
 
 trelloListeners:()=> {
 
@@ -39,12 +40,12 @@ trelloListeners:()=> {
       app.handleChangeCardColor();
       app.handleToggleEnableCheckBoxOnEmptyCard();
       app.handleTaskDone();
-      app.handleNewCardSetNumber();
-      app.handleDisableDragOnActiveInputs();
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
       app.handleDeleteCard();
-      tpl.setColumnTemplate(columns);
+      app.handleNewCardSetNumber();
+      app.handleDisableDragOnActiveInputs();
+      
       
       
   });
@@ -247,6 +248,7 @@ handleNewColumnSetNumber:() => {
 
 handleNewCardSetNumber:() => {
   console.log('handleNewCardSetNumber');
+
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
     if (draggables[i].parentElement.classList.contains('new--card--section')) {
@@ -257,6 +259,8 @@ handleNewCardSetNumber:() => {
 },
 
 handleGetColumnName:() => {
+  console.log('handleGetColumnName');
+
   const columns = document.querySelectorAll('.input--column--name');
   columns.forEach(column => {
     column.addEventListener('input', (event) => {
@@ -267,9 +271,12 @@ handleGetColumnName:() => {
 },
 
 updateAllCardsNumberAndColumnName:() => {
+  console.log('updateAllCardsNumberAndColumnName');
+
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
     const cards = column.querySelectorAll('.draggable--card');
+ 
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));

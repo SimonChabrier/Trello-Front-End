@@ -1,10 +1,11 @@
 // Récupéer nom de la conlonne 1
-// const columName = document.getElementsByClassName('input--column--name')[0].value;
+
 
 const tpl = {
 
 init: () => {
     console.log('tpl init');
+    tpl.setColumnTemplate(columns);
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -19,12 +20,13 @@ setColumnTemplate: (columns) => {
 
         target.appendChild(columnTemplate); 
         // Je passe les carte à setCardTemplate
-        tpl.setCardTemplate(column.cards);  
+        tpl.setCardTemplate(column.cards, column.placeholder);
+        app.handleDeleteColumn();  
     }); 
 },
 
 // * 2 - CONSTRUCTION DES CARTES
-setCardTemplate: (cards) => {   
+setCardTemplate: (cards, colPlaceholder) => {   
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
     cards?.forEach(card => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
@@ -46,6 +48,7 @@ setCardTemplate: (cards) => {
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
         cardTemplate.querySelector('.card--text').innerHTML = card.task_content;
         cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
+        cardTemplate.querySelector('.card--number').innerHTML = colPlaceholder;
         
 
         // time out pour que le DOM soit chargé avant de faire le appendChild
@@ -56,27 +59,19 @@ setCardTemplate: (cards) => {
                     newColumn.appendChild(cardTemplate);
                 }
             });
-            // j'active les méthodes dont j'ai besoin pour le gestion des colonnes
-            app.handleDeleteColumn();
-            app.handleNewColumnSetNumber();
-            // j'active les méthodes dont j'ai besoin pour manipuler les cartes existantes chargées
             app.handleDragAndDrop();
             app.handleDeleteCard();
             app.handleCountBackLogCards();
             app.handleChangeCardColor();
             app.handleToggleEnableCheckBoxOnEmptyCard();
             app.handleTaskDone();
+            app.handleGetColumnName();
             app.handleDisableDragOnActiveInputs();
-            
             
         }, 100);
     });
 },
-
-
-    
-}
-
-
+ 
+};
 
 document.addEventListener('DOMContentLoaded', tpl.init);
