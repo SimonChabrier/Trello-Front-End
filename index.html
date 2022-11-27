@@ -33,7 +33,7 @@
         <section class="new--card--section cards_dropzone" draggable="true" column_number="0" id="backlog_column">
             <p class="card--count">BACKLOG CARDS</p>
         </section>
-        <section class="columns--container columns_dropzone">
+        <section class="columns--container columns_dropzone" id="columns_container">
             <!-- insert created columns here -->
         </section>
     </div>
@@ -60,7 +60,7 @@
 
 <!-- balise colonne pour cloner une colonne -->
 <template id="column_template">
-    <div class="cards_dropzone" column_number="1">
+    <div class="cards_dropzone" column_number="">
         <input type="input" name="input_column_name" class="input--column--name" placeholder="todo">
         <button class="delete_column">X</button>
     </div>
