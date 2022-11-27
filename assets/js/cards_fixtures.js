@@ -50,10 +50,10 @@ const columns = [
             id : '2',
             task_title : 'Titre de la carte 3',
             task_content : 'Contenu de la carte 3',
-            task_done : 'true',
+            task_done : 'false',
             column_number : '2',
             card_number : '1',
-            card_color : 'card--color--blue',
+            card_color : 'card--color--orange',
             textarea_height : '100px',
             },
             {

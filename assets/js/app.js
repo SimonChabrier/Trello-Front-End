@@ -6,7 +6,7 @@ init:()=> {
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
-//TODO récupèrer l'état du style height du textarea de chaque carte
+//TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
 
 trelloListeners:()=> {
 
@@ -44,6 +44,9 @@ trelloListeners:()=> {
       app.handleOnLoadCheckIfTaskDone();
       app.handleHideColorsBtnsOnDoneCards();
       app.handleDeleteCard();
+      tpl.setColumnTemplate(columns);
+      
+      
   });
 },
 
