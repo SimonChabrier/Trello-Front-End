@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/switch.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script src="assets/js/app.js"></script>
     <script src="assets/js/cards_fixtures.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/tpl.js"></script>
-    <script src="assets/js/app.js"></script>
+    
+    
     <title>Js Trello</title>
 </head>
 <body>
@@ -33,7 +35,7 @@
         <section class="new--card--section cards_dropzone" draggable="true" column_number="0" id="backlog_column">
             <p class="card--count">BACKLOG CARDS</p>
         </section>
-        <section class="columns--container columns_dropzone">
+        <section class="columns--container columns_dropzone" id="columns_container">
             <!-- insert created columns here -->
         </section>
     </div>
@@ -49,7 +51,7 @@
             <button type="submit" name="color_button" class="card--color--blue"></button>
         </section>
             <button class="delete_card">X</button>
-            <span class="card--number">Backlog Card N° 1</span>
+            <span class="card--number">Nom Colonnne</span>
         <section class="card--content">
             <input type="text" name="task_title" class="card--title" placeholder="Title">
             <textarea type="" name="task_content" class="card--text" placeholder="Description" style="height: 150px;"></textarea>
@@ -60,7 +62,7 @@
 
 <!-- balise colonne pour cloner une colonne -->
 <template id="column_template">
-    <div class="cards_dropzone" column_number="1">
+    <div class="cards_dropzone" column_number="">
         <input type="input" name="input_column_name" class="input--column--name" placeholder="todo">
         <button class="delete_column">X</button>
     </div>
