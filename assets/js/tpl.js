@@ -22,7 +22,6 @@ setColumnTemplate: (columns) => {
 
         app.handleDeleteColumn();
         app.handleNewColumnSetNumber();
-        app.handleGetColumnName();
         // Je passe les carte à setCardTemplate
         tpl.setCardTemplate(column.cards, column.placeholder);
     }); 
@@ -62,15 +61,14 @@ setCardTemplate: (cards, colPlaceholder) => {
                     newColumn.appendChild(cardTemplate);
                 }
             });
+            app.handleGetColumnName();
             app.handleDragAndDrop();
             app.handleDeleteCard();
             app.handleCountBackLogCards();
             app.handleChangeCardColor();
             app.handleToggleEnableCheckBoxOnEmptyCard();
             app.handleTaskDone();
-            app.handleGetColumnName();
             app.handleDisableDragOnActiveInputs();
-            
         }, 100);
     });
 },
