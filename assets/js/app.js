@@ -265,7 +265,6 @@ handleGetColumnName:() => {
   columns.forEach(column => {
     column.addEventListener('input', (event) => {
       event.target.closest('div').setAttribute('placeholder', event.target.value);
-      //console.log(event.target.closest('input').value);
       app.updateAllCardsNumberAndColumnName();
     });
   });
@@ -277,20 +276,19 @@ updateAllCardsNumberAndColumnName:() => {
 
   const columns = document.querySelectorAll('.cards_dropzone');
   columns.forEach(column => {
+    
     const cards = column.querySelectorAll('.draggable--card');
  
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
       
-      if(cards[i].parentElement.classList.contains('new--card--section')){
+      if(cards[i].parentElement.classList.contains('new--card--section')) {
         cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
       } else {
-        // TODO gérer ici la mise à jour du nom de colonne pour les cartes déjà existantes en BDD
-        cards[i].parentElement.firstChild.value != '' ? cards[i].querySelector('.card--number').innerText = 
-          `${cards[i].parentElement.firstChild.value} - Card N° ${cards[i].getAttribute('card_number')}` : 
-        cards[i].querySelector('.card--number').innerText = 
-          `${cards[i].parentElement.firstChild.getAttribute('placeholder')} - Card N° ${cards[i].getAttribute('card_number')}`
+        // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
+        'column', column.getAttribute('placeholder') == null ? column.setAttribute('placeholder', 'TODO') : true;
+        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('placeholder')} Card - N° ${cards[i].getAttribute('card_number')}`;
       }
     }
   });
