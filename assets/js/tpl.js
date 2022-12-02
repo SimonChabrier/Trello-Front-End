@@ -15,8 +15,10 @@ setColumnTemplate: (columns) => {
         const target = document.getElementById('columns_container');
         const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
-        columnTemplate.querySelector('.cards_dropzone').setAttribute('column_number', column.column_number);
+        columnTemplate.querySelector('.cards_dropzone').setAttribute('column_number', column.column_number);``
+        columnTemplate.querySelector('.cards_dropzone').setAttribute('placeholder', column.placeholder);
         columnTemplate.querySelector('.input--column--name').value = column.placeholder;
+        columnTemplate.querySelector('.input--column--name').setAttribute('placeholder', column.placeholder);
 
         target.appendChild(columnTemplate); 
 
