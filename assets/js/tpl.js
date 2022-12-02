@@ -50,9 +50,9 @@ setCardTemplate: (cards, colPlaceholder) => {
         }
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
-        cardTemplate.querySelector('.card--text').innerHTML = card.task_content;
+        cardTemplate.querySelector('.card--text').innerText = card.task_content;
         cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
-        cardTemplate.querySelector('.card--number').innerHTML = colPlaceholder;
+        cardTemplate.querySelector('.card--number').innerText = `${colPlaceholder} Card - N° ${card.card_number}`;
         
 
         // time out pour que le DOM soit chargé avant de faire le appendChild
