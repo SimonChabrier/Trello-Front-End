@@ -218,14 +218,16 @@ handleChangeCardColor:() => {
 createElement:(tag, className, textContent) => {
   const element = document.createElement(tag);
   element.classList.add(className);
-  element.innerHTML = textContent;
+  element.innerText = textContent;
 
   return element;
 },
 
-createInputElement:(inputType, atribute, name, className, placeHolder) => {
+// inputType pour le type de l'input par exemple text, checkbox, submit, file etc...
+// attribute pour préciser le type de l'input par exemple (submit)
+createInputElement:(inputType, attribute, name, className, placeHolder) => {
   const element = document.createElement(inputType);
-  element.setAttribute('type', atribute);
+  element.setAttribute('type', attribute);
   element.setAttribute('name', name);
   element.classList.add(className);
   element.placeholder = placeHolder;
@@ -303,7 +305,7 @@ handleCountBackLogCards:()=> {
   const newCard = document.querySelectorAll('.new--card--section');
   newCard.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
-    count > 1 ? card.querySelector('.card--count').innerHTML = `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerHTML = `${count} CARD IN BACKLOG`;
+    count > 1 ? card.querySelector('.card--count').innerText= `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerText = `${count} CARD IN BACKLOG`;
   });
 },
 
