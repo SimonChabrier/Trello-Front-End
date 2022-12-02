@@ -16,21 +16,21 @@ setColumnTemplate: (columns) => {
         const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
         columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);``
-        columnTemplate.querySelector('.cards--dropzone').setAttribute('placeholder', column.placeholder);
-        columnTemplate.querySelector('.input--column--name').value = column.placeholder;
-        columnTemplate.querySelector('.input--column--name').setAttribute('placeholder', column.placeholder);
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('name', column.name);
+        columnTemplate.querySelector('.input--column--name').value = column.name;
+        columnTemplate.querySelector('.input--column--name').setAttribute('name', column.name);
 
         target.appendChild(columnTemplate); 
 
         app.handleDeleteColumn();
         app.handleNewColumnSetNumber();
         // Je passe les carte à setCardTemplate
-        tpl.setCardTemplate(column.cards, column.placeholder);
+        tpl.setCardTemplate(column.cards, column.name);
     }); 
 },
 
 // * 2 - CONSTRUCTION DES CARTES
-setCardTemplate: (cards, colPlaceholder) => {   
+setCardTemplate: (cards, colName) => {   
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
     cards?.forEach(card => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
@@ -52,7 +52,7 @@ setCardTemplate: (cards, colPlaceholder) => {
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
         cardTemplate.querySelector('.card--text').innerText = card.task_content;
         cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
-        cardTemplate.querySelector('.card--number').innerText = `${colPlaceholder} Card - N° ${card.card_number}`;
+        cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;
         
 
         // time out pour que le DOM soit chargé avant de faire le appendChild

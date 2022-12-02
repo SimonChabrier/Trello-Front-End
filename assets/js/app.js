@@ -260,13 +260,16 @@ handleNewCardSetNumber:() => {
 
 handleGetColumnName:() => {
   console.log('handleGetColumnName');
-
   const columns = document.querySelectorAll('.input--column--name');
+
   columns.forEach(column => {
     column.addEventListener('input', (event) => {
-      // si pas de valeur dans l'input, on ne fait rien je fixe le placeholder à TODO pour le conserver dans les cards de la colonne
-      // à l'appel de la fonction updateAllCardsNumberAndColumnName()
-      event.target.value === '' ? event.target.closest('div').setAttribute('placeholder', 'TODO') : event.target.closest('div').setAttribute('placeholder', event.target.value);
+      if(event.target.value === '') {
+        event.target.placeholder = 'TODO';
+        event.target.closest('div').setAttribute('name', event.target.placeholder)
+      } else {
+        event.target.closest('div').setAttribute('name', event.target.value)
+      }
       app.updateAllCardsNumberAndColumnName();
     });
   });
@@ -289,8 +292,8 @@ updateAllCardsNumberAndColumnName:() => {
         cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
       } else {
         // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
-        'column', column.getAttribute('placeholder') == null ? column.setAttribute('placeholder', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('placeholder')} Card - N° ${cards[i].getAttribute('card_number')}`;
+        'column', column.getAttribute('name') == null ? column.setAttribute('name', 'TODO') : true;
+        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('name')} Card - N° ${cards[i].getAttribute('card_number')}`;
       }
     }
   });
