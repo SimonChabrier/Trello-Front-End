@@ -7,7 +7,7 @@ init: () => {
 
 //* LECTURE DES DONNEES
 getCards: () => {
-
+    // APi fetch cards
 },
 
 getColumns: () => {

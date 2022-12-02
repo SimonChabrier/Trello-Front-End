@@ -6,6 +6,15 @@ const tpl = {
 init: () => {
     console.log('tpl init');
     tpl.setColumnTemplate(columns);
+    // les méthodes nécéssaires pour manipuler les cartes
+    app.handleGetColumnName();
+    app.handleDragAndDrop();
+    app.handleDeleteCard();
+    app.handleCountBackLogCards();
+    app.handleChangeCardColor();
+    app.handleToggleEnableCheckBoxOnEmptyCard();
+    app.handleTaskDone();
+    app.handleDisableDragOnActiveInputs();
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -62,14 +71,6 @@ setCardTemplate: (cards, colName) => {
                 newColumn.appendChild(cardTemplate);
             }
         });
-        app.handleGetColumnName();
-        app.handleDragAndDrop();
-        app.handleDeleteCard();
-        app.handleCountBackLogCards();
-        app.handleChangeCardColor();
-        app.handleToggleEnableCheckBoxOnEmptyCard();
-        app.handleTaskDone();
-        app.handleDisableDragOnActiveInputs();
     });
 },
  
