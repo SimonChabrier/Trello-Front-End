@@ -15,8 +15,8 @@ setColumnTemplate: (columns) => {
         const target = document.getElementById('columns_container');
         const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
-        columnTemplate.querySelector('.cards_dropzone').setAttribute('column_number', column.column_number);``
-        columnTemplate.querySelector('.cards_dropzone').setAttribute('placeholder', column.placeholder);
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);``
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('placeholder', column.placeholder);
         columnTemplate.querySelector('.input--column--name').value = column.placeholder;
         columnTemplate.querySelector('.input--column--name').setAttribute('placeholder', column.placeholder);
 
@@ -57,7 +57,7 @@ setCardTemplate: (cards, colPlaceholder) => {
 
         // time out pour que le DOM soit chargé avant de faire le appendChild
         setTimeout(() => {
-        let newColumns = document.querySelectorAll('.cards_dropzone');
+        let newColumns = document.querySelectorAll('.cards--dropzone');
             newColumns?.forEach(newColumn => {
                 if (newColumn.getAttribute('column_number') == card.column_number) {
                     newColumn.appendChild(cardTemplate);

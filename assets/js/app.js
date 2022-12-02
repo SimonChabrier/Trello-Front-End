@@ -80,7 +80,7 @@ handleDisableDragOnActiveInputs:()=> {
 },
 
 handleDeleteColumn:()=> {
-  const buttons = document.querySelectorAll('.delete_column');
+  const buttons = document.querySelectorAll('.delete--column');
 
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
@@ -102,10 +102,10 @@ handleDeleteCard:() => {
 },
 
 handleCreateColumn:() => {
-  const column = app.createElement('div', 'cards_dropzone', '');
+  const column = app.createElement('div', 'cards--dropzone', '');
   column.appendChild(app.createInputElement('input','input', 'input_column_name', 'input--column--name', 'todo'));
   app.appendElementToSelector(column,'.columns--container');
-  const btn = app.createElement('button', 'delete_column', 'X');
+  const btn = app.createElement('button', 'delete--column', 'X');
   column.appendChild(btn);
 },
 
@@ -276,7 +276,7 @@ handleGetColumnName:() => {
 updateAllCardsNumberAndColumnName:() => {
   console.log('updateAllCardsNumberAndColumnName');
 
-  const columns = document.querySelectorAll('.cards_dropzone');
+  const columns = document.querySelectorAll('.cards--dropzone');
   columns.forEach(column => {
     
     const cards = column.querySelectorAll('.draggable--card');
@@ -308,7 +308,7 @@ handleDragAndDrop: ()=> {
   
   console.log('handleDragAndDrop');
   const draggables = document.querySelectorAll('.draggable--card');
-  const columns = document.querySelectorAll('.cards_dropzone');
+  const columns = document.querySelectorAll('.cards--dropzone');
   
   draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', (event) => {
