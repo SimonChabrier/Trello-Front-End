@@ -286,6 +286,7 @@ updateAllCardsNumberAndColumnName:() => {
       if(cards[i].parentElement.classList.contains('new--card--section')){
         cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
       } else {
+        console.log('column name', column.getAttribute('placeholder'));
         // TODO gérer ici la mise à jour du nom de colonne pour les cartes déjà existantes en BDD
         cards[i].parentElement.firstChild.value != '' ? cards[i].querySelector('.card--number').innerText = 
           `${cards[i].parentElement.firstChild.value} - Card N° ${cards[i].getAttribute('card_number')}` : 
