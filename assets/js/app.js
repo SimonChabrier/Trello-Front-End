@@ -264,7 +264,9 @@ handleGetColumnName:() => {
   const columns = document.querySelectorAll('.input--column--name');
   columns.forEach(column => {
     column.addEventListener('input', (event) => {
-      event.target.closest('div').setAttribute('placeholder', event.target.value);
+      // si pas de valeur dans l'input, on ne fait rien je fixe le placeholder à TODO pour le conserver dans les cards de la colonne
+      // à l'appel de la fonction updateAllCardsNumberAndColumnName()
+      event.target.value === '' ? event.target.closest('div').setAttribute('placeholder', 'TODO') : event.target.closest('div').setAttribute('placeholder', event.target.value);
       app.updateAllCardsNumberAndColumnName();
     });
   });
