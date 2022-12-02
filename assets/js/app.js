@@ -384,21 +384,21 @@ getDragAfterElement:(column, y_position) => {
 },
 
 toggleFullScreenMode:(event) => {
+  console.log('toggleFullScreenMode');
   
   const element = document.documentElement
-
+   
   if(event.target.checked == true)
   {
-    
     event.target.setAttribute('checked', 'true');
     setTimeout(() => {
-    element.requestFullscreen();
-    }, 500);
+      element.requestFullscreen();
+    }, 200);
   } else {
     event.target.removeAttribute('checked');
     setTimeout(() => {
-    document.exitFullscreen();
-    }, 500); 
+      document.exitFullscreen();
+    }, 200); 
   }
 },
 
