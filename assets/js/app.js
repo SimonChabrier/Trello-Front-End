@@ -266,9 +266,9 @@ handleGetColumnName:() => {
     column.addEventListener('input', (event) => {
       if(event.target.value === '') {
         event.target.placeholder = 'TODO';
-        event.target.closest('div').setAttribute('name', event.target.placeholder)
+        event.target.closest('div').setAttribute('column_name', event.target.placeholder)
       } else {
-        event.target.closest('div').setAttribute('name', event.target.value)
+        event.target.closest('div').setAttribute('column_name', event.target.value)
       }
       app.updateAllCardsNumberAndColumnName();
     });
@@ -292,8 +292,8 @@ updateAllCardsNumberAndColumnName:() => {
         cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
       } else {
         // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
-        'column', column.getAttribute('name') == null ? column.setAttribute('name', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('name')} Card - N° ${cards[i].getAttribute('card_number')}`;
+        'column', column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
       }
     }
   });

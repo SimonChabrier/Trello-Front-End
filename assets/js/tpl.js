@@ -16,16 +16,16 @@ setColumnTemplate: (columns) => {
         const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
         columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);``
-        columnTemplate.querySelector('.cards--dropzone').setAttribute('name', column.name);
-        columnTemplate.querySelector('.input--column--name').value = column.name;
-        columnTemplate.querySelector('.input--column--name').setAttribute('name', column.name);
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('column_name', column.column_name);
+        columnTemplate.querySelector('.input--column--name').value = column.column_name;
+        columnTemplate.querySelector('.input--column--name').setAttribute('column_name', column.column_name);
 
         target.appendChild(columnTemplate); 
 
         app.handleDeleteColumn();
         app.handleNewColumnSetNumber();
         // Je passe les carte à setCardTemplate
-        tpl.setCardTemplate(column.cards, column.name);
+        tpl.setCardTemplate(column.cards, column.column_name);
     }); 
 },
 

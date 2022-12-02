@@ -4,7 +4,7 @@ const columns = [
     {
         id : '1',
         column_number : '1',
-        name : 'Col 1',
+        column_name : 'Col 1',
         cards : [
             {
             id : '1',
@@ -21,7 +21,7 @@ const columns = [
     {
         id : '2',
         column_number :'2',
-        name : 'Col 2',
+        column_name : 'Col 2',
         cards : [
             {
             id : '2',
