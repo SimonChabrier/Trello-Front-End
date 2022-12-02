@@ -3,6 +3,7 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.trelloListeners(); 
+  //app.handleToggleTheme();
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
@@ -33,6 +34,10 @@ trelloListeners:()=> {
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
+  });
+
+  document.querySelector('#dark_mode_switch').addEventListener('change', () => {
+      app.handleToggleTheme();
   });
 
   window.addEventListener('load', () => {
@@ -395,6 +400,10 @@ toggleFullScreenMode:(event) => {
     document.exitFullscreen();
     }, 500); 
   }
+},
+
+handleToggleTheme:() => {
+    document.body.classList.toggle('light--theme');
 },
 
 };
