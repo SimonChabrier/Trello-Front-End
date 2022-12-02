@@ -53,10 +53,14 @@ handleDisableDragOnActiveInputs:()=> {
   const inputs = document.querySelectorAll('.card--title, .card--text');
   const cards = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
+
+  inputs.forEach(input => {
+      input.classList.add('hidden');
+});
   
   inputs.forEach(input => {
     
-    input.addEventListener('focus', (e) => {
+    input.addEventListener('focus', () => {
       cards.forEach(card => {
         card.setAttribute('draggable', 'false');
       });
