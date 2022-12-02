@@ -36,18 +36,15 @@ trelloListeners:()=> {
   });
 
   window.addEventListener('load', () => {
-      app.handleCountBackLogCards();
-      app.handleChangeCardColor();
-      app.handleToggleEnableCheckBoxOnEmptyCard();
-      app.handleTaskDone();
-      app.handleOnLoadCheckIfTaskDone();
-      app.handleHideColorsBtnsOnDoneCards();
-      app.handleDeleteCard();
-      app.handleNewCardSetNumber();
-      app.handleDisableDragOnActiveInputs();
-      
-      
-      
+      // app.handleCountBackLogCards();
+      // app.handleChangeCardColor();
+      // app.handleToggleEnableCheckBoxOnEmptyCard();
+      // app.handleTaskDone();
+      // app.handleOnLoadCheckIfTaskDone();
+      // app.handleHideColorsBtnsOnDoneCards();
+      // app.handleDeleteCard();
+      // app.handleNewCardSetNumber();
+      // app.handleDisableDragOnActiveInputs();      
   });
 },
 
@@ -274,7 +271,6 @@ handleGetColumnName:() => {
     });
   });
 },
-
 
 updateAllCardsNumberAndColumnName:() => {
   console.log('updateAllCardsNumberAndColumnName');

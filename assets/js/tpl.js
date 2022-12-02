@@ -55,23 +55,21 @@ setCardTemplate: (cards, colName) => {
         cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;
         
 
-        // time out pour que le DOM soit chargé avant de faire le appendChild
-        setTimeout(() => {
         let newColumns = document.querySelectorAll('.cards--dropzone');
-            newColumns?.forEach(newColumn => {
-                if (newColumn.getAttribute('column_number') == card.column_number) {
-                    newColumn.appendChild(cardTemplate);
-                }
-            });
-            app.handleGetColumnName();
-            app.handleDragAndDrop();
-            app.handleDeleteCard();
-            app.handleCountBackLogCards();
-            app.handleChangeCardColor();
-            app.handleToggleEnableCheckBoxOnEmptyCard();
-            app.handleTaskDone();
-            app.handleDisableDragOnActiveInputs();
-        }, 100);
+        // - newColumns? pour dire que si newColumns existe alors je fais le forEach (optionnal chaining) sinon je fais rien
+        newColumns?.forEach(newColumn => {
+            if (newColumn.getAttribute('column_number') == card.column_number) {
+                newColumn.appendChild(cardTemplate);
+            }
+        });
+        app.handleGetColumnName();
+        app.handleDragAndDrop();
+        app.handleDeleteCard();
+        app.handleCountBackLogCards();
+        app.handleChangeCardColor();
+        app.handleToggleEnableCheckBoxOnEmptyCard();
+        app.handleTaskDone();
+        app.handleDisableDragOnActiveInputs();
     });
 },
  
