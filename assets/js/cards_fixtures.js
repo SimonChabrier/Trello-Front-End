@@ -14,7 +14,7 @@ const columns = [
             column_number : '1',
             card_number : '1',
             card_color : 'card--color--blue',
-            textarea_height : '100px',
+            textarea_height : '150px',
             },
         ]
     },
