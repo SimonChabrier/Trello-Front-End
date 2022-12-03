@@ -12,9 +12,10 @@ init: () => {
     app.handleDeleteCard();
     app.handleCountBackLogCards();
     app.handleChangeCardColor();
-    app.handleToggleEnableCheckBoxOnEmptyCard();
+    app.handleDesableCheckBoxOnEmptyCard();
     app.handleTaskDone();
     app.handleDisableDragOnActiveInputs();
+    app.handleHideColorsBtnsOnDoneCards();
 },
 
 // * 1 - CONSTRUCTION DES COLONNES

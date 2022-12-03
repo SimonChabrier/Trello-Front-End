@@ -24,7 +24,7 @@ allListeners:()=> {
       app.handleDeleteCard();
       app.handleCountBackLogCards();
       app.handleChangeCardColor();
-      app.handleToggleEnableCheckBoxOnEmptyCard();
+      app.handleDesableCheckBoxOnEmptyCard();
       app.handleTaskDone();
       app.handleNewCardSetNumber();
       app.handleDisableDragOnActiveInputs();
@@ -41,7 +41,7 @@ allListeners:()=> {
   window.addEventListener('load', () => {
       // app.handleCountBackLogCards();
       // app.handleChangeCardColor();
-      // app.handleToggleEnableCheckBoxOnEmptyCard();
+      // app.handleDesableCheckBoxOnEmptyCard();
       // app.handleTaskDone();
       // app.handleOnLoadCheckIfTaskDone();
       // app.handleHideColorsBtnsOnDoneCards();
@@ -51,15 +51,18 @@ allListeners:()=> {
   });
 },
 
+handleToggleTheme:() => {
+  document.body.classList.toggle('light--theme');
+  document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
+      dropzone.classList.toggle('light--column--theme');
+  });
+},
+
 handleDisableDragOnActiveInputs:()=> {
 
   const inputs = document.querySelectorAll('.card--title, .card--text');
   const cards = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
-
-  inputs.forEach(input => {
-      input.classList.add('hidden');
-});
   
   inputs.forEach(input => {
     
@@ -161,7 +164,7 @@ handleTaskDone:() => {
   });
 },
 
-handleToggleEnableCheckBoxOnEmptyCard:() => {
+handleDesableCheckBoxOnEmptyCard:() => {
   const cards = document.querySelectorAll('.draggable--card');
   cards.forEach(card => {
     const inputs = card.querySelectorAll('.card--text, .card--title');
@@ -187,15 +190,6 @@ handleToggleEnableCheckBoxOnEmptyCard:() => {
   });
 },
 
-setCardContent:() => {
-  const cardContent = app.createElement('section', 'card--content', ''); 
-  cardContent.appendChild(app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title'));
-  cardContent.appendChild(app.createInputElement('textarea', '', 'task_content', 'card--text', 'Description'));
-  cardContent.appendChild(app.createInputElement('input', 'checkbox', 'task_status', 'card--checkox', ''));
-  
-  return cardContent;
-},
-
 headerCardColors:() => {
   section = app.createElement('section', 'card--colors', null);
   section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--default' ,''));
@@ -215,41 +209,6 @@ handleChangeCardColor:() => {
       event.target.closest('div').setAttribute('card_color', event.target.className);
     });
   });
-},
-
-createElement:(tag, className, textContent) => {
-  const element = document.createElement(tag);
-  element.classList.add(className);
-  element.innerText = textContent;
-
-  return element;
-},
-
-// inputType pour le type de l'input par exemple text, checkbox, submit, file etc...
-// attribute pour préciser le type de l'input par exemple (submit)
-// eg : app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title')
-createInputElement:(input, inputType, inputName, className, placeHolder) => {
-  const element = document.createElement(input);
-  element.setAttribute('type', inputType);
-  element.setAttribute('name', inputName);
-  element.classList.add(className);
-  element.placeholder = placeHolder;
-
-  return element;
-},
-
-appendElementToQuerySelector:(element, querySelector) => {
-  const appendTo = document.querySelector(querySelector);
-  appendTo.appendChild(element);
-
-  return appendTo;
-},
-
-handleNewColumnSetNumber:() => {
-  const columns = document.querySelector('.columns--container');
-  for(let i = 0; i < columns.children.length; i++) {
-    columns.children[i].setAttribute('column_number', i + 1);
-  }
 },
 
 handleNewCardSetNumber:() => {
@@ -278,29 +237,6 @@ handleGetColumnName:() => {
       }
       app.updateAllCardsNumberAndColumnName();
     });
-  });
-},
-
-updateAllCardsNumberAndColumnName:() => {
-  console.log('updateAllCardsNumberAndColumnName');
-
-  const columns = document.querySelectorAll('.cards--dropzone');
-  columns.forEach(column => {
-    
-    const cards = column.querySelectorAll('.draggable--card');
- 
-    for(let i = 0; i < cards.length; i++) {
-      cards[i].setAttribute('card_number', i + 1);
-      cards[i].setAttribute('column_number', column.getAttribute('column_number'));
-      
-      if(cards[i].parentElement.classList.contains('new--card--section')) {
-        cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
-      } else {
-        // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
-        'column', column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
-      }
-    }
   });
 },
 
@@ -360,6 +296,66 @@ handleHideColorsBtnsOnDoneCards:() => {
   });
 },
 
+handleNewColumnSetNumber:() => {
+  const columns = document.querySelector('.columns--container');
+  for(let i = 0; i < columns.children.length; i++) {
+    columns.children[i].setAttribute('column_number', i + 1);
+  }
+},
+
+//* UTILS
+
+createElement:(tag, className, textContent) => {
+  const element = document.createElement(tag);
+  element.classList.add(className);
+  element.innerText = textContent;
+
+  return element;
+},
+
+// inputType pour le type de l'input par exemple text, checkbox, submit, file etc...
+// attribute pour préciser le type de l'input par exemple (submit)
+// eg : app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title')
+createInputElement:(input, inputType, inputName, className, placeHolder) => {
+  const element = document.createElement(input);
+  element.setAttribute('type', inputType);
+  element.setAttribute('name', inputName);
+  element.classList.add(className);
+  element.placeholder = placeHolder;
+
+  return element;
+},
+
+appendElementToQuerySelector:(element, querySelector) => {
+  const appendTo = document.querySelector(querySelector);
+  appendTo.appendChild(element);
+
+  return appendTo;
+},
+
+updateAllCardsNumberAndColumnName:() => {
+  console.log('updateAllCardsNumberAndColumnName');
+
+  const columns = document.querySelectorAll('.cards--dropzone');
+  columns.forEach(column => {
+    
+    const cards = column.querySelectorAll('.draggable--card');
+ 
+    for(let i = 0; i < cards.length; i++) {
+      cards[i].setAttribute('card_number', i + 1);
+      cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      
+      if(cards[i].parentElement.classList.contains('new--card--section')) {
+        cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
+      } else {
+        // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
+        'column', column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
+      }
+    }
+  });
+},
+
 // y c'est la position de l'élment déplacé sur l'axe horizontal
 // positionne l'élément déplacé au dessous ou au dessus du plus proche élément de la liste
 getDragAfterElement:(column, y_position) => {
@@ -400,8 +396,13 @@ toggleFullScreenMode:(event) => {
   }
 },
 
-handleToggleTheme:() => {
-    document.body.classList.toggle('light--theme');
+setCardContent:() => {
+  const cardContent = app.createElement('section', 'card--content', ''); 
+  cardContent.appendChild(app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title'));
+  cardContent.appendChild(app.createInputElement('textarea', '', 'task_content', 'card--text', 'Description'));
+  cardContent.appendChild(app.createInputElement('input', 'checkbox', 'task_status', 'card--checkox', ''));
+  
+  return cardContent;
 },
 
 };

@@ -5,8 +5,33 @@ body {
 }
 
 .light--theme {
-    background-color: rgb(213, 213, 213);
+    background-color: whitesmoke;
     transition: all 1s ease;
+}
+
+.light--column--theme {
+    background-color:#fcfcfc!important;
+    transition: all .5s ease;
+    border: 1px solid #413F3F!important; 
+}
+
+.light--column--theme > .input--column--name {
+    color: #000000!important; 
+    background-color:#f5f5f5!important;
+}
+
+.light--column--theme > {
+    color: #000000!important; 
+    background-color:#f5f5f5;
+}
+
+.light--column--theme, .card--text {
+    color: #000000!important; 
+    background-color:#f5f5f5;
+}
+
+.light--column--theme > .card--count {
+    color: #000000!important;
 }
 
 input:focus {
@@ -137,6 +162,7 @@ textarea:focus {
     text-transform: uppercase;
     font-weight: 400;
     color: #ffffff;
+    background-color: #3a3939;
 }
 
 .input--column--name:focus {
@@ -151,7 +177,7 @@ textarea:focus {
 
 .cards--dropzone {
     position: relative;
-    /* border: 1px solid #d3d3d3; */
+    border: 1px solid transparent;
     border-radius: 5px;
     padding: 25px;
     margin: 10px;
