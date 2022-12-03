@@ -70,7 +70,7 @@ postColumns: () => {
     console.log(cards);
 
     // 3 - Envoyer les données au serveur
-    fetch('http://localhost:3000/api/post', {
+    fetch('https://127.0.0.1:8000/api/post', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
