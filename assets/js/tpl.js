@@ -16,6 +16,8 @@ init: () => {
     app.handleTaskDone();
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
+
+    api.postColumns();
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -25,7 +27,8 @@ setColumnTemplate: (columns) => {
         const target = document.getElementById('columns_container');
         const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
-        columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);``
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('id', column.id);
+        columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);
         columnTemplate.querySelector('.cards--dropzone').setAttribute('column_name', column.column_name);
         columnTemplate.querySelector('.input--column--name').value = column.column_name;
         columnTemplate.querySelector('.input--column--name').setAttribute('column_name', column.column_name);

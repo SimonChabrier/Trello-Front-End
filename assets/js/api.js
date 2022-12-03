@@ -3,6 +3,7 @@ const api = {
 init: () => {
     console.log('data init');
     api.getCards();
+    
 },
 
 //* LECTURE DES DONNEES
@@ -20,7 +21,16 @@ postCards: () => {
 },
 
 postColumns: () => {     
+    console.log('postColumns');
     //APi call POST
+    const columns = document.querySelectorAll('.cards--dropzone');
+    columns.forEach((column) => {
+        console.log(column.getAttribute('id'));
+        console.log(column.getAttribute('column_number'));
+        console.log(column.getAttribute('column_name'));
+        
+        
+    });
 },
 
 //* MODIFICATION COMPLETE DES DONNEES
