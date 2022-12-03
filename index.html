@@ -23,6 +23,7 @@
         <button id="create_column_btn" class="header--button">Add Column</button>
         <button id="create_card_btn" class="header--button">New Card</button>
         
+    <div class="switch">
         <section class="fullscreen--switch--section">
             <p class="fullscreen--text">FullScreen</p>
             <label class="switch">
@@ -30,9 +31,19 @@
                 <span class="slider round"></span>
             </label>
         </section>
+
+        <section class="darkmode--switch--section">
+            <p class="fullscreen--text">Dark / Light</p>
+            <label class="switch">
+            <input type="checkbox" id="dark_mode_switch">
+                <span class="slider round"></span>
+            </label>
+        </section>
+    </div>
+
     </div>
     <div class="main">
-        <section class="new--card--section cards--dropzone" draggable="true" column_number="0" id="backlog_column">
+        <section class="new--card--section cards--dropzone" draggable="true" column_number="0" column_name="backlog" id="backlog_column">
             <p class="card--count">BACKLOG CARDS</p>
         </section>
         <section class="columns--container columns_dropzone" id="columns_container">
