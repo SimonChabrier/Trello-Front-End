@@ -2,15 +2,13 @@ const app = {
 
 init:()=> {
   console.log('Trello start success !');
-  app.trelloListeners(); 
-  //app.handleToggleTheme();
+  app.allListeners(); 
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
 //TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
-//TODO voir comment récupérer le nom de la colonne dans la carte au chargement de la page
 
-trelloListeners:()=> {
+allListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
       app.handleCreateColumn()
