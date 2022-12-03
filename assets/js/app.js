@@ -39,6 +39,7 @@ allListeners:()=> {
   });
 
   window.addEventListener('load', () => {
+    app.handleGetThemeStatusFromLocalStorage();
       // app.handleCountBackLogCards();
       // app.handleChangeCardColor();
       // app.handleDesableCheckBoxOnEmptyCard();
@@ -56,6 +57,27 @@ handleToggleTheme:() => {
   document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
       dropzone.classList.toggle('light--column--theme');
   });
+  document.querySelector('.header').classList.toggle('light--theme--header');
+
+  localStorage.setItem('theme_status', document.body.classList.contains('light--theme') ? 'light' : 'dark');
+  
+},
+
+handleGetThemeStatusFromLocalStorage:() => {
+  const theme = localStorage.getItem('theme_status');
+  if (theme === 'light') {
+      document.body.classList.add('light--theme');
+      document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
+          dropzone.classList.add('light--column--theme');
+          document.getElementById('dark_mode_switch').checked = true;
+      });
+  } else {
+      document.body.classList.remove('light--theme');
+      document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
+          dropzone.classList.remove('light--column--theme');
+          document.getElementById('dark_mode_switch').checked = false;
+      });
+  }
 },
 
 handleDisableDragOnActiveInputs:()=> {

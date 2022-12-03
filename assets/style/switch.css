@@ -46,8 +46,8 @@ p.fullscreen--text{
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .7s;
-    transition: .7s;
+    -webkit-transition: .2s;
+    transition: .2s;
   }
   
   .slider:before {
@@ -58,8 +58,8 @@ p.fullscreen--text{
     left: 0px;
     bottom: 0px;
     background-color: white;
-    -webkit-transition: .7s;
-    transition: .7s;
+    -webkit-transition: .2s;
+    transition: .2s;
   }
   
   input:checked + .slider {
