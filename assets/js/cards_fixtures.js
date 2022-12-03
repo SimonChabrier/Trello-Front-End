@@ -48,7 +48,7 @@ const columns = [
     {
         id : '3',
         column_number :'3',
-        column_name : '',
+        column_name : 'Col 3',
         cards : [
             {
             id : '4',

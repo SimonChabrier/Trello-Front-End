@@ -8,6 +8,16 @@
     align-items: flex-end;
 }
 
+.darkmode--switch--section{
+  position: fixed;
+  color: #21f360;
+  top: 30px;
+  right: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 p.fullscreen--text{
     margin: 5px 0;
     padding: 0;
@@ -36,8 +46,8 @@ p.fullscreen--text{
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .7s;
-    transition: .7s;
+    -webkit-transition: .2s;
+    transition: .2s;
   }
   
   .slider:before {
@@ -48,8 +58,8 @@ p.fullscreen--text{
     left: 0px;
     bottom: 0px;
     background-color: white;
-    -webkit-transition: .7s;
-    transition: .7s;
+    -webkit-transition: .2s;
+    transition: .2s;
   }
   
   input:checked + .slider {
