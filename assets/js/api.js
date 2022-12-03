@@ -2,8 +2,6 @@ const api = {
 
 init: () => {
     console.log('data init');
-    api.getCards();
-    
 },
 
 //* LECTURE DES DONNEES
@@ -13,6 +11,33 @@ getCards: () => {
 
 getColumns: () => {
     //APi call GET
+    //const apiRootUrl = 'https://photoboothback.simschab.fr/api/get'
+    const apiRootUrl = 'https://127.0.0.1:8000/api/tasks'
+
+    let config = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+    };
+    
+    fetch(apiRootUrl, config)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        tpl.setColumnTemplate(data);
+
+        app.handleGetColumnName();
+        app.handleDragAndDrop();
+        app.handleDeleteCard();
+        app.handleCountBackLogCards();
+        app.handleChangeCardColor();
+        app.handleDesableCheckBoxOnEmptyCard();
+        app.handleTaskDone();
+        app.handleDisableDragOnActiveInputs();
+        app.handleHideColorsBtnsOnDoneCards();
+    })
+    .catch(error => console.log(error));
+
 },
 
 //* ECRITURE DES DONNEES
@@ -70,7 +95,7 @@ postColumns: () => {
     console.log(cards);
 
     // 3 - Envoyer les données au serveur
-    fetch('http://localhost:3000/api/post', {
+    fetch('https://127.0.0.1:8000/api/tasks', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -86,8 +111,6 @@ postColumns: () => {
     .catch((error) => {
         console.error(error);
     });
-
-
 },
 
 //* MODIFICATION COMPLETE DES DONNEES

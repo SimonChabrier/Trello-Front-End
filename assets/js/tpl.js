@@ -5,19 +5,21 @@ const tpl = {
 
 init: () => {
     console.log('tpl init');
-    tpl.setColumnTemplate(columns);
+    api.getColumns();
+    //tpl.setColumnTemplate(columns);
     // les méthodes nécéssaires pour manipuler les cartes
-    app.handleGetColumnName();
-    app.handleDragAndDrop();
-    app.handleDeleteCard();
-    app.handleCountBackLogCards();
-    app.handleChangeCardColor();
-    app.handleDesableCheckBoxOnEmptyCard();
-    app.handleTaskDone();
-    app.handleDisableDragOnActiveInputs();
-    app.handleHideColorsBtnsOnDoneCards();
+    // app.handleGetColumnName();
+    // app.handleDragAndDrop();
+    // app.handleDeleteCard();
+    // app.handleCountBackLogCards();
+    // app.handleChangeCardColor();
+    // app.handleDesableCheckBoxOnEmptyCard();
+    // app.handleTaskDone();
+    // app.handleDisableDragOnActiveInputs();
+    // app.handleHideColorsBtnsOnDoneCards();
     //TODO pour tester les données
-    api.postColumns();
+    // api.postColumns();
+    
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -38,7 +40,7 @@ setColumnTemplate: (columns) => {
         app.handleDeleteColumn();
         app.handleNewColumnSetNumber();
         // Je passe les carte à setCardTemplate
-        tpl.setCardTemplate(column.cards, column.column_name);
+        tpl.setCardTemplate(column.tasks, column.column_name);
     }); 
 },
 
@@ -52,7 +54,7 @@ setCardTemplate: (cards, colName) => {
         cardTemplate.querySelector('.draggable--card').setAttribute('id', card.id);
         cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
        
-        if (card.task_done == 'true') {
+        if (card.task_done == true) {
             cardTemplate.querySelector('.draggable--card').classList.add('task--done');
             cardTemplate.querySelector('.draggable--card').setAttribute('task_done', card.task_done);
             cardTemplate.querySelector('.card--checkox').setAttribute('checked', 'checked');
@@ -65,7 +67,8 @@ setCardTemplate: (cards, colName) => {
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
         cardTemplate.querySelector('.card--text').innerText = card.task_content;
-        cardTemplate.querySelector('.card--text').style.height = card.textarea_height;
+        cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
+        console.log(card.textarea_height);
         cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;
         
 
