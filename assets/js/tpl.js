@@ -16,7 +16,7 @@ init: () => {
     app.handleTaskDone();
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
-
+    //TODO pour tester les données
     api.postColumns();
 },
 
@@ -49,6 +49,7 @@ setCardTemplate: (cards, colName) => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
         
         cardTemplate.querySelector('.draggable--card').setAttribute('column_number', card.column_number);
+        cardTemplate.querySelector('.draggable--card').setAttribute('id', card.id);
         cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
        
         if (card.task_done == 'true') {
