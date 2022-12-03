@@ -107,8 +107,8 @@ handleDeleteCard:() => {
 
 handleCreateColumn:() => {
   const column = app.createElement('div', 'cards--dropzone', '');
-  column.appendChild(app.createInputElement('input','input', 'input_column_name', 'input--column--name', 'todo'));
-  app.appendElementToSelector(column,'.columns--container');
+  column.appendChild(app.createInputElement('input', 'input', 'input_column_name', 'input--column--name', 'todo'));
+  app.appendElementToQuerySelector(column,'.columns--container');
   const btn = app.createElement('button', 'delete--column', 'X');
   column.appendChild(btn);
 },
@@ -121,7 +121,7 @@ handleCreateCard:() => {
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
   card.appendChild(app.createElement('span', 'card--number', 'N°'));
   card.appendChild(app.setCardContent());
-  app.appendElementToSelector(card,'.new--card--section');
+  app.appendElementToQuerySelector(card,'.new--card--section');
 },
 
 handleOnLoadCheckIfTaskDone:()=> {
@@ -139,11 +139,10 @@ handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
       if (event.target.checked){ 
-        // hide colors btns on check action
-        app.handleHideColorsBtnsOnDoneCards();
-        event.target.closest('div').classList.add('task--done');
-        event.target.closest('div').setAttribute('task_done', 'true');
-
+          // hide colors btns on check action
+          app.handleHideColorsBtnsOnDoneCards();
+          event.target.closest('div').classList.add('task--done');
+          event.target.closest('div').setAttribute('task_done', 'true');
           event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
           input.setAttribute('disabled', true);
           input.disabled = true;
@@ -151,11 +150,11 @@ handleTaskDone:() => {
       } else {
           event.target.closest('div').classList.remove('task--done');
           event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
-          input.removeAttribute('disabled', true);
-          input.disabled = false;
+            input.removeAttribute('disabled');
+            input.disabled = false;
           });
-          event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
-          btn.style.display = 'block';
+            event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
+            btn.style.display = 'block';
           });
         }
     });
@@ -171,7 +170,7 @@ handleToggleEnableCheckBoxOnEmptyCard:() => {
         if(input.value === '') {
             card.querySelector('.card--checkox').setAttribute('disabled', true);
         } else {
-            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+            card.querySelector('.card--checkox').removeAttribute('disabled');
         }
       });
 
@@ -180,7 +179,7 @@ handleToggleEnableCheckBoxOnEmptyCard:() => {
           if(event.target.value === '') {
             card.querySelector('.card--checkox').setAttribute('disabled', true);
           } else {
-            card.querySelector('.card--checkox').removeAttribute('disabled', true);
+            card.querySelector('.card--checkox').removeAttribute('disabled');
           }
         }
       );
@@ -228,17 +227,18 @@ createElement:(tag, className, textContent) => {
 
 // inputType pour le type de l'input par exemple text, checkbox, submit, file etc...
 // attribute pour préciser le type de l'input par exemple (submit)
-createInputElement:(inputType, attribute, name, className, placeHolder) => {
-  const element = document.createElement(inputType);
-  element.setAttribute('type', attribute);
-  element.setAttribute('name', name);
+// eg : app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title')
+createInputElement:(input, inputType, inputName, className, placeHolder) => {
+  const element = document.createElement(input);
+  element.setAttribute('type', inputType);
+  element.setAttribute('name', inputName);
   element.classList.add(className);
   element.placeholder = placeHolder;
 
   return element;
 },
 
-appendElementToSelector:(element, querySelector) => {
+appendElementToQuerySelector:(element, querySelector) => {
   const appendTo = document.querySelector(querySelector);
   appendTo.appendChild(element);
 
@@ -305,8 +305,8 @@ updateAllCardsNumberAndColumnName:() => {
 },
 
 handleCountBackLogCards:()=> {
-  const newCard = document.querySelectorAll('.new--card--section');
-  newCard.forEach(card => {
+  const newCardColumn = document.querySelectorAll('.new--card--section');
+  newCardColumn.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
     count > 1 ? card.querySelector('.card--count').innerText= `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerText = `${count} CARD IN BACKLOG`;
   });
