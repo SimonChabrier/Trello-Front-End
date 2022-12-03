@@ -137,6 +137,11 @@ handleCreateColumn:() => {
   app.appendElementToQuerySelector(column,'.columns--container');
   const btn = app.createElement('button', 'delete--column', 'X');
   column.appendChild(btn);
+
+  const theme = localStorage.getItem('theme_status');
+  if (theme === 'light') {
+      column.classList.add('light--column--theme');
+  }
 },
 
 handleCreateCard:() => {
