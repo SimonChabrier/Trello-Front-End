@@ -67,6 +67,7 @@ handleGetThemeStatusFromLocalStorage:() => {
   const theme = localStorage.getItem('theme_status');
   if (theme === 'light') {
       document.body.classList.add('light--theme');
+      document.querySelector('.header').classList.toggle('light--theme--header');
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
           dropzone.classList.add('light--column--theme');
           document.getElementById('dark_mode_switch').checked = true;
