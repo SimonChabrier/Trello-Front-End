@@ -2,6 +2,7 @@ const api = {
 
 init: () => {
     console.log('data init');
+    
     //? API FETCH EXEMPLES
     // https://github.com/SimonChabrier/bikeManagementSystem/blob/main/public/assets/js/inventoryForm.js
 },
@@ -41,6 +42,7 @@ getColumns: async () => {
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
+    
 },
 
 //* ECRITURE DES DONNEES
@@ -139,11 +141,24 @@ deleteCards: () => {
     //APi call DELETE
 },
 
-deleteColumns: () => {                                          
-    //APi call DELETE
+deleteColumns: async (id) => {                                          
+
+    // APi call DELETE
+    await fetch('https://127.0.0.1:8000/api/column/' + id, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: null
+    })
+    .then(response => {
+        return response.json( )
+    })
+    .then(data => 
+        console.log(data) 
+    );
 },
-
-
 
 }   
 

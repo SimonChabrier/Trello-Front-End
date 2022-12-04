@@ -3,6 +3,7 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.allListeners(); 
+  
   setTimeout(() => {
   console.log(document.querySelectorAll('.draggable--card').length);
   }, 1000);
@@ -10,7 +11,7 @@ init:()=> {
 },
 
 //TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
-
+// TODO il faut gére de recalculer le numéro de carte à chque fois que je supprime une colonne sur Insomnia, le nuéro de colonne se décale
 allListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
@@ -118,6 +119,9 @@ handleDeleteColumn:()=> {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
+      // je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
+      const columId = event.target.closest('div').getAttribute('id');
+      api.deleteColumns(columId);
       app.handleNewColumnSetNumber();
     });
   });
@@ -328,10 +332,12 @@ handleHideColorsBtnsOnDoneCards:() => {
 },
 
 handleNewColumnSetNumber:() => {
+  // ici j'ai chaque chaque colonne et je boucle sur leur cartes
   const columns = document.querySelector('.columns--container');
-  for(let i = 0; i < columns.children.length; i++) {
+  for(let i = 0; i < columns.children.length; i++) {    
     columns.children[i].setAttribute('column_number', i + 1);
   }
+  console.log('recalculer les uméros des cartes à la suppression d\'une colonne');
 },
 
 //* UTILS
