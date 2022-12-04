@@ -95,15 +95,22 @@ postColumn: async () => {
         console.log(data);
 },
 
-//* OK
-patchCard: async (id) => {         
+//* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
+patchCard: async (id, title, content, done, column_number, card_number, card_color, textarea_height) => {         
     //APi call PUT
 
+    done == null ? done = false : done = true;
+    card_color == null ? card_color = 'card--color--default' : card_color = card_color;
+    textarea_height == null ? textarea_height = '150' : textarea_height = textarea_height.replace('px', '');
+
     const cardData = { 
-        "task_title": "Mise à jour test PATCH",
-		"column_number": "1",
-	    "task_content": "test de contenu",
-		"card_number": "1"
+        "task_title": title,
+        "task_content": content,
+        "task_done": done,
+		"column_number": column_number,
+        "card_number": card_number,
+        "card_color": card_color,
+        "textarea_height": textarea_height,
     };
 
     const response = await fetch('https://127.0.0.1:8000/api/task/' + id, {

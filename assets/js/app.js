@@ -298,10 +298,33 @@ handleDragAndDrop: ()=> {
         event.target.classList.add('dragging');
         app.handleCountBackLogCards();
     });
-        draggable.addEventListener('dragend', () => {
+        draggable.addEventListener('dragend', (event) => {
         draggable.classList.remove('dragging');
+
         app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
+
+        //* On traite la sauvegarde des données de la carte
+        // console.log(event.target);
+        id = event.target.getAttribute('id');
+        title = event.target.querySelector('.card--title').value;
+        content = event.target.querySelector('.card--text').value;
+        done = event.target.getAttribute('task_done');
+        column_number = event.target.parentElement.getAttribute('column_number');
+        card_number = event.target.getAttribute('card_number');
+        card_color = event.target.getAttribute('card_color');
+        textarea_height = event.target.querySelector('.card--text').style.height;
+        
+          api.patchCard(
+            id, 
+            title, 
+            content, 
+            done, 
+            column_number, 
+            card_number, 
+            card_color, 
+            textarea_height
+          ); 
     });
   });
 
