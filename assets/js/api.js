@@ -30,7 +30,7 @@ getColumns: async () => {
         } catch (error){
             console.log(error);
         }
-
+        console.log(data);
         tpl.setColumnTemplate(data);
 
         app.handleGetColumnName();
