@@ -118,31 +118,72 @@ postColumns: () => {
     });
 },
 
-//* MODIFICATION COMPLETE DES DONNEES
-putCards: () => {         
+//* OK
+patchCard: async (id) => {         
     //APi call PUT
+
+    const cardData = { 
+        "task_title": "Mise à jour test PATCH",
+		"column_number": "1",
+	    "task_content": "test de contenu",
+		"card_number": "1"
+    };
+
+    const response = await fetch('https://127.0.0.1:8000/api/task/' + id, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+
+    const data = await response.json( );
+    // now do whatever you want with the data  
+    console.log(data);
 },
 
-putColumns: () => {                    
+//* OK
+patchColumn: async (id) => {   
+    console.log('patchColumn');                 
     //APi call PUT
+    const columnData = { 
+        column_name: 'Nouveau titre',
+    };
+
+    const response = await fetch('https://127.0.0.1:8000/api/column/' + id, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(columnData)
+    });
+
+    const data = await response.json( );
+    // now do whatever you want with the data  
+    console.log(data);
 },
 
-//* MODIFICATION PARTIELLE DES DONNEES
-patchCards: () => {
-    //APi call PATCH
-},
-
-patchColumns: () => {
-    //APi call PATCH
-},
-
-//* SUPPRESSION DES DONNEES
-deleteCards: () => {                               
+//* OK
+deleteCards: async (id) => {                               
     //APi call DELETE
+    await fetch('https://127.0.0.1:8000/api/task/' + id, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: null
+    })
+    .then(response => {
+        return response.json( )
+    })
+    .then(data => 
+        console.log(data) 
+    ); 
 },
 
+//* OK
 deleteColumns: async (id) => {                                          
-
     // APi call DELETE
     await fetch('https://127.0.0.1:8000/api/column/' + id, {
         method: 'DELETE',

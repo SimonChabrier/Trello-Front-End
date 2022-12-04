@@ -20,6 +20,7 @@ allListeners:()=> {
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
+      api.deleteCards(1);
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -40,6 +41,7 @@ allListeners:()=> {
 
   document.querySelector('#dark_mode_switch').addEventListener('change', () => {
       app.handleToggleTheme();
+      
   });
 
   window.addEventListener('load', () => {
@@ -119,7 +121,7 @@ handleDeleteColumn:()=> {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
-      // je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
+      //* je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
       const columId = event.target.closest('div').getAttribute('id');
       api.deleteColumns(columId);
       app.handleNewColumnSetNumber();
