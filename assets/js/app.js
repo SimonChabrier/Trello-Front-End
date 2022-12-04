@@ -3,6 +3,7 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.allListeners(); 
+  
   setTimeout(() => {
   console.log(document.querySelectorAll('.draggable--card').length);
   }, 1000);
@@ -10,7 +11,7 @@ init:()=> {
 },
 
 //TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
-
+// TODO il faut gére de recalculer le numéro de carte à chque fois que je supprime une colonne sur Insomnia, le nuéro de colonne se décale
 allListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
@@ -19,9 +20,11 @@ allListeners:()=> {
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
+      api.postColumn();
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
+      api.postCard();
       app.handleCreateCard()
       app.handleDragAndDrop();
       app.handleDeleteCard();
@@ -39,6 +42,7 @@ allListeners:()=> {
 
   document.querySelector('#dark_mode_switch').addEventListener('change', () => {
       app.handleToggleTheme();
+      
   });
 
   window.addEventListener('load', () => {
@@ -118,6 +122,9 @@ handleDeleteColumn:()=> {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.target.closest('div').remove();
+      //* je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
+      const columId = event.target.closest('div').getAttribute('id');
+      api.deleteColumns(columId);
       app.handleNewColumnSetNumber();
     });
   });
@@ -127,6 +134,7 @@ handleDeleteCard:() => {
   const buttons = document.querySelectorAll('.delete_card');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
+      api.deleteCard(event.target.closest('div').getAttribute('id'));
       event.target.closest('div').remove();
       app.handleCountBackLogCards();
       app.updateAllCardsNumberAndColumnName();
@@ -290,10 +298,33 @@ handleDragAndDrop: ()=> {
         event.target.classList.add('dragging');
         app.handleCountBackLogCards();
     });
-        draggable.addEventListener('dragend', () => {
+        draggable.addEventListener('dragend', (event) => {
         draggable.classList.remove('dragging');
+
         app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
+
+        //* On traite la sauvegarde des données de la carte
+        // console.log(event.target);
+        id = event.target.getAttribute('id');
+        title = event.target.querySelector('.card--title').value;
+        content = event.target.querySelector('.card--text').value;
+        done = event.target.getAttribute('task_done');
+        column_number = event.target.parentElement.getAttribute('column_number');
+        card_number = event.target.getAttribute('card_number');
+        card_color = event.target.getAttribute('card_color');
+        textarea_height = event.target.querySelector('.card--text').style.height;
+        
+          api.patchCard(
+            id, 
+            title, 
+            content, 
+            done, 
+            column_number, 
+            card_number, 
+            card_color, 
+            textarea_height
+          ); 
     });
   });
 
@@ -328,10 +359,12 @@ handleHideColorsBtnsOnDoneCards:() => {
 },
 
 handleNewColumnSetNumber:() => {
+  // ici j'ai chaque chaque colonne et je boucle sur leur cartes
   const columns = document.querySelector('.columns--container');
-  for(let i = 0; i < columns.children.length; i++) {
+  for(let i = 0; i < columns.children.length; i++) {    
     columns.children[i].setAttribute('column_number', i + 1);
   }
+  console.log('recalculer les uméros des cartes à la suppression d\'une colonne');
 },
 
 //* UTILS
