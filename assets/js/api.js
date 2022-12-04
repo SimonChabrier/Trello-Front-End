@@ -32,7 +32,6 @@ getColumns: async () => {
     console.log(data);
     tpl.setColumnTemplate(data);
 
-    app.handleGetColumnName();
     app.handleDragAndDrop();
     app.handleDeleteCard();
     app.handleCountBackLogCards();
@@ -41,6 +40,7 @@ getColumns: async () => {
     app.handleTaskDone();
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
+    app.handleGetColumnName();
 },
 
 //* ECRITURE DES DONNEES
