@@ -20,10 +20,11 @@ allListeners:()=> {
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
-      api.deleteCards(1);
+      api.postColumn();
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
+      api.postCard();
       app.handleCreateCard()
       app.handleDragAndDrop();
       app.handleDeleteCard();
@@ -133,6 +134,7 @@ handleDeleteCard:() => {
   const buttons = document.querySelectorAll('.delete_card');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
+      api.deleteCard(event.target.closest('div').getAttribute('id'));
       event.target.closest('div').remove();
       app.handleCountBackLogCards();
       app.updateAllCardsNumberAndColumnName();
