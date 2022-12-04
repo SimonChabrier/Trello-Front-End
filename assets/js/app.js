@@ -3,6 +3,9 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.allListeners(); 
+  setTimeout(() => {
+  console.log(document.querySelectorAll('.draggable--card').length);
+  }, 1000);
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 

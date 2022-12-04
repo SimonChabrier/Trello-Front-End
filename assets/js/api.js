@@ -2,6 +2,8 @@ const api = {
 
 init: () => {
     console.log('data init');
+    //? API FETCH EXEMPLES
+    // https://github.com/SimonChabrier/bikeManagementSystem/blob/main/public/assets/js/inventoryForm.js
 },
 
 //* LECTURE DES DONNEES
@@ -9,21 +11,26 @@ getCards: () => {
     // APi fetch cards
 },
 
-getColumns: () => {
-    //APi call GET
-    //const apiRootUrl = 'https://photoboothback.simschab.fr/api/get'
-    const apiRootUrl = 'https://127.0.0.1:8000/api/tasks'
+getColumns: async () => {
 
-    let config = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache'
-    };
-    
-    fetch(apiRootUrl, config)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
+
+        //const location = window.location.origin;
+        const endPoint = '/api/tasks';
+        //const apiRootUrl = location + endPoint;
+        const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+
+        let fetchOptions = {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache'
+        };
+        try {
+            response = await fetch(apiRootUrl, fetchOptions);
+            data = await response.json();
+        } catch (error){
+            console.log(error);
+        }
+
         tpl.setColumnTemplate(data);
 
         app.handleGetColumnName();
@@ -35,9 +42,6 @@ getColumns: () => {
         app.handleTaskDone();
         app.handleDisableDragOnActiveInputs();
         app.handleHideColorsBtnsOnDoneCards();
-    })
-    .catch(error => console.log(error));
-
 },
 
 //* ECRITURE DES DONNEES
