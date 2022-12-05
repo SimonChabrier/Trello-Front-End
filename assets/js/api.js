@@ -83,7 +83,7 @@ postColumn: async () => {
     // Préparer le stockage des données
     // 3 - Envoyer les données au serveur
     const columnData = { 
-        "column_name": "test",
+        "column_name": "",
 		"column_number": parseInt(newColumnNumber),
     };
 
