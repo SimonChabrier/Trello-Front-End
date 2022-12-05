@@ -45,6 +45,7 @@ getColumns: async () => {
 },
 
 //* OK
+// TODO mettre la colonne backlog en BDD avec un id
 postCard: async () => {
     //APi call POST
     const cardData = { 
