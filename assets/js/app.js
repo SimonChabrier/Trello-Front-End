@@ -4,6 +4,7 @@ init:()=> {
   console.log('Trello start success !');
   app.allListeners(); 
   
+  // compter les cartes renvoyées par le serveur pour vérifier qu'il n'en manque pas
   setTimeout(() => {
   console.log(document.querySelectorAll('.draggable--card').length);
   }, 1000);
@@ -21,6 +22,7 @@ allListeners:()=> {
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
       api.postColumn();
+      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 

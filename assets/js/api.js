@@ -49,8 +49,8 @@ getColumns: async () => {
 postCard: async () => {
     //APi call POST
     const cardData = { 
-        "task_title": "Titre de la carte 1",
-        "task_content": "Contenu de la carte 1",
+        "task_title": "",
+        "task_content": "",
         "task_done": false,
         "column_number": "0",
         "card_number": "",
@@ -75,15 +75,21 @@ postCard: async () => {
 //* OK
 postColumn: async () => {     
     console.log('postColumns');
+
+
+    const newColumn = document.getElementById('columns_container').lastChild;
+    const newColumnNumber = newColumn.getAttribute('column_number');
+
     // Préparer le stockage des données
     // 3 - Envoyer les données au serveur
     const columnData = { 
-        "column_name": "",
-		"column_number": 1,
+        "column_name": "test",
+		"column_number": parseInt(newColumnNumber),
     };
 
         const response = await fetch('https://127.0.0.1:8000/api/column', {
             method: 'POST', 
+            mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
             },
