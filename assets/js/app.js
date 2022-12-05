@@ -4,6 +4,7 @@ init:()=> {
   console.log('Trello start success !');
   app.allListeners(); 
   
+  // compter les cartes renvoyées par le serveur pour vérifier qu'il n'en manque pas
   setTimeout(() => {
   console.log(document.querySelectorAll('.draggable--card').length);
   }, 1000);
@@ -21,6 +22,7 @@ allListeners:()=> {
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
       api.postColumn();
+      
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
@@ -306,7 +308,7 @@ handleDragAndDrop: ()=> {
 
         //* On traite la sauvegarde des données de la carte
         // console.log(event.target);
-        id = event.target.getAttribute('id');
+        cardId = event.target.getAttribute('id');
         title = event.target.querySelector('.card--title').value;
         content = event.target.querySelector('.card--text').value;
         done = event.target.getAttribute('task_done');
@@ -314,16 +316,21 @@ handleDragAndDrop: ()=> {
         card_number = event.target.getAttribute('card_number');
         card_color = event.target.getAttribute('card_color');
         textarea_height = event.target.querySelector('.card--text').style.height;
+        columnId = event.target.parentElement.getAttribute('id');
+        
+        console.log('columnId', columnId);
+        console.log('cardId', cardId);
         
           api.patchCard(
-            id, 
+            cardId, 
             title, 
             content, 
             done, 
             column_number, 
             card_number, 
             card_color, 
-            textarea_height
+            textarea_height,
+            columnId
           ); 
     });
   });
