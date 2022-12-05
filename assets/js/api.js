@@ -96,7 +96,7 @@ postColumn: async () => {
 },
 
 //* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
-patchCard: async (id, title, content, done, column_number, card_number, card_color, textarea_height) => {         
+patchCard: async (cardId, title, content, done, column_number, card_number, card_color, textarea_height, columnId) => {         
     //APi call PUT
 
     done == null ? done = false : done = true;
@@ -112,8 +112,11 @@ patchCard: async (id, title, content, done, column_number, card_number, card_col
         "card_color": card_color,
         "textarea_height": textarea_height,
     };
-
-    const response = await fetch('https://127.0.0.1:8000/api/task/' + id, {
+    console.log(columnId);
+    // premier id = id de la colonne et le deuxième id = id de la carte
+    // le param converter côté serveur permet de convertir l'id de la colonne et id de la carte
+    // pour mettre à jour la relation oneToMany entre la carte et la colonne
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
         method: 'PATCH', 
         headers: {
             'Content-Type': 'application/json'
