@@ -33,6 +33,7 @@ allListeners:()=> {
   document.getElementById('create_card_btn').addEventListener('click', () => { 
       
       app.handleCreateCard()
+      //api.postCard();
       app.handleDragAndDrop();
       app.handleDeleteCard();
       app.handleCountBackLogCards();

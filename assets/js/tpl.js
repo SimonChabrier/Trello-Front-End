@@ -5,7 +5,7 @@ const tpl = {
 
 init: () => {
     console.log('tpl init');
-    api.getColumns();    
+    api.getData();    
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -34,6 +34,8 @@ setCardTemplate: (cards, colName) => {
     app.handleDeleteColumn();
     app.handleNewColumnSetNumber();
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
+    // TODO ici je ne peux pas utiliser le forEach pour une carte unique
+    if (cards) {
     cards?.forEach(card => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
         
@@ -65,8 +67,27 @@ setCardTemplate: (cards, colName) => {
             }
         });
     });
+    } 
 },
  
+//TODO JE SUIS ICI
+setNewCardTemplate: (card) => {
+
+    const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
+    const firstColumn = document.querySelectorAll('.cards--dropzone')[0];
+
+        
+        cardTemplate.querySelector('.draggable--card').setAttribute('id', card.id);
+        cardTemplate.querySelector('.draggable--card').setAttribute('column_number', card.column_number);
+        cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
+
+        //cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
+        //cardTemplate.querySelector('.card--text').innerText = card.task_content;
+        //cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
+        //cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
+    firstColumn.appendChild(cardTemplate);
+},
+
 };
 
 document.addEventListener('DOMContentLoaded', tpl.init);

@@ -8,11 +8,42 @@ init: () => {
 },
 
 //* LECTURE DES DONNEES
-getCards: () => {
-    // APi fetch cards
+// TODO ne pas vider tout template mais juste ajouter la denrière carte postée
+getLastCreatedCard: async () => {
+    //const location = window.location.origin;
+    const endPoint = '/api/tasks/last';
+    //const apiRootUrl = location + endPoint;
+    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+
+    let fetchOptions = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+    };
+    try {
+        response = await fetch(apiRootUrl, fetchOptions);
+        data = await response.json();
+    } catch (error){
+        console.log(error);
+    }
+    console.table(data);
+    // TODO ici il faut que je construise la carte avec les données de data
+   
+    tpl.setNewCardTemplate(data);
+
+    app.handleDragAndDrop();
+    app.handleDeleteCard();
+    app.handleCountBackLogCards();
+    app.handleChangeCardColor();
+    app.handleDesableCheckBoxOnEmptyCard();
+    app.handleTaskDone();
+    app.handleDisableDragOnActiveInputs();
+    app.handleHideColorsBtnsOnDoneCards();
+    app.handleGetColumnName();
+    app.updateAllCardsNumberAndColumnName();
 },
 
-getColumns: async () => {
+getData: async () => {
     //const location = window.location.origin;
     const endPoint = '/api/tasks';
     //const apiRootUrl = location + endPoint;
@@ -84,7 +115,6 @@ postCard: async () => {
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
     const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
 
-    //TODO  il faut récupèrer le numéro de la carte
     const cardData = { 
         "task_title": "New card",
         "task_content": "",
@@ -95,7 +125,6 @@ postCard: async () => {
         "textarea_height": "150"
     };
 
-        //TODO la colonne doit avoir un id et exister en bdd pour pouvoir ajouter une carte
         const response = await fetch('https://127.0.0.1:8000/api/column/' + firstColumnid, {
             method: 'POST', 
             headers: {
@@ -105,12 +134,13 @@ postCard: async () => {
         });
      
        const data = await response.json( );
-     
-       // now do whatever you want with the data  
-        console.table(data);
-        //document.getElementById('backlog_column').innerHTML = '';
+        //console.table(data);
+        //TODO ici il faut juste ajouter la dernière carte postée sans tout recharger
         document.getElementById('columns_container').innerHTML = '';
-        api.getColumns();
+        api.getData();
+
+        //document.querySelectorAll('.cards--dropzone')[0].innerHTML = '';
+        //api.getLastCreatedCard();
 },
 
 //* OK
@@ -133,12 +163,9 @@ postColumn: async () => {
     });
     
     const data = await response.json( );
-    
-    // now do whatever you want with the data  
     console.log(data);
-    //TODO récupérer l'id de la colonne et l'ajouter à la colonne
     document.getElementById('columns_container').innerHTML = '';
-    api.getColumns();
+    api.getData();
 
 },
 
