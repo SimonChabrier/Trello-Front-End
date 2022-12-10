@@ -113,7 +113,7 @@ handleDeleteColumn:()=> {
       event.target.closest('div').remove();
       //* je met à jour le numéro des colonnes
       app.handleNewColumnSetNumber();
-      //TODO je met à jour le numéro des cartes
+      //* je met à jour le numéro des cartes avec API patch
       app.updateAllCardsColumnNumberOnDeleteColumn();
     });
   });
