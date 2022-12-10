@@ -16,14 +16,13 @@ init:()=> {
 allListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
-      
-
+      // je crée la colonne
       app.handleCreateColumn()
+      // je gère le drag and drop et les mehodes associées à la colonne
       app.handleDragAndDrop();
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
-
       // je poste la colonne en base de données
       api.postColumn();
       
