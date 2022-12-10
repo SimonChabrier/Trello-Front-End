@@ -5,12 +5,13 @@ init:()=> {
   app.allListeners(); 
   
   // compter les cartes renvoyées par le serveur pour vérifier qu'il n'en manque pas
-  setTimeout(() => {
-  console.log(document.querySelectorAll('.draggable--card').length);
-  }, 1000);
+  // setTimeout(() => {
+  // console.log(document.querySelectorAll('.draggable--card').length);
+  // }, 1000);
   // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
+// TODO handleCountBackLogCards n'est plus utilisé, à supprimer ou gérer autrement
 //TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
 // TODO il faut gére de recalculer le numéro de carte à chque fois que je supprime une colonne sur Insomnia, le nuéro de colonne se décale
 allListeners:()=> {
@@ -56,6 +57,7 @@ allListeners:()=> {
 
   window.addEventListener('load', () => {
     app.handleGetThemeStatusFromLocalStorage();
+    app.updateAllCardsNumberAndColumnName();
       // app.handleCountBackLogCards();
       // app.handleChangeCardColor();
       // app.handleDesableCheckBoxOnEmptyCard();
@@ -264,13 +266,26 @@ handleChangeCardColor:() => {
       event.target.closest('div').classList.add('draggable--card');    
       event.target.closest('div').classList.add(event.target.className);
       event.target.closest('div').setAttribute('card_color', event.target.className);
+
+      const cardId = event.target.closest('div').getAttribute('id')
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      const cardColor = event.target.closest('div').getAttribute('card_color');
+      api.patchCard(
+        cardId,
+        null, 
+        null, 
+        null, 
+        null, 
+        null,  
+        cardColor,
+        null, 
+        columnId
+       );
     });
   });
 },
 
 handleNewCardSetNumber:() => {
-  console.log('handleNewCardSetNumber');
-
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
     if (draggables[i].parentElement.classList.contains('new--card--section')) {
@@ -281,7 +296,6 @@ handleNewCardSetNumber:() => {
 },
 
 handleGetColumnName:() => {
-  console.log('handleGetColumnName');
   const columns = document.querySelectorAll('.input--column--name');
 
   columns.forEach(column => {
@@ -306,7 +320,7 @@ handleGetColumnName:() => {
 
 },
 
-handleCountBackLogCards:()=> {
+handleCountBackLogCards:() => {
   const newCardColumn = document.querySelectorAll('.new--card--section');
   newCardColumn.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
@@ -314,9 +328,7 @@ handleCountBackLogCards:()=> {
   });
 },
 
-handleDragAndDrop: ()=> {
-  
-  console.log('handleDragAndDrop');
+handleDragAndDrop: () => {
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
   
@@ -332,7 +344,6 @@ handleDragAndDrop: ()=> {
         app.updateAllCardsNumberAndColumnName();
 
         //* On traite la sauvegarde des données de la carte
-        // console.log(event.target);
         cardId = event.target.getAttribute('id');
         title = event.target.querySelector('.card--title').value;
         content = event.target.querySelector('.card--text').value;
@@ -342,10 +353,8 @@ handleDragAndDrop: ()=> {
         card_color = event.target.getAttribute('card_color');
         textarea_height = event.target.querySelector('.card--text').style.height;
         columnId = event.target.parentElement.getAttribute('id');
-        
-        console.log('columnId', columnId);
-        console.log('cardId', cardId);
-        
+      
+        //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
           api.patchCard(
             cardId, 
             title, 
@@ -396,7 +405,6 @@ handleNewColumnSetNumber:() => {
   for(let i = 0; i < columns.children.length; i++) {    
     columns.children[i].setAttribute('column_number', i + 1);
   }
-  console.log('recalculer les uméros des cartes à la suppression d\'une colonne');
 },
 
 //* UTILS
@@ -430,8 +438,6 @@ appendElementToQuerySelector:(element, querySelector) => {
 },
 
 updateAllCardsNumberAndColumnName:() => {
-  console.log('updateAllCardsNumberAndColumnName');
-
   const columns = document.querySelectorAll('.cards--dropzone');
   columns.forEach(column => {
     
@@ -474,8 +480,6 @@ getDragAfterElement:(column, y_position) => {
 },
 
 toggleFullScreenMode:(event) => {
-  console.log('toggleFullScreenMode');
-  
   const element = document.documentElement
    
   if(event.target.checked == true)

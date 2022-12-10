@@ -29,7 +29,7 @@ getColumns: async () => {
     } catch (error){
         console.log(error);
     }
-    console.log(data);
+    console.table(data);
     tpl.setColumnTemplate(data);
 
     app.handleDragAndDrop();
@@ -41,6 +41,7 @@ getColumns: async () => {
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
+    app.updateAllCardsNumberAndColumnName();
     
 },
 
@@ -106,7 +107,7 @@ postCard: async () => {
        const data = await response.json( );
      
        // now do whatever you want with the data  
-        console.log(data);
+        console.table(data);
         //document.getElementById('backlog_column').innerHTML = '';
         document.getElementById('columns_container').innerHTML = '';
         api.getColumns();
@@ -114,46 +115,38 @@ postCard: async () => {
 
 //* OK
 postColumn: async () => {     
-    console.log('postColumns');
-
-
     const newColumn = document.getElementById('columns_container').lastChild;
     const newColumnNumber = newColumn.getAttribute('column_number');
 
-    // Préparer le stockage des données
-    // 3 - Envoyer les données au serveur
     const columnData = { 
         "column_name": "",
 		"column_number": parseInt(newColumnNumber),
     };
 
-        const response = await fetch('https://127.0.0.1:8000/api/column', {
-            method: 'POST', 
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(columnData)
-        });
-     
-       const data = await response.json( );
-     
-       // now do whatever you want with the data  
-        console.log(data);
-        //TODO récupérer l'id de la colonne et l'ajouter à la colonne
-        document.getElementById('columns_container').innerHTML = '';
-        api.getColumns();
+    const response = await fetch('https://127.0.0.1:8000/api/column', {
+        method: 'POST', 
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(columnData)
+    });
+    
+    const data = await response.json( );
+    
+    // now do whatever you want with the data  
+    console.log(data);
+    //TODO récupérer l'id de la colonne et l'ajouter à la colonne
+    document.getElementById('columns_container').innerHTML = '';
+    api.getColumns();
 
 },
 
 //* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
 patchCard: async (cardId, title, content, done, column_number, card_number, card_color, textarea_height, columnId) => {         
-    //APi call PUT
 
-    done == null ? done = false : done = true;
-    card_color == null ? card_color = 'card--color--default' : card_color = card_color;
-    textarea_height == null ? textarea_height = '150' : textarea_height = textarea_height.replace('px', '');
-
+    // Si modification de toute les données de la carte
+    if(title && content && done && column_number && card_number && card_color && textarea_height){
     const cardData = { 
         "task_title": title,
         "task_content": content,
@@ -161,9 +154,8 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
 		"column_number": column_number,
         "card_number": card_number,
         "card_color": card_color,
-        "textarea_height": textarea_height,
+        "textarea_height": textarea_height.replace('px', ''),
     };
-    console.log(columnId);
     // premier id = id de la colonne et le deuxième id = id de la carte
     // le param converter côté serveur permet de convertir l'id de la colonne et id de la carte
     // pour mettre à jour la relation oneToMany entre la carte et la colonne
@@ -174,10 +166,123 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         },
         body: JSON.stringify(cardData)
     });
+        const data = await response.json( );
+        console.table(data);
+    }
 
-    const data = await response.json( );
-    // now do whatever you want with the data  
-    console.log(data);
+    // Si modification de la couleur de la carte
+    if(card_color){
+        const cardData = { 
+            "card_color": card_color,
+        };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( ); 
+        console.table(data);
+    }
+
+    // si modification du titre de la carte
+    if(title){
+    const cardData = { 
+        "task_title": title,
+    };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( );
+        console.table(data);
+    }
+
+    // si modification du texte de la carte
+    if(content){
+    const cardData = { 
+        "task_content": content,
+    };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( );
+        console.table(data);
+    }
+
+    // si modification du texte de la carte
+    if(done){
+    const cardData = { 
+        "task_done": done,
+    };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( );
+        console.table(data);
+    }
+
+    // si modification du numéro de la carte
+    if(card_number){
+        const cardData = { 
+            "card_number": card_number,
+        };
+        const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+            method: 'PATCH', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cardData)
+        });
+            const data = await response.json( );
+            console.table(data);
+        }
+
+    if(column_number){
+    const cardData = { 
+        "column_number": column_number,
+    };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( );
+        console.table(data);
+    }
+
+    if(textarea_height){
+    const cardData = { 
+        "textarea_height": textarea_height.replace('px', ''),
+    };
+    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
+        const data = await response.json( );
+        console.table(data);
+    }
+
+    
+
+    
 },
 
 //* OK
