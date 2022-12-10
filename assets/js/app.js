@@ -35,6 +35,7 @@ allListeners:()=> {
   document.querySelector('#dark_mode_switch').addEventListener('change', () => {
       app.handleToggleTheme();  
   });
+
 },
 
 handlePatchColumnName:() => {
@@ -48,11 +49,10 @@ handlePatchColumnName:() => {
 
 handleToggleTheme:() => {
   document.body.classList.toggle('light--theme');
-  document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
-      dropzone.classList.toggle('light--column--theme');
+  document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
+    dropzone.classList.toggle('light--column--theme'); 
   });
   document.querySelector('.header').classList.toggle('light--theme--header');
-
   localStorage.setItem('theme_status', document.body.classList.contains('light--theme') ? 'light' : 'dark');
 },
 
@@ -129,54 +129,15 @@ handleDeleteCard:() => {
   });
 },
 
-handleCreateColumn:() => {
-  const column = app.createElement('div', 'cards--dropzone', '');
-  column.appendChild(app.createInputElement('input', 'input', 'input_column_name', 'input--column--name', 'todo'));
-  app.appendElementToQuerySelector(column,'.columns--container');
-  const btn = app.createElement('button', 'delete--column', 'X');
-  column.appendChild(btn);
-
-  const theme = localStorage.getItem('theme_status');
-  if (theme == 'light') {
-      column.classList.add('light--column--theme');
-  } else {
-      column.classList.remove('light--column--theme');
-  }
-},
-
-// handleCreateCard:() => {
-//   const card = app.createElement('div', 'draggable--card', null);
-//   card.setAttribute('draggable', 'true');
-//   card.setAttribute('column_number', '1');
-//   card.appendChild(app.headerCardColors());
-//   card.appendChild(app.createElement('button', 'delete_card', 'X'));
-//   card.appendChild(app.createElement('span', 'card--number', 'N°'));
-//   card.appendChild(app.setCardContent());
-//   app.appendElementToQuerySelector(card,'.cards--dropzone');
-//   app.updateAllCardsNumberAndColumnName();
-
-//   api.postCard();
-// },
-
-handleOnLoadCheckIfTaskDone:()=> {
-  document.querySelectorAll('.card--checkox').forEach(checkBox => {
-      if (checkBox.checked) {
-        checkBox.parentElement.querySelectorAll('.card--title, .card--text').forEach(input => {
-          input.setAttribute('disabled', 'true');
-          input.disabled = true;
-        });
-      };
-  });
-},
 
 handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-
+  if(event.target.checked) {
     const cardId = event.target.closest('div').getAttribute('id');
     const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
 
-    if (event.target.checked){ 
+
         // hide colors btns on check action
         app.handleHideColorsBtnsOnDoneCards();
         event.target.closest('div').classList.add('task--done');
@@ -221,7 +182,7 @@ handleTaskDone:() => {
             columnId
           );
         }
-    });
+   });
   });
 },
 
@@ -398,9 +359,19 @@ handleHideColorsBtnsOnDoneCards:() => {
 
 handleNewColumnSetNumber:() => {
   // ici j'ai chaque chaque colonne et je boucle sur leur cartes
-  const columns = document.querySelector('.columns--container');
-  for(let i = 0; i < columns.children.length; i++) {    
-    columns.children[i].setAttribute('column_number', i + 1);
+  const columnContainer = document.querySelector('.columns--container');
+  
+  for(let i = 0; i < columnContainer.children.length; i++) {    
+    columnContainer.children[i].setAttribute('column_number', i + 1);
+
+    //TODO mettre à jour les numéros des cartes et colones dans la base de données si on supprime une colonne
+    if(columnContainer.length > 0) {
+    // id des colonnes
+    console.log(columnContainer.children[i].getAttribute('id'));
+    //console.log(columnContainer.children[i].getAttribute('column_number'));
+   // api.patchColumn(columns[i].getAttribute('id'), columns.children[i].getAttribute('column_number'));
+    }
+
   }
 },
 

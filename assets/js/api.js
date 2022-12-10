@@ -270,7 +270,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
             body: JSON.stringify(cardData)
         });
             const data = await response.json( );
-            console.table(data);
+            //console.table(data);
         }
 
     if(column_number){
@@ -285,7 +285,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         body: JSON.stringify(cardData)
     });
         const data = await response.json( );
-        console.table(data);
+        //console.table(data);
     }
 
     if(textarea_height){
@@ -301,11 +301,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
     });
         const data = await response.json( );
         console.table(data);
-    }
-
-    
-
-    
+    }  
 },
 
 //* OK
@@ -339,18 +335,18 @@ deleteCard: async (id) => {
         body: null
     })
     .then(response => {
-        return response.json( )
+        if(response.status == 200){
+        console.log('http Response Success' , response.status)
+        //return response.json( )
+        }
     })
-    .then(data => 
-        console.log(data) 
-    ); 
+    // .then(data => 
+    //     console.log(data) 
+    // ); 
 },
 
 //* OK
 deleteColumns: async (id) => {                                          
-    // APi call DELETE
-    console.log('deleteColumns');
-    console.log(id);
 
     await fetch('https://127.0.0.1:8000/api/column/' + id, {
         method: 'DELETE',
@@ -361,7 +357,10 @@ deleteColumns: async (id) => {
         body: null
     })
     .then(response => {
-        return response.json( )
+        if(response.status == 200){
+        console.log('http Response Success' , response.status)
+        //return response.json( )
+        }
     })
     // .then(data => 
     //     console.log(data) 

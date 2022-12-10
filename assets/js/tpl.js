@@ -8,7 +8,7 @@ init: () => {
     // Je récupère les données en BDD via l'API si il y en a   
 },
 
-// * 1 - CONSTRUCTION DES COLONNES
+// CONSTRUCTION DE L'ENSEMBLE DES COLONNES PERSISTEES EN BDD
 setColumnTemplate: (columns) => {
     // je crée les colonnes
     columns.forEach(column => {
@@ -18,24 +18,20 @@ setColumnTemplate: (columns) => {
         columnTemplate.querySelector('.cards--dropzone').setAttribute('id', column.id);
         columnTemplate.querySelector('.cards--dropzone').setAttribute('column_name', column.column_name);
         columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);
-        
         columnTemplate.querySelector('.input--column--name').value = column.column_name;
         columnTemplate.querySelector('.input--column--name').setAttribute('column_name', column.column_name);
 
         target.appendChild(columnTemplate); 
-        // Je passe les carte à setCardTemplate
-        // app.handleNewColumnSetNumber();
         tpl.setCardTemplate(column.tasks, column.column_name);
     }); 
 },
 
-// * 2 - CONSTRUCTION DES CARTES
+// CONSTRUCTION DE L'ENSEMBLE DES CARTES PERSISTEES EN BDD
 setCardTemplate: (cards, colName) => {  
-    app.handleDeleteColumn();
+
     app.handleNewColumnSetNumber();
+    
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
-    // TODO ici je ne peux pas utiliser le forEach pour une carte unique
-    if (cards) {
     cards?.forEach(card => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
         
@@ -67,10 +63,13 @@ setCardTemplate: (cards, colName) => {
             }
         });
     });
-    } 
 },
  
-//TODO JE SUIS ICI
+///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+
+
+// CONSTRUCTION D'UNE NOUVELLE COLONNE
 setNewCardTemplate: (card) => {
 
     const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
@@ -88,27 +87,23 @@ setNewCardTemplate: (card) => {
     firstColumn.appendChild(cardTemplate);
 },
 
+// CONSTRUCTION D'UNE NOUVELLE CARTE
 setNewColumnTemplate: (column) => {
+
+    // je récupère le nombre de colonne qui démarrera à 1 en ajoutant + 1 
+    // au premier passage, comme le noeud est vide le premier valeur retournée par columns.length == 0
     const columns = document.querySelectorAll('.cards--dropzone');
-    // je récupère le nombre de colonne qui démarrera à 1 en ajoutant + 1 car le point de départ est 0
     column.column_number = columns.length + 1;
     const target = document.getElementById('columns_container');
     const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
         
     columnTemplate.querySelector('.cards--dropzone').setAttribute('id', column.id);
     columnTemplate.querySelector('.cards--dropzone').setAttribute('column_name', column.column_name);
-    
-    //TODO je n'ai plus de propriété column_number
-    columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);
-        
+    columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number); 
     columnTemplate.querySelector('.input--column--name').value = column.column_name;
     columnTemplate.querySelector('.input--column--name').setAttribute('column_name', column.column_name);
 
     target.appendChild(columnTemplate); 
-    // Je passe les carte à setCardTemplate
-    // app.handleNewColumnSetNumber();
-    //tpl.setCardTemplate(column.tasks, column.column_name);
-
 },
 
 };
