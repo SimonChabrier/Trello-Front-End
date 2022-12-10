@@ -41,7 +41,7 @@ allListeners:()=> {
       app.handleTaskDone();
       app.handleNewCardSetNumber();
       app.handleDisableDragOnActiveInputs();
-      api.postCard();
+      
   });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -184,6 +184,10 @@ handleCreateCard:() => {
   card.appendChild(app.createElement('span', 'card--number', 'N°'));
   card.appendChild(app.setCardContent());
   app.appendElementToQuerySelector(card,'.cards--dropzone');
+  app.updateAllCardsNumberAndColumnName();
+
+  //TODO  il faut récupèrer le numéro de la carte
+  api.postCard();
 },
 
 handleOnLoadCheckIfTaskDone:()=> {
@@ -446,14 +450,26 @@ updateAllCardsNumberAndColumnName:() => {
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+      cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
       
-      if(cards[i].parentElement.classList.contains('new--card--section')) {
-        cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
-      } else {
-        // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
-        'column', column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
-      }
+      cards.forEach(card => {
+        const columnId = card.parentElement.getAttribute('id');
+        const cardId = card.getAttribute('id');
+        const cardNumber = card.getAttribute('card_number');
+        
+        api.patchCard(
+            cardId, 
+            null,
+            null,
+            null,
+            null,
+            cardNumber, 
+            null,
+            null,
+            columnId
+          );
+      });
     }
   });
 },

@@ -80,23 +80,23 @@ getColumns: async () => {
 //* OK
 // TODO mettre la colonne backlog en BDD avec un id
 postCard: async () => {
-    //APi call POST
 
-    const id = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
-    console.log(id);
+    const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
+    const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
 
+    //TODO  il faut récupèrer le numéro de la carte
     const cardData = { 
         "task_title": "New card",
         "task_content": "",
         "task_done": false,
         "column_number": "1",
-        "card_number": "",
+        "card_number": newCardNumber,
         "card_color": "card--color--default",
         "textarea_height": "150"
     };
 
         //TODO la colonne doit avoir un id et exister en bdd pour pouvoir ajouter une carte
-        const response = await fetch('https://127.0.0.1:8000/api/column/' + id, {
+        const response = await fetch('https://127.0.0.1:8000/api/column/' + firstColumnid, {
             method: 'POST', 
             headers: {
               'Content-Type': 'application/json'
