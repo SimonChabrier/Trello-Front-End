@@ -30,7 +30,7 @@ allListeners:()=> {
   });
 
   document.getElementById('create_card_btn').addEventListener('click', () => { 
-      api.postCard();
+      
       app.handleCreateCard()
       app.handleDragAndDrop();
       app.handleDeleteCard();
@@ -40,6 +40,7 @@ allListeners:()=> {
       app.handleTaskDone();
       app.handleNewCardSetNumber();
       app.handleDisableDragOnActiveInputs();
+      api.postCard();
   });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -175,12 +176,12 @@ handleCreateColumn:() => {
 handleCreateCard:() => {
   const card = app.createElement('div', 'draggable--card', null);
   card.setAttribute('draggable', 'true');
-  card.setAttribute('column_number', '0');
+  card.setAttribute('column_number', '1');
   card.appendChild(app.headerCardColors());
   card.appendChild(app.createElement('button', 'delete_card', 'X'));
   card.appendChild(app.createElement('span', 'card--number', 'N°'));
   card.appendChild(app.setCardContent());
-  app.appendElementToQuerySelector(card,'.new--card--section');
+  app.appendElementToQuerySelector(card,'.cards--dropzone');
 },
 
 handleOnLoadCheckIfTaskDone:()=> {

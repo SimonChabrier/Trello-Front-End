@@ -80,17 +80,22 @@ getColumns: async () => {
 // TODO mettre la colonne backlog en BDD avec un id
 postCard: async () => {
     //APi call POST
+
+    const id = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
+    console.log(id);
+
     const cardData = { 
-        "task_title": "",
+        "task_title": "New card",
         "task_content": "",
         "task_done": false,
-        "column_number": "0",
+        "column_number": "1",
         "card_number": "",
         "card_color": "card--color--default",
         "textarea_height": "150"
     };
 
-        const response = await fetch('https://127.0.0.1:8000/api/column/1/task', {
+        //TODO la colonne doit avoir un id et exister en bdd pour pouvoir ajouter une carte
+        const response = await fetch('https://127.0.0.1:8000/api/column/' + id, {
             method: 'POST', 
             headers: {
               'Content-Type': 'application/json'
@@ -102,6 +107,9 @@ postCard: async () => {
      
        // now do whatever you want with the data  
         console.log(data);
+        //document.getElementById('backlog_column').innerHTML = '';
+        document.getElementById('columns_container').innerHTML = '';
+        api.getColumns();
 },
 
 //* OK

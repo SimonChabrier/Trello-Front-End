@@ -60,8 +60,8 @@ setCardTemplate: (cards, colName) => {
         let newColumns = document.querySelectorAll('.cards--dropzone');
         // - newColumns? pour dire que si newColumns existe alors je fais le forEach (optionnal chaining) sinon je ne fais rien
         newColumns?.forEach(newColumn => {
+            console.log(newColumn.getAttribute('column_number') == card.column_number);
             if (newColumn.getAttribute('column_number') == card.column_number) {  
-                console.log(newColumn.getAttribute('column_number') == card.column_number)
                 newColumn.appendChild(cardTemplate);
             }
         });
