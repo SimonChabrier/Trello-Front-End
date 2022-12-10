@@ -16,12 +16,17 @@ init:()=> {
 allListeners:()=> {
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
+      
+
       app.handleCreateColumn()
       app.handleDragAndDrop();
       app.handleDeleteColumn();
       app.handleNewColumnSetNumber();
       app.handleGetColumnName();
+
+      // je poste la colonne en base de données
       api.postColumn();
+      
       
   });
 
@@ -47,6 +52,8 @@ allListeners:()=> {
       
   });
 
+
+
   window.addEventListener('load', () => {
     app.handleGetThemeStatusFromLocalStorage();
       // app.handleCountBackLogCards();
@@ -57,7 +64,16 @@ allListeners:()=> {
       // app.handleHideColorsBtnsOnDoneCards();
       // app.handleDeleteCard();
       // app.handleNewCardSetNumber();
-      // app.handleDisableDragOnActiveInputs();      
+      // app.handleDisableDragOnActiveInputs();    
+  });
+},
+
+handlePatchColumnName:() => {
+  const column = document.querySelectorAll('.column');
+  column.forEach(column => {
+      const columnId = column.getAttribute('id');
+      const columnName = column.querySelector('.column--name').value;
+      api.patchColumnName(columnId, columnName);
   });
 },
 
@@ -274,11 +290,20 @@ handleGetColumnName:() => {
         event.target.placeholder = 'TODO';
         event.target.closest('div').setAttribute('column_name', event.target.placeholder)
       } else {
-        event.target.closest('div').setAttribute('column_name', event.target.value)
+        event.target.closest('div').setAttribute('column_name', event.target.value);
       }
       app.updateAllCardsNumberAndColumnName();
-    });
+      });
+
+        // update column name on blur event
+        column.addEventListener('blur', (event) => {
+        api.patchColumn(event.target.closest('div').getAttribute('id'), event.target.closest('div').getAttribute('column_name'))
+      }
+    );
   });
+
+    
+
 },
 
 handleCountBackLogCards:()=> {

@@ -5,21 +5,7 @@ const tpl = {
 
 init: () => {
     console.log('tpl init');
-    api.getColumns();
-    //tpl.setColumnTemplate(columns);
-    // les méthodes nécéssaires pour manipuler les cartes
-    // app.handleGetColumnName();
-    // app.handleDragAndDrop();
-    // app.handleDeleteCard();
-    // app.handleCountBackLogCards();
-    // app.handleChangeCardColor();
-    // app.handleDesableCheckBoxOnEmptyCard();
-    // app.handleTaskDone();
-    // app.handleDisableDragOnActiveInputs();
-    // app.handleHideColorsBtnsOnDoneCards();
-    //TODO pour tester les données
-    // api.postColumns();
-    
+    api.getColumns();    
 },
 
 // * 1 - CONSTRUCTION DES COLONNES

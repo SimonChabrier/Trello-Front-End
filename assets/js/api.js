@@ -100,6 +100,10 @@ postColumn: async () => {
      
        // now do whatever you want with the data  
         console.log(data);
+        //TODO récupérer l'id de la colonne et l'ajouter à la colonne
+        document.getElementById('columns_container').innerHTML = '';
+        api.getColumns();
+
 },
 
 //* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
@@ -137,11 +141,13 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
 },
 
 //* OK
-patchColumn: async (id) => {   
-    console.log('patchColumn');                 
+patchColumn: async (id, columnName) => {   
+    console.log('patchColumn');   
+    console.log(id);
+    console.log(columnName);             
     //APi call PUT
     const columnData = { 
-        column_name: 'Nouveau titre',
+        "column_name": columnName,
     };
 
     const response = await fetch('https://127.0.0.1:8000/api/column/' + id, {
