@@ -113,6 +113,8 @@ handleDeleteColumn:()=> {
       event.target.closest('div').remove();
       //* je met à jour le numéro des colonnes
       app.handleNewColumnSetNumber();
+      //TODO je met à jour le numéro des cartes
+      app.updateAllCardsColumnNumberOnDeleteColumn();
     });
   });
 },
@@ -363,22 +365,38 @@ handleNewColumnSetNumber:() => {
   for(let i = 0; i < columnContainer.children.length; i++) {    
     // je donne le numéro de la colonne à chaque colonne en fontion de leur position dans le DOM
     columnContainer.children[i].setAttribute('column_number', i + 1);
-
-    const columCards = columnContainer.children[i].querySelector('.draggable--card');
-
-    // if(columCards !== null) {
-    //   console.log(columCards.length);
-    //   // si pas null j'ai les carte de chaque colonne
-    //   for (let j = 0; j < columCards.length; j++) {
-    //     console.log(columCards[j].closest('div').querySelectorAll('.cards--dropzone')[j].getAttribute('column_number'))
-    //     // je boucle sur les cartes de chaque colonne
-    //     // je donne le numéro de la carte à chaque carte en fonction de leur position dans le DOM
-    //     let card = columCards[j].closest('div').querySelectorAll('.cards--dropzone')[j].getAttribute('column_number');  
-    //     console.log(card);    
-    //   }
-    //  }
-    //TODO mettre à jour les numéros des cartes et colones dans la base de données si on supprime une colonne
   }
+},
+
+updateAllCardsColumnNumberOnDeleteColumn:() => {
+  const columns = document.querySelectorAll('.cards--dropzone');
+  columns.forEach(column => {
+    const cards = column.querySelectorAll('.draggable--card');
+    cards.forEach(card => {
+      let columnId = card.closest(".cards--dropzone").getAttribute('id');
+      
+      card.setAttribute('column_number', column.getAttribute('column_number'));
+      let cardId = card.getAttribute('id');
+      let column_number = card.getAttribute('column_number');
+
+      //console.log('cardId', cardId)
+      //console.log('column_number', column_number)
+      //console.log('columnId' , columnId)
+      if(columnId && cardId && column_number) {
+      api.patchCard(
+        cardId,
+        null,
+        null,
+        null,
+        column_number,
+        null,
+        null,
+        null,
+        columnId
+      );
+      }
+    });
+  });
 },
 
 //* UTILS
