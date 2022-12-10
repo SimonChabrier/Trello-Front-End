@@ -44,6 +44,38 @@ getColumns: async () => {
     
 },
 
+// getLastColumn: async () => {
+//     //const location = window.location.origin;
+//     const endPoint = '/api/columns/last';
+//     //const apiRootUrl = location + endPoint;
+//     const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+
+//     let fetchOptions = {
+//         method: 'GET',
+//         mode: 'cors',
+//         cache: 'no-cache'
+//     };
+//     try {
+//         response = await fetch(apiRootUrl, fetchOptions);
+//         data = await response.json();
+//     } catch (error){
+//         console.log(error);
+//     }
+//     console.log(data);
+//     tpl.setColumnTemplate(data);
+
+//     app.handleDragAndDrop();
+//     app.handleDeleteCard();
+//     app.handleCountBackLogCards();
+//     app.handleChangeCardColor();
+//     app.handleDesableCheckBoxOnEmptyCard();
+//     app.handleTaskDone();
+//     app.handleDisableDragOnActiveInputs();
+//     app.handleHideColorsBtnsOnDoneCards();
+//     app.handleGetColumnName();
+    
+// },
+
 //* OK
 // TODO mettre la colonne backlog en BDD avec un id
 postCard: async () => {
