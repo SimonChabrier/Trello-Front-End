@@ -218,21 +218,22 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         console.table(data);
     }
 
-    // si modification du texte de la carte
-    if(done){
-    const cardData = { 
-        "task_done": done,
-    };
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardData)
-    });
-        const data = await response.json( );
-        console.table(data);
-    }
+     // si modification du statut de la carte
+     if(done == 0 || done == 1){
+        console.log(done);
+        const cardData = { 
+            "task_done": done,
+        };
+        const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+            method: 'PATCH', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cardData)
+        });
+            const data = await response.json( );
+            console.table(data);
+        }
 
     // si modification du numéro de la carte
     if(card_number){

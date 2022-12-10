@@ -186,7 +186,6 @@ handleCreateCard:() => {
   app.appendElementToQuerySelector(card,'.cards--dropzone');
   app.updateAllCardsNumberAndColumnName();
 
-  //TODO  il faut récupèrer le numéro de la carte
   api.postCard();
 },
 
@@ -204,16 +203,33 @@ handleOnLoadCheckIfTaskDone:()=> {
 handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-      if (event.target.checked){ 
-          // hide colors btns on check action
-          app.handleHideColorsBtnsOnDoneCards();
-          event.target.closest('div').classList.add('task--done');
-          event.target.closest('div').setAttribute('task_done', 'true');
-          event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
-          input.setAttribute('disabled', true);
-          input.disabled = true;
-        });
-      } else {
+
+    const cardId = event.target.closest('div').getAttribute('id');
+    const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+
+    if (event.target.checked){ 
+        // hide colors btns on check action
+        app.handleHideColorsBtnsOnDoneCards();
+        event.target.closest('div').classList.add('task--done');
+        event.target.closest('div').setAttribute('task_done', 'true');
+        event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
+        input.setAttribute('disabled', true);
+        input.disabled = true;
+
+        // PATCH CARD
+        api.patchCard(
+          cardId, 
+          null,
+          null,
+          done = true,
+          null,
+          null,
+          null,
+          null,
+          columnId
+        );
+      });
+    } else {
           event.target.closest('div').classList.remove('task--done');
           event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
             input.removeAttribute('disabled');
@@ -222,6 +238,19 @@ handleTaskDone:() => {
             event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
             btn.style.display = 'block';
           });
+          
+          // PATCH CARD
+          api.patchCard(
+            cardId, 
+            null,
+            null,
+            done = false,
+            null,
+            null,
+            null,
+            null,
+            columnId
+          );
         }
     });
   });
