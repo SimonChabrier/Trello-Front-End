@@ -359,7 +359,6 @@ handleHideColorsBtnsOnDoneCards:() => {
 },
 
 handleNewColumnSetNumber:() => {
-
   // ici j'ai chaque chaque colonne et je boucle sur leur cartes
   const columnContainer = document.querySelector('.columns--container');
   for(let i = 0; i < columnContainer.children.length; i++) {    

@@ -275,7 +275,6 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         }
 
     if(column_number){
-    console.log(column_number);
     const cardData = { 
         "column_number": column_number,
     };
@@ -362,12 +361,11 @@ deleteColumns: async (id) => {
         if(response.status == 200){
         console.log('http Response Success' , response.status)
         //return response.json()
-        
         }
     })
-    .then(data => 
-        console.log(data) 
-    );
+    // .then(data => 
+    //     console.log(data) 
+    // );
 },
 
 }   
