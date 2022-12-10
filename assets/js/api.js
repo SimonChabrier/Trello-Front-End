@@ -26,7 +26,7 @@ getData: async () => {
     //console.table(data);
     //* si j'ai des données...alors je les affiche
     if(data.length){
-        console.log('data');
+        console.log(data);
     tpl.setColumnTemplate(data);
 
         app.handleDragAndDrop();
@@ -75,6 +75,7 @@ getLastCreatedCard: async () => {
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
     app.updateAllCardsNumberAndColumnName();
+    app.handleNewColumnSetNumber();
 },
 
 getLastCreatedColumn: async () => {

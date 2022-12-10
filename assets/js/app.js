@@ -357,20 +357,27 @@ handleHideColorsBtnsOnDoneCards:() => {
 },
 
 handleNewColumnSetNumber:() => {
+
   // ici j'ai chaque chaque colonne et je boucle sur leur cartes
   const columnContainer = document.querySelector('.columns--container');
-  
   for(let i = 0; i < columnContainer.children.length; i++) {    
+    // je donne le numéro de la colonne à chaque colonne en fontion de leur position dans le DOM
     columnContainer.children[i].setAttribute('column_number', i + 1);
 
-    //TODO mettre à jour les numéros des cartes et colones dans la base de données si on supprime une colonne
-    if(columnContainer.length > 0) {
-    // id des colonnes
-    console.log(columnContainer.children[i].getAttribute('id'));
-    //console.log(columnContainer.children[i].getAttribute('column_number'));
-   // api.patchColumn(columns[i].getAttribute('id'), columns.children[i].getAttribute('column_number'));
-    }
+    const columCards = columnContainer.children[i].querySelector('.draggable--card');
 
+    // if(columCards !== null) {
+    //   console.log(columCards.length);
+    //   // si pas null j'ai les carte de chaque colonne
+    //   for (let j = 0; j < columCards.length; j++) {
+    //     console.log(columCards[j].closest('div').querySelectorAll('.cards--dropzone')[j].getAttribute('column_number'))
+    //     // je boucle sur les cartes de chaque colonne
+    //     // je donne le numéro de la carte à chaque carte en fonction de leur position dans le DOM
+    //     let card = columCards[j].closest('div').querySelectorAll('.cards--dropzone')[j].getAttribute('column_number');  
+    //     console.log(card);    
+    //   }
+    //  }
+    //TODO mettre à jour les numéros des cartes et colones dans la base de données si on supprime une colonne
   }
 },
 

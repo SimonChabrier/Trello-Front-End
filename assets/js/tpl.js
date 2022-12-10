@@ -29,7 +29,10 @@ setColumnTemplate: (columns) => {
 // CONSTRUCTION DE L'ENSEMBLE DES CARTES PERSISTEES EN BDD
 setCardTemplate: (cards, colName) => {  
 
+    //TODO gérer l'association des cartes à la bonne colonne
+    //* méthode obligatoire pour associer les cartes à la bonne colonne
     app.handleNewColumnSetNumber();
+    
     
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
     cards?.forEach(card => {
