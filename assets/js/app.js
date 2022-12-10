@@ -2,40 +2,23 @@ const app = {
 
 init:()=> {
   console.log('Trello start success !');
-  app.allListeners(); 
-  
-  // compter les cartes renvoyées par le serveur pour vérifier qu'il n'en manque pas
-  setTimeout(() => {
-  console.log(document.querySelectorAll('.draggable--card').length);
-  }, 1000);
-  // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
+  app.allListeners();   
 },
 
-//TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
-// TODO il faut gére de recalculer le numéro de carte à chque fois que je supprime une colonne sur Insomnia, le nuéro de colonne se décale
+// TODO handleCountBackLogCards n'est plus utilisé, à supprimer ou gérer autrement
 allListeners:()=> {
 
-  document.getElementById('create_column_btn').addEventListener('click', () => { 
-      app.handleCreateColumn()
-      app.handleDragAndDrop();
-      app.handleDeleteColumn();
-      app.handleNewColumnSetNumber();
-      app.handleGetColumnName();
-      api.postColumn();
-      
+  window.addEventListener('load', () => {
+    api.getData(); 
+    app.handleGetThemeStatusFromLocalStorage();
   });
 
-  document.getElementById('create_card_btn').addEventListener('click', () => { 
-      api.postCard();
-      app.handleCreateCard()
-      app.handleDragAndDrop();
-      app.handleDeleteCard();
-      app.handleCountBackLogCards();
-      app.handleChangeCardColor();
-      app.handleDesableCheckBoxOnEmptyCard();
-      app.handleTaskDone();
-      app.handleNewCardSetNumber();
-      app.handleDisableDragOnActiveInputs();
+  document.getElementById('create_column_btn').addEventListener('click', () => { 
+      api.postColumn();
+  });
+
+  document.getElementById('create_card_btn').addEventListener('click', () => {     
+      api.postCard();      
   });
 
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -43,33 +26,27 @@ allListeners:()=> {
   });
 
   document.querySelector('#dark_mode_switch').addEventListener('change', () => {
-      app.handleToggleTheme();
-      
+      app.handleToggleTheme();  
   });
 
-  window.addEventListener('load', () => {
-    app.handleGetThemeStatusFromLocalStorage();
-      // app.handleCountBackLogCards();
-      // app.handleChangeCardColor();
-      // app.handleDesableCheckBoxOnEmptyCard();
-      // app.handleTaskDone();
-      // app.handleOnLoadCheckIfTaskDone();
-      // app.handleHideColorsBtnsOnDoneCards();
-      // app.handleDeleteCard();
-      // app.handleNewCardSetNumber();
-      // app.handleDisableDragOnActiveInputs();      
+},
+
+handlePatchColumnName:() => {
+  const column = document.querySelectorAll('.column');
+  column.forEach(column => {
+      const columnId = column.getAttribute('id');
+      const columnName = column.querySelector('.column--name').value;
+      api.patchColumnName(columnId, columnName);
   });
 },
 
 handleToggleTheme:() => {
   document.body.classList.toggle('light--theme');
-  document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
-      dropzone.classList.toggle('light--column--theme');
+  document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
+    dropzone.classList.toggle('light--column--theme'); 
   });
   document.querySelector('.header').classList.toggle('light--theme--header');
-
   localStorage.setItem('theme_status', document.body.classList.contains('light--theme') ? 'light' : 'dark');
-  
 },
 
 handleGetThemeStatusFromLocalStorage:() => {
@@ -120,14 +97,18 @@ handleDisableDragOnActiveInputs:()=> {
 
 handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete--column');
-
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
-      event.target.closest('div').remove();
+      //TODO Avertir l'utilisateur qu'il va supprimer une colonne avec des cartes...
       //* je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
       const columId = event.target.closest('div').getAttribute('id');
       api.deleteColumns(columId);
+      //* je supprime la colonne du DOM
+      event.target.closest('div').remove();
+      //* je met à jour le numéro des colonnes
       app.handleNewColumnSetNumber();
+      //* je met à jour le numéro des cartes avec API patch
+      app.updateAllCardsColumnNumberOnDeleteColumn();
     });
   });
 },
@@ -144,54 +125,36 @@ handleDeleteCard:() => {
   });
 },
 
-handleCreateColumn:() => {
-  const column = app.createElement('div', 'cards--dropzone', '');
-  column.appendChild(app.createInputElement('input', 'input', 'input_column_name', 'input--column--name', 'todo'));
-  app.appendElementToQuerySelector(column,'.columns--container');
-  const btn = app.createElement('button', 'delete--column', 'X');
-  column.appendChild(btn);
-
-  const theme = localStorage.getItem('theme_status');
-  if (theme === 'light') {
-      column.classList.add('light--column--theme');
-  }
-},
-
-handleCreateCard:() => {
-  const card = app.createElement('div', 'draggable--card', null);
-  card.setAttribute('draggable', 'true');
-  card.setAttribute('column_number', '0');
-  card.appendChild(app.headerCardColors());
-  card.appendChild(app.createElement('button', 'delete_card', 'X'));
-  card.appendChild(app.createElement('span', 'card--number', 'N°'));
-  card.appendChild(app.setCardContent());
-  app.appendElementToQuerySelector(card,'.new--card--section');
-},
-
-handleOnLoadCheckIfTaskDone:()=> {
-  document.querySelectorAll('.card--checkox').forEach(checkBox => {
-      if (checkBox.checked) {
-        checkBox.parentElement.querySelectorAll('.card--title, .card--text').forEach(input => {
-          input.setAttribute('disabled', 'true');
-          input.disabled = true;
-        });
-      };
-  });
-},
-
 handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-      if (event.target.checked){ 
-          // hide colors btns on check action
-          app.handleHideColorsBtnsOnDoneCards();
-          event.target.closest('div').classList.add('task--done');
-          event.target.closest('div').setAttribute('task_done', 'true');
-          event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
-          input.setAttribute('disabled', true);
-          input.disabled = true;
-        });
-      } else {
+  if(event.target.checked) {
+    const cardId = event.target.closest('div').getAttribute('id');
+    const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+
+
+        // hide colors btns on check action
+        app.handleHideColorsBtnsOnDoneCards();
+        event.target.closest('div').classList.add('task--done');
+        event.target.closest('div').setAttribute('task_done', 'true');
+        event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
+        input.setAttribute('disabled', true);
+        input.disabled = true;
+
+        // PATCH CARD
+        api.patchCard(
+          cardId, 
+          null,
+          null,
+          done = true,
+          null,
+          null,
+          null,
+          null,
+          columnId
+        );
+      });
+    } else {
           event.target.closest('div').classList.remove('task--done');
           event.target.closest('section').querySelectorAll('.card--text, .card--title').forEach(input => {
             input.removeAttribute('disabled');
@@ -200,8 +163,21 @@ handleTaskDone:() => {
             event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
             btn.style.display = 'block';
           });
+
+          // PATCH CARD
+          api.patchCard(
+            cardId, 
+            null,
+            null,
+            done = false,
+            null,
+            null,
+            null,
+            null,
+            columnId
+          );
         }
-    });
+   });
   });
 },
 
@@ -248,13 +224,26 @@ handleChangeCardColor:() => {
       event.target.closest('div').classList.add('draggable--card');    
       event.target.closest('div').classList.add(event.target.className);
       event.target.closest('div').setAttribute('card_color', event.target.className);
+
+      const cardId = event.target.closest('div').getAttribute('id')
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      const cardColor = event.target.closest('div').getAttribute('card_color');
+      api.patchCard(
+        cardId,
+        null, 
+        null, 
+        null, 
+        null, 
+        null,  
+        cardColor,
+        null, 
+        columnId
+       );
     });
   });
 },
 
 handleNewCardSetNumber:() => {
-  console.log('handleNewCardSetNumber');
-
   const draggables = document.querySelectorAll('.draggable--card');  
   for(let i = 0; i < draggables.length; i++) {
     if (draggables[i].parentElement.classList.contains('new--card--section')) {
@@ -265,7 +254,6 @@ handleNewCardSetNumber:() => {
 },
 
 handleGetColumnName:() => {
-  console.log('handleGetColumnName');
   const columns = document.querySelectorAll('.input--column--name');
 
   columns.forEach(column => {
@@ -274,14 +262,23 @@ handleGetColumnName:() => {
         event.target.placeholder = 'TODO';
         event.target.closest('div').setAttribute('column_name', event.target.placeholder)
       } else {
-        event.target.closest('div').setAttribute('column_name', event.target.value)
+        event.target.closest('div').setAttribute('column_name', event.target.value);
       }
       app.updateAllCardsNumberAndColumnName();
-    });
+      });
+
+        // update column name on blur event
+        column.addEventListener('blur', (event) => {
+        api.patchColumn(event.target.closest('div').getAttribute('id'), event.target.closest('div').getAttribute('column_name'))
+      }
+    );
   });
+
+    
+
 },
 
-handleCountBackLogCards:()=> {
+handleCountBackLogCards:() => {
   const newCardColumn = document.querySelectorAll('.new--card--section');
   newCardColumn.forEach(card => {
     const count = card.querySelectorAll('.draggable--card').length;
@@ -289,9 +286,7 @@ handleCountBackLogCards:()=> {
   });
 },
 
-handleDragAndDrop: ()=> {
-  
-  console.log('handleDragAndDrop');
+handleDragAndDrop: () => {
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
   
@@ -306,30 +301,22 @@ handleDragAndDrop: ()=> {
         app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
 
-        //* On traite la sauvegarde des données de la carte
-        // console.log(event.target);
+        // //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
-        title = event.target.querySelector('.card--title').value;
-        content = event.target.querySelector('.card--text').value;
-        done = event.target.getAttribute('task_done');
         column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
-        card_color = event.target.getAttribute('card_color');
-        textarea_height = event.target.querySelector('.card--text').style.height;
         columnId = event.target.parentElement.getAttribute('id');
-        
-        console.log('columnId', columnId);
-        console.log('cardId', cardId);
-        
+      
+        // //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
           api.patchCard(
             cardId, 
-            title, 
-            content, 
-            done, 
+            null, 
+            null, 
+            null, 
             column_number, 
             card_number, 
-            card_color, 
-            textarea_height,
+            null, 
+            null,
             columnId
           ); 
     });
@@ -367,11 +354,42 @@ handleHideColorsBtnsOnDoneCards:() => {
 
 handleNewColumnSetNumber:() => {
   // ici j'ai chaque chaque colonne et je boucle sur leur cartes
-  const columns = document.querySelector('.columns--container');
-  for(let i = 0; i < columns.children.length; i++) {    
-    columns.children[i].setAttribute('column_number', i + 1);
+  const columnContainer = document.querySelector('.columns--container');
+  for(let i = 0; i < columnContainer.children.length; i++) {    
+    // je donne le numéro de la colonne à chaque colonne en fontion de leur position dans le DOM
+    columnContainer.children[i].setAttribute('column_number', i + 1);
   }
-  console.log('recalculer les uméros des cartes à la suppression d\'une colonne');
+},
+
+updateAllCardsColumnNumberOnDeleteColumn:() => {
+  const columns = document.querySelectorAll('.cards--dropzone');
+  columns.forEach(column => {
+    const cards = column.querySelectorAll('.draggable--card');
+    cards.forEach(card => {
+      let columnId = card.closest(".cards--dropzone").getAttribute('id');
+      
+      card.setAttribute('column_number', column.getAttribute('column_number'));
+      let cardId = card.getAttribute('id');
+      let column_number = card.getAttribute('column_number');
+
+      //console.log('cardId', cardId)
+      //console.log('column_number', column_number)
+      //console.log('columnId' , columnId)
+      if(columnId && cardId && column_number) {
+      api.patchCard(
+        cardId,
+        null,
+        null,
+        null,
+        column_number,
+        null,
+        null,
+        null,
+        columnId
+      );
+      }
+    });
+  });
 },
 
 //* UTILS
@@ -405,8 +423,6 @@ appendElementToQuerySelector:(element, querySelector) => {
 },
 
 updateAllCardsNumberAndColumnName:() => {
-  console.log('updateAllCardsNumberAndColumnName');
-
   const columns = document.querySelectorAll('.cards--dropzone');
   columns.forEach(column => {
     
@@ -415,14 +431,26 @@ updateAllCardsNumberAndColumnName:() => {
     for(let i = 0; i < cards.length; i++) {
       cards[i].setAttribute('card_number', i + 1);
       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+      column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+      cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
       
-      if(cards[i].parentElement.classList.contains('new--card--section')) {
-        cards[i].querySelector('.card--number').innerText = `Backlog Card - N° ${cards[i].getAttribute('card_number')}`;
-      } else {
-        // si ma colonne n'a pas d'attribute placeholder (nouvelles colonnes), je donne à son placeholder la valeur par défaut 'TODO'.
-        'column', column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
-      }
+      cards.forEach(card => {
+        const columnId = card.parentElement.getAttribute('id');
+        const cardId = card.getAttribute('id');
+        const cardNumber = card.getAttribute('card_number');
+        
+        api.patchCard(
+            cardId, 
+            null,
+            null,
+            null,
+            null,
+            cardNumber, 
+            null,
+            null,
+            columnId
+          );
+      });
     }
   });
 },
@@ -449,8 +477,6 @@ getDragAfterElement:(column, y_position) => {
 },
 
 toggleFullScreenMode:(event) => {
-  console.log('toggleFullScreenMode');
-  
   const element = document.documentElement
    
   if(event.target.checked == true)
