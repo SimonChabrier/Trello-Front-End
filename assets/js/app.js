@@ -238,7 +238,7 @@ handleTaskDone:() => {
             event.target.closest('div').querySelectorAll('[name=color_button]').forEach(btn => {
             btn.style.display = 'block';
           });
-          
+
           // PATCH CARD
           api.patchCard(
             cardId, 
@@ -376,27 +376,22 @@ handleDragAndDrop: () => {
         app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
 
-        //* On traite la sauvegarde des données de la carte
+        // //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
-        title = event.target.querySelector('.card--title').value;
-        content = event.target.querySelector('.card--text').value;
-        done = event.target.getAttribute('task_done');
         column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
-        card_color = event.target.getAttribute('card_color');
-        textarea_height = event.target.querySelector('.card--text').style.height;
         columnId = event.target.parentElement.getAttribute('id');
       
-        //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
+        // //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
           api.patchCard(
             cardId, 
-            title, 
-            content, 
-            done, 
+            null, 
+            null, 
+            null, 
             column_number, 
             card_number, 
-            card_color, 
-            textarea_height,
+            null, 
+            null,
             columnId
           ); 
     });
