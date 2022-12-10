@@ -11,8 +11,6 @@ init:()=> {
 },
 
 // TODO handleCountBackLogCards n'est plus utilisé, à supprimer ou gérer autrement
-//TODO gérer l'ordre d'appel des méthodes si il y a des cartes qui sont déjà crées par tpl.js ou par fetch c'est là que ça va démarrer....
-// TODO il faut gére de recalculer le numéro de carte à chque fois que je supprime une colonne sur Insomnia, le nuéro de colonne se décale
 allListeners:()=> {
 
   window.addEventListener('load', () => {

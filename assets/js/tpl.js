@@ -71,7 +71,6 @@ setCardTemplate: (cards, colName) => {
 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
-
 // CONSTRUCTION D'UNE NOUVELLE COLONNE
 setNewCardTemplate: (card) => {
 
@@ -82,12 +81,15 @@ setNewCardTemplate: (card) => {
         cardTemplate.querySelector('.draggable--card').setAttribute('id', card.id);
         cardTemplate.querySelector('.draggable--card').setAttribute('column_number', card.column_number);
         cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
-
-        //cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
-        //cardTemplate.querySelector('.card--text').innerText = card.task_content;
-        //cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
-        //cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
-    firstColumn.appendChild(cardTemplate);
+        
+        //TODO VOIR LA GESTION D'UNE CARTE AVEC DU CONTENU DANS LA COLONNE 1
+        // cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
+        // cardTemplate.querySelector('.card--text').innerText = card.task_content;
+        // cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
+        // cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
+        firstColumn.appendChild(cardTemplate);
+        //firstColumn.getElementsByTagName("input")[0].appendChild(cardTemplate);
+  
 },
 
 // CONSTRUCTION D'UNE NOUVELLE CARTE
