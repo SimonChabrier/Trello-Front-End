@@ -2,45 +2,8 @@ const api = {
 
 init: () => {
     console.log('data init');
-    
     //? API FETCH EXEMPLES
     // https://github.com/SimonChabrier/bikeManagementSystem/blob/main/public/assets/js/inventoryForm.js
-},
-
-//* LECTURE DES DONNEES
-// TODO ne pas vider tout template mais juste ajouter la denrière carte postée
-getLastCreatedCard: async () => {
-    //const location = window.location.origin;
-    const endPoint = '/api/tasks/last';
-    //const apiRootUrl = location + endPoint;
-    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
-
-    let fetchOptions = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache'
-    };
-    try {
-        response = await fetch(apiRootUrl, fetchOptions);
-        data = await response.json();
-    } catch (error){
-        console.log(error);
-    }
-    console.table(data);
-    // TODO ici il faut que je construise la carte avec les données de data
-   
-    tpl.setNewCardTemplate(data);
-
-    app.handleDragAndDrop();
-    app.handleDeleteCard();
-    app.handleCountBackLogCards();
-    app.handleChangeCardColor();
-    app.handleDesableCheckBoxOnEmptyCard();
-    app.handleTaskDone();
-    app.handleDisableDragOnActiveInputs();
-    app.handleHideColorsBtnsOnDoneCards();
-    app.handleGetColumnName();
-    app.updateAllCardsNumberAndColumnName();
 },
 
 getData: async () => {
@@ -60,10 +23,49 @@ getData: async () => {
     } catch (error){
         console.log(error);
     }
-    console.table(data);
+    //console.table(data);
+    //* si j'ai des données...alors je les affiche
+    if(data.length){
+        console.log('data');
     tpl.setColumnTemplate(data);
 
+        app.handleDragAndDrop();
+        app.handleDeleteColumn();
+        app.handleDeleteCard();
+        app.handleCountBackLogCards();
+        app.handleChangeCardColor();
+        app.handleDesableCheckBoxOnEmptyCard();
+        app.handleTaskDone();
+        app.handleDisableDragOnActiveInputs();
+        app.handleHideColorsBtnsOnDoneCards();
+        app.handleGetColumnName();
+        app.updateAllCardsNumberAndColumnName();
+    }
+},
+
+//* LECTURE DES DONNEES
+getLastCreatedCard: async () => {
+    //const location = window.location.origin;
+    const endPoint = '/api/tasks/last';
+    //const apiRootUrl = location + endPoint;
+    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+
+    let fetchOptions = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+    };
+    try {
+        response = await fetch(apiRootUrl, fetchOptions);
+        data = await response.json();
+    } catch (error){
+        console.log(error);
+    }
+    
+    tpl.setNewCardTemplate(data);
+
     app.handleDragAndDrop();
+    app.handleDeleteColumn();
     app.handleDeleteCard();
     app.handleCountBackLogCards();
     app.handleChangeCardColor();
@@ -73,84 +75,80 @@ getData: async () => {
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
     app.updateAllCardsNumberAndColumnName();
-    
 },
 
-// getLastColumn: async () => {
-//     //const location = window.location.origin;
-//     const endPoint = '/api/columns/last';
-//     //const apiRootUrl = location + endPoint;
-//     const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+getLastCreatedColumn: async () => {
 
-//     let fetchOptions = {
-//         method: 'GET',
-//         mode: 'cors',
-//         cache: 'no-cache'
-//     };
-//     try {
-//         response = await fetch(apiRootUrl, fetchOptions);
-//         data = await response.json();
-//     } catch (error){
-//         console.log(error);
-//     }
-//     console.log(data);
-//     tpl.setColumnTemplate(data);
+     //const location = window.location.origin;
+     const endPoint = '/api/columns/last';
+     //const apiRootUrl = location + endPoint;
+     const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+ 
+     let fetchOptions = {
+         method: 'GET',
+         mode: 'cors',
+         cache: 'no-cache'
+     };
+     try {
+         response = await fetch(apiRootUrl, fetchOptions);
+         data = await response.json();
+     } catch (error){
+         console.log(error);
+     }
+     
+    tpl.setNewColumnTemplate(data);
 
-//     app.handleDragAndDrop();
-//     app.handleDeleteCard();
-//     app.handleCountBackLogCards();
-//     app.handleChangeCardColor();
-//     app.handleDesableCheckBoxOnEmptyCard();
-//     app.handleTaskDone();
-//     app.handleDisableDragOnActiveInputs();
-//     app.handleHideColorsBtnsOnDoneCards();
-//     app.handleGetColumnName();
-    
-// },
+    app.handleDragAndDrop();
+    app.handleDeleteCard();
+    app.handleDeleteColumn();
+    app.handleCountBackLogCards();
+    app.handleChangeCardColor();
+    app.handleDesableCheckBoxOnEmptyCard();
+    app.handleTaskDone();
+    app.handleDisableDragOnActiveInputs();
+    app.handleHideColorsBtnsOnDoneCards();
+    app.handleGetColumnName();
+    app.updateAllCardsNumberAndColumnName();
+},
 
 //* OK
-// TODO mettre la colonne backlog en BDD avec un id
 postCard: async () => {
 
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
-    const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
+    //const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
 
     const cardData = { 
         "task_title": "New card",
         "task_content": "",
         "task_done": false,
         "column_number": "1",
-        "card_number": newCardNumber,
+        "card_number": 1,
+        "card_number": "1",
         "card_color": "card--color--default",
         "textarea_height": "150"
     };
 
-        const response = await fetch('https://127.0.0.1:8000/api/column/' + firstColumnid, {
-            method: 'POST', 
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(cardData)
-        });
+    const response = await fetch('https://127.0.0.1:8000/api/column/' + firstColumnid, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardData)
+    });
      
-       const data = await response.json( );
-        //console.table(data);
-        //TODO ici il faut juste ajouter la dernière carte postée sans tout recharger
-        document.getElementById('columns_container').innerHTML = '';
-        api.getData();
-
-        //document.querySelectorAll('.cards--dropzone')[0].innerHTML = '';
-        //api.getLastCreatedCard();
+       //const data = await response.json( );
+    api.getLastCreatedCard();
 },
 
 //* OK
 postColumn: async () => {     
-    const newColumn = document.getElementById('columns_container').lastChild;
-    const newColumnNumber = newColumn.getAttribute('column_number');
+    // const newColumn = document.getElementById('columns_container').lastChild;
+    //const newColumnNumber = newColumn.getAttribute('column_number');
 
     const columnData = { 
         "column_name": "",
-		"column_number": parseInt(newColumnNumber),
+		//"column_number": parseInt(newColumnNumber),
+		"column_number": 1
     };
 
     const response = await fetch('https://127.0.0.1:8000/api/column', {
@@ -163,10 +161,7 @@ postColumn: async () => {
     });
     
     const data = await response.json( );
-    console.log(data);
-    document.getElementById('columns_container').innerHTML = '';
-    api.getData();
-
+    api.getLastCreatedColumn();
 },
 
 //* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
@@ -314,11 +309,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
 },
 
 //* OK
-patchColumn: async (id, columnName) => {   
-    console.log('patchColumn');   
-    console.log(id);
-    console.log(columnName);             
-    //APi call PUT
+patchColumn: async (id, columnName) => {               
     const columnData = { 
         "column_name": columnName,
     };
@@ -333,7 +324,7 @@ patchColumn: async (id, columnName) => {
 
     const data = await response.json( );
     // now do whatever you want with the data  
-    console.log(data);
+    //console.log(data);
 },
 
 //* OK
@@ -358,6 +349,9 @@ deleteCard: async (id) => {
 //* OK
 deleteColumns: async (id) => {                                          
     // APi call DELETE
+    console.log('deleteColumns');
+    console.log(id);
+
     await fetch('https://127.0.0.1:8000/api/column/' + id, {
         method: 'DELETE',
         mode: 'cors',
@@ -369,9 +363,9 @@ deleteColumns: async (id) => {
     .then(response => {
         return response.json( )
     })
-    .then(data => 
-        console.log(data) 
-    );
+    // .then(data => 
+    //     console.log(data) 
+    // );
 },
 
 }   

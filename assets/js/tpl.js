@@ -5,7 +5,7 @@ const tpl = {
 
 init: () => {
     console.log('tpl init');
-    api.getData();    
+    // Je récupère les données en BDD via l'API si il y en a   
 },
 
 // * 1 - CONSTRUCTION DES COLONNES
@@ -86,6 +86,29 @@ setNewCardTemplate: (card) => {
         //cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
         //cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
     firstColumn.appendChild(cardTemplate);
+},
+
+setNewColumnTemplate: (column) => {
+    const columns = document.querySelectorAll('.cards--dropzone');
+    // je récupère le nombre de colonne qui démarrera à 1 en ajoutant + 1 car le point de départ est 0
+    column.column_number = columns.length + 1;
+    const target = document.getElementById('columns_container');
+    const columnTemplate = document.getElementById('column_template').content.cloneNode(true);
+        
+    columnTemplate.querySelector('.cards--dropzone').setAttribute('id', column.id);
+    columnTemplate.querySelector('.cards--dropzone').setAttribute('column_name', column.column_name);
+    
+    //TODO je n'ai plus de propriété column_number
+    columnTemplate.querySelector('.cards--dropzone').setAttribute('column_number', column.column_number);
+        
+    columnTemplate.querySelector('.input--column--name').value = column.column_name;
+    columnTemplate.querySelector('.input--column--name').setAttribute('column_name', column.column_name);
+
+    target.appendChild(columnTemplate); 
+    // Je passe les carte à setCardTemplate
+    // app.handleNewColumnSetNumber();
+    //tpl.setCardTemplate(column.tasks, column.column_name);
+
 },
 
 };
