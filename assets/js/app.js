@@ -3,11 +3,6 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   app.allListeners();   
-  // compter les cartes renvoyées par le serveur pour vérifier qu'il n'en manque pas
-  // setTimeout(() => {
-  // console.log(document.querySelectorAll('.draggable--card').length);
-  // }, 1000);
-  // * POUR API CALL IL QUE TOUT SOIT DISPO EN EN DEHORS DES LISTENERS
 },
 
 // TODO handleCountBackLogCards n'est plus utilisé, à supprimer ou gérer autrement

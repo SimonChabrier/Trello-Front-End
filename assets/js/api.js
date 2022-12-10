@@ -181,7 +181,7 @@ postColumn: async () => {
     api.getLastCreatedColumn();
 },
 
-//* OK Manque la mise à jour du numéro de carte quand on les déplace il prend toujours la valeur 1
+//* OK 
 patchCard: async (cardId, title, content, done, column_number, card_number, card_color, textarea_height, columnId) => {         
 
     // TODO Si modification de toute les données de la carte
@@ -305,7 +305,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
             // const data = await response.json( ); 
             // console.table(data);
             if (response.status === 200) {
-                console.log('SUCCESS - Card number updated')
+                console.log('SUCCESS - Card card_number updated')
             }
         }
 
@@ -324,7 +324,7 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         // const data = await response.json( ); 
         // console.table(data);
         if (response.status === 200) {
-            console.log('SUCCESS - Card number updated')
+            console.log('SUCCESS - Card column_number updated')
         }
     }
 
