@@ -119,7 +119,7 @@ handleDeleteCard:() => {
     button.addEventListener('click', (event) => {
       api.deleteCard(event.target.closest('div').getAttribute('id'));
       event.target.closest('div').remove();
-      app.handleCountBackLogCards();
+      //app.handleCountBackLogCards();
       app.updateAllCardsNumberAndColumnName();
     });
   });
@@ -278,13 +278,21 @@ handleGetColumnName:() => {
 
 },
 
-handleCountBackLogCards:() => {
-  const newCardColumn = document.querySelectorAll('.new--card--section');
-  newCardColumn.forEach(card => {
-    const count = card.querySelectorAll('.draggable--card').length;
-    count > 1 ? card.querySelector('.card--count').innerText= `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerText = `${count} CARD IN BACKLOG`;
-  });
-},
+// handleCountBackLogCards:() => {
+//   // j'ajoute une classe à la colonne numéro 1
+//   const columns = document.querySelectorAll('.cards--dropzone');
+//   columns[0].classList.add('new--card--section');
+//   const countPara = document.createElement('p', 'card--count', '0 CARD IN BACKLOG');
+//   columns[0].prepend(countPara);
+//   const newCardColumn = document.querySelectorAll('.new--card--section');
+//   count > 1 ? countPara.innerText= `${count} CARDS IN BACKLOG` : countPara.innerText = `${count} CARD IN BACKLOG`;
+//   newCardColumn.forEach(card => {
+//     const count = card.querySelectorAll('.draggable--card').length;
+//     //count > 1 ? card.querySelector('.card--count').innerText= `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerText = `${count} CARD IN BACKLOG`;
+//     count > 1 ? countPara.innerText= `${count} CARDS IN BACKLOG` : countPara.innerText = `${count} CARD IN BACKLOG`;
+//    // countPara.appendChild(count);
+//   });
+// },
 
 handleDragAndDrop: () => {
   const draggables = document.querySelectorAll('.draggable--card');
@@ -293,12 +301,12 @@ handleDragAndDrop: () => {
   draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', (event) => {
         event.target.classList.add('dragging');
-        app.handleCountBackLogCards();
+        //app.handleCountBackLogCards();
     });
         draggable.addEventListener('dragend', (event) => {
         draggable.classList.remove('dragging');
 
-        app.handleCountBackLogCards();
+        //app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
 
         // //* On traite la sauvegarde des données de la carte

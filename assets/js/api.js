@@ -37,7 +37,7 @@ getData: async () => {
         app.handleDragAndDrop();
         app.handleDeleteColumn();
         app.handleDeleteCard();
-        app.handleCountBackLogCards();
+        //app.handleCountBackLogCards();
         app.handleChangeCardColor();
         app.handleDesableCheckBoxOnEmptyCard();
         app.handleTaskDone();
@@ -77,7 +77,7 @@ getLastCreatedCard: async () => {
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
-    app.handleCountBackLogCards();
+    //app.handleCountBackLogCards();
     app.handleChangeCardColor();
     app.handleDesableCheckBoxOnEmptyCard();
     app.handleTaskDone();
@@ -116,7 +116,7 @@ console.log('getLastCreatedColumn');
     app.handleDragAndDrop();
     app.handleDeleteCard();
     app.handleDeleteColumn();
-    app.handleCountBackLogCards();
+    //app.handleCountBackLogCards();
     app.handleChangeCardColor();
     app.handleDesableCheckBoxOnEmptyCard();
     app.handleTaskDone();
