@@ -99,6 +99,7 @@ handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete--column');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
+      //TODO Avertir l'utilisateur qu'il va supprimer une colonne avec des cartes...
       //* je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
       const columId = event.target.closest('div').getAttribute('id');
       api.deleteColumns(columId);
