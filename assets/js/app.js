@@ -129,7 +129,6 @@ handleDeleteCard:() => {
   });
 },
 
-
 handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {

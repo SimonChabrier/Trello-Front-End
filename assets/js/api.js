@@ -118,7 +118,7 @@ postCard: async () => {
     //const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
 
     const cardData = { 
-        "task_title": "New card",
+        "task_title": "",
         "task_content": "",
         "task_done": false,
         "column_number": "1",
