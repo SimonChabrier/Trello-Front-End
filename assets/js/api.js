@@ -24,7 +24,7 @@ getData: async () => {
         data = await response.json();
         if(response.status === 200){
             console.table(data);
-            console.log('SUCCESS - GET ALL DATA');
+            console.log('GET ALL DATAS SUCCESS');
         }
     } catch (error){
         console.log(error);
@@ -37,7 +37,6 @@ getData: async () => {
         app.handleDragAndDrop();
         app.handleDeleteColumn();
         app.handleDeleteCard();
-        //app.handleCountBackLogCards();
         app.handleChangeCardColor();
         app.handleDesableCheckBoxOnEmptyCard();
         app.handleTaskDone();
@@ -78,7 +77,6 @@ getLastCreatedCard: async () => {
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
-    //app.handleCountBackLogCards();
     app.handleChangeCardColor();
     app.handleDesableCheckBoxOnEmptyCard();
     app.handleTaskDone();
@@ -118,7 +116,6 @@ console.log('getLastCreatedColumn');
     app.handleDragAndDrop();
     app.handleDeleteCard();
     app.handleDeleteColumn();
-    //app.handleCountBackLogCards();
     app.handleChangeCardColor();
     app.handleDesableCheckBoxOnEmptyCard();
     app.handleTaskDone();
@@ -130,7 +127,7 @@ console.log('getLastCreatedColumn');
 
 //* OK
 postCard: async () => {
-console.log('postCard');
+
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
     
     const cardData = { 
@@ -138,8 +135,7 @@ console.log('postCard');
         "task_content": "",
         "task_done": false,
         "column_number": "1",
-        "card_number": 1,
-        "card_number": "1",
+        "card_number": "",
         "card_color": "card--color--default",
         "textarea_height": "150"
     };
@@ -160,7 +156,6 @@ console.log('postCard');
 
 //* OK
 postColumn: async () => {    
-    console.log('postColumn'); 
 
     const columnData = { 
         "column_name": "",
@@ -183,39 +178,9 @@ postColumn: async () => {
 },
 
 //* OK 
-patchCard: async (cardId, title, content, done, column_number, card_number, card_color, textarea_height, columnId) => {         
+patchCard: async (cardId, cardData, columnId) => {        
 
-    // TODO Si modification de toute les données de la carte
-    // if(title && content && done && column_number && card_number && card_color && textarea_height){
-    // const cardData = { 
-    //     "task_title": title,
-    //     "task_content": content,
-    //     "task_done": done,
-	// 	"column_number": column_number,
-    //     "card_number": card_number,
-    //     "card_color": card_color,
-    //     "textarea_height": textarea_height.replace('px', ''),
-    // };
-    // // premier id = id de la colonne et le deuxième id = id de la carte
-    // // le param converter côté serveur permet de convertir l'id de la colonne et id de la carte
-    // // pour mettre à jour la relation oneToMany entre la carte et la colonne
-    // const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-    //     method: 'PATCH', 
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(cardData)
-    // });
-    //     const data = await response.json( );
-    //     console.table(data);
-    // }
-
-    // Si modification de la couleur de la carte
-    if(card_color){
-        console.log('patch card color' + card_color)
-        const cardData = { 
-            "card_color": card_color,
-        };
+    if(cardData){
     const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
         method: 'PATCH', 
         headers: {
@@ -226,131 +191,14 @@ patchCard: async (cardId, title, content, done, column_number, card_number, card
         // const data = await response.json( ); 
         // console.table(data);
         if (response.status === 200) {
-            console.log('SUCCESS - Card color updated')
+            console.log('PATCH CARD SUCCESS')
         }
     }
-
-    // si modification du titre de la carte
-    if(title){
-    console.log('patch card title' + title)
-    const cardData = { 
-        "task_title": title,
-    };
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardData)
-    });
-        // const data = await response.json( ); 
-        // console.table(data);
-        if (response.status === 200) {
-            console.log('SUCCESS - Card title updated')
-        }
-    }
-
-    // si modification du texte de la carte
-    if(content){
-    console.log('patch card content' + content)
-    const cardData = { 
-        "task_content": content,
-    };
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardData)
-    });
-        // const data = await response.json( ); 
-        // console.table(data);
-        if (response.status === 200) {
-            console.log('SUCCESS - Card content updated')
-        }
-    }
-
-     // si modification du statut de la carte
-     if(done == 0 || done == 1){
-        console.log('patch card done' + done);
-        const cardData = { 
-            "task_done": done,
-        };
-        const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-            method: 'PATCH', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(cardData)
-        });
-            // const data = await response.json( ); 
-            // console.table(data);
-            if (response.status === 200) {
-                console.log('SUCCESS - Card done updated')
-            }
-        }
-
-    // si modification du numéro de la carte
-    if(card_number){
-        console.log('patch card number' + card_number);
-        const cardData = { 
-            "card_number": card_number,
-        };
-        const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-            method: 'PATCH', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(cardData)
-        });
-            // const data = await response.json( ); 
-            // console.table(data);
-            if (response.status === 200) {
-                console.log('SUCCESS - Card card_number updated')
-            }
-        }
-
-    if(column_number){
-    console.log('patch card column number' + column_number);
-    const cardData = { 
-        "column_number": column_number,
-    };
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardData)
-    });
-        // const data = await response.json( ); 
-        // console.table(data);
-        if (response.status === 200) {
-            console.log('SUCCESS - Card column_number updated')
-        }
-    }
-
-    if(textarea_height){
-    console.log('patch card textarea height' + textarea_height);
-    const cardData = { 
-        "textarea_height": textarea_height.replace('px', ''),
-    };
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardData)
-    });
-        // const data = await response.json( ); 
-        // console.table(data);
-        if (response.status === 200) {
-            console.log('SUCCESS - Card number updated')
-        }
-    }  
 },
 
 //* OK
-patchColumn: async (id, columnName) => {               
+patchColumn: async (id, columnName) => {  
+
     const columnData = { 
         "column_name": columnName,
     };
@@ -366,13 +214,13 @@ patchColumn: async (id, columnName) => {
     // const data = await response.json( ); 
     // console.table(data);
     if (response.status === 200) {
-        console.log('SUCCESS - Patch column')
+        console.log('PATCH COLUMN SUCCESS')
     }
 },
 
 //* OK
 deleteCard: async (id) => {                               
-    //APi call DELETE
+
     await fetch('https://127.0.0.1:8000/api/task/' + id, {
         method: 'DELETE',
         mode: 'cors',
@@ -383,7 +231,7 @@ deleteCard: async (id) => {
     })
     .then(response => {
         if(response.status == 200){
-        console.log('SUCCESS - Delete card')
+        console.log('DELETE CARD SUCCESS')
         //return response.json( )
         }
     })
@@ -405,7 +253,7 @@ deleteColumns: async (id) => {
     })
     .then(response => {
         if(response.status == 200){
-        console.log('SUCESS - Delete column')
+        console.log('DLETE COLUMN SUCESS')
         //return response.json()
         }
     })
