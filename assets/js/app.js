@@ -2,15 +2,15 @@ const app = {
 
 init:()=> {
   console.log('Trello start success !');
+  api.getData(); 
   app.allListeners();   
 },
 
 // * LISTENERS * //
 
 allListeners:()=> {
-
   window.addEventListener('load', () => {
-    api.getData(); 
+    
     app.handleGetThemeStatusFromLocalStorage();
   });
 
@@ -22,6 +22,27 @@ allListeners:()=> {
       api.postCard();      
   });
 
+  // TODO cibler les textareas problème ici ils ne sont pas encore créés
+  // Timeout est la solution temporaire
+  setTimeout(() => {
+  document.querySelectorAll('.card--title').forEach(card => {
+      card.addEventListener('blur', (event) => {
+      app.handlePatchCardTitle(event);
+      });
+  });
+  }, 1000);
+
+  // TODO cibler les textareas problème ici ils ne sont pas encore créés
+  // Timeout est la solution temporaire
+  setTimeout(() => {
+  const textareas = document.getElementsByTagName('textarea');
+  for (let i = 0; i < textareas.length; i++) {
+    textareas[i].addEventListener('blur', (event) => {
+      app.handlePatchCardContent(event);
+    });
+  }
+  }, 1000);
+  
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
   });
@@ -59,6 +80,27 @@ handlePatchColumnName:() => {
       // PATCH COLUMN NAME
       api.patchColumnName(columnId, columnName);
   });
+},
+
+
+handlePatchCardTitle:(event) => {
+  console.log(event.target.value);
+  const cardId = event.target.closest('.draggable--card').getAttribute('id');
+  const cardTitle = event.target.value;
+  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+    
+    // PATCH CARD TITLE
+    api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
+},
+
+handlePatchCardContent:(event) => {
+  console.log(event.target.value);
+  const cardId = event.target.closest('.draggable--card').getAttribute('id');
+  const cardContent = event.target.value;
+  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+    
+    // PATCH CARD CONTENT
+    api.patchCard(cardId, {"task_content": cardContent}, columnId);
 },
 
 handleToggleTheme:() => {
