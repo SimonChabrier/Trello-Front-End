@@ -39,6 +39,8 @@ handlePatchColumnName:() => {
   column.forEach(column => {
       const columnId = column.getAttribute('id');
       const columnName = column.querySelector('.column--name').value;
+
+      // PATCH COLUMN NAME
       api.patchColumnName(columnId, columnName);
   });
 },
@@ -110,7 +112,7 @@ handleDeleteColumn:()=> {
       event.target.closest('div').remove();
       //* je met à jour le numéro des colonnes
       app.handleNewColumnSetNumber();
-      //* je met à jour le numéro des cartes avec API patch
+      //* je met à jour le numéro des cartes -> API PATCH
       app.updateAllCardsColumnNumberOnDeleteColumn();
     });
   });
@@ -199,6 +201,8 @@ handleChangeCardColor:() => {
       const cardId = event.target.closest('div').getAttribute('id')
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       const cardColor = event.target.closest('div').getAttribute('card_color');
+
+      // PATCH CARD
       api.patchCard(cardId, {"card_color" : cardColor}, columnId);
     });
   });
@@ -230,7 +234,10 @@ handleGetColumnName:() => {
 
         // update column name on blur event
         column.addEventListener('blur', (event) => {
-        api.patchColumn(event.target.closest('div').getAttribute('id'), event.target.closest('div').getAttribute('column_name'))
+
+        // PATCH COLUMN
+        api.patchColumn(event.target.closest('div').getAttribute('id'), 
+        event.target.closest('div').getAttribute('column_name'))
       }
     );
   });
@@ -252,13 +259,13 @@ handleDragAndDrop: () => {
 
         app.updateAllCardsNumberAndColumnName();
 
-        // //* On traite la sauvegarde des données de la carte
+        //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
         column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
         const columnId = event.target.parentElement.getAttribute('id');
       
-        //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
+        // PATCH CARD
         api.patchCard(cardId, {"column_number" : column_number, "card_number" : card_number}, columnId); 
     });
   });
@@ -321,11 +328,8 @@ updateAllCardsNumberAndColumnName:() => {
         const cardId = card.getAttribute('id');
         const cardNumber = card.getAttribute('card_number');
         
-        api.patchCard(
-            cardId, 
-            {"card_number" : cardNumber},
-            columnId
-          );
+        // PATCH CARD
+        api.patchCard(cardId, {"card_number" : cardNumber}, columnId);
       });
     }
   });
@@ -343,6 +347,8 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
       const column_number = card.getAttribute('column_number');
 
       if(columnId && cardId && column_number) {
+        
+          // PATCH CARD
           api.patchCard(cardId, {"column_number" : column_number}, columnId);
       }
 
