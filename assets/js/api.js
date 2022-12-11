@@ -130,8 +130,8 @@ console.log('getLastCreatedColumn');
 postCard: async () => {
 console.log('postCard');
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
-    //const newCardNumber = document.getElementById(firstColumnid).lastChild.getAttribute('card_number');
-
+    console.log(firstColumnid);
+    
     const cardData = { 
         "task_title": "",
         "task_content": "",
@@ -143,7 +143,7 @@ console.log('postCard');
         "textarea_height": "150"
     };
 
-    const response = await fetch('https://127.0.0.1:8000/api/column/' + firstColumnid, {
+    const response = await fetch('https://127.0.0.1:8000/api/tasks/' + firstColumnid, {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -174,10 +174,10 @@ postColumn: async () => {
         },
         body: JSON.stringify(columnData)
     });
-    //const data = await response.json();
     if (response.status === 200) {
         console.log('SUCCESS - POST COLUMN')
     }
+    //const data = await response.json();
     api.getLastCreatedColumn();
 },
 
