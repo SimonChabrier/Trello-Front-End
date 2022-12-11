@@ -8,7 +8,7 @@ init: () => {
 
 //* OK
 getData: async () => {
-    console.log('getData');
+
     //const location = window.location.origin;
     const endPoint = '/api/tasks';
     //const apiRootUrl = location + endPoint;
@@ -29,27 +29,15 @@ getData: async () => {
     } catch (error){
         console.log(error);
     }
-    //console.table(data);
-    //* si j'ai des données...alors je les affiche
+    // si j'ai des données...alors je les affiche
     if(data.length){
-    tpl.setColumnTemplate(data);
-
-        app.handleDragAndDrop();
-        app.handleDeleteColumn();
-        app.handleDeleteCard();
-        app.handleChangeCardColor();
-        app.handleDesableCheckBoxOnEmptyCard();
-        app.handleTaskDone();
-        app.handleDisableDragOnActiveInputs();
-        app.handleHideColorsBtnsOnDoneCards();
-        app.handleGetColumnName();
-        app.updateAllCardsNumberAndColumnName();
+        tpl.setColumnTemplate(data);
+        app.initAllAppActions();
     }
 },
 
 //* OK
 getLastCreatedCard: async () => {
-    console.log('getLastCreatedCard');
 
     //const location = window.location.origin;
     const endPoint = '/api/tasks/last';
@@ -73,56 +61,35 @@ getLastCreatedCard: async () => {
     }
     
     tpl.setNewCardTemplate(data);
-
-    app.handleDragAndDrop();
-    app.handleDeleteColumn();
-    app.handleDeleteCard();
-    app.handleChangeCardColor();
-    app.handleDesableCheckBoxOnEmptyCard();
-    app.handleTaskDone();
-    app.handleDisableDragOnActiveInputs();
-    app.handleHideColorsBtnsOnDoneCards();
-    app.handleGetColumnName();
-    app.updateAllCardsNumberAndColumnName();
-    app.handleNewColumnSetNumber();
+    app.initAllAppActions();
 },
 
 //* OK
 getLastCreatedColumn: async () => {
-console.log('getLastCreatedColumn');
-     //const location = window.location.origin;
-     const endPoint = '/api/columns/last';
-     //const apiRootUrl = location + endPoint;
-     const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
- 
-     let fetchOptions = {
-         method: 'GET',
-         mode: 'cors',
-         cache: 'no-cache'
-     };
-     try {
-         response = await fetch(apiRootUrl, fetchOptions);
-         data = await response.json();
-         if(response.status === 200){
-            console.table(data);
-             console.log('SUCCESS - GET LAST CREATED COLUMN')
-         }
-     } catch (error){
-         console.log(error);
-     }
+
+    //const location = window.location.origin;
+    const endPoint = '/api/columns/last';
+    //const apiRootUrl = location + endPoint;
+    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+
+    let fetchOptions = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+    };
+    try {
+        response = await fetch(apiRootUrl, fetchOptions);
+        data = await response.json();
+        if(response.status === 200){
+        console.table(data);
+            console.log('SUCCESS - GET LAST CREATED COLUMN')
+        }
+    } catch (error){
+        console.log(error);
+    }
      
     tpl.setNewColumnTemplate(data);
-
-    app.handleDragAndDrop();
-    app.handleDeleteCard();
-    app.handleDeleteColumn();
-    app.handleChangeCardColor();
-    app.handleDesableCheckBoxOnEmptyCard();
-    app.handleTaskDone();
-    app.handleDisableDragOnActiveInputs();
-    app.handleHideColorsBtnsOnDoneCards();
-    app.handleGetColumnName();
-    app.updateAllCardsNumberAndColumnName();
+    app.initAllAppActions();
 },
 
 //* OK

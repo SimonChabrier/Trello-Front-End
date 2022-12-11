@@ -32,6 +32,22 @@ allListeners:()=> {
 
 },
 
+// * INIT ALL APP ACTIONS * //
+
+initAllAppActions:()=> {
+    app.handleDragAndDrop();
+    app.handleDeleteColumn();
+    app.handleDeleteCard();
+    app.handleChangeCardColor();
+    app.handleDesableCheckBoxOnEmptyCard();
+    app.handleTaskDone();
+    app.handleDisableDragOnActiveInputs();
+    app.handleHideColorsBtnsOnDoneCards();
+    app.handleGetColumnName();
+    app.updateAllCardsNumberAndColumnName();
+    app.handleNewColumnSetNumber();
+},
+
 // * ACTIONS * //
 
 handlePatchColumnName:() => {
@@ -347,7 +363,7 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
       const column_number = card.getAttribute('column_number');
 
       if(columnId && cardId && column_number) {
-        
+
           // PATCH CARD
           api.patchCard(cardId, {"column_number" : column_number}, columnId);
       }
