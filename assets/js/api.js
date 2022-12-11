@@ -23,7 +23,8 @@ getData: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-            console.log('SUCCESS - GET ALL DATA')
+            console.table(data);
+            console.log('SUCCESS - GET ALL DATA');
         }
     } catch (error){
         console.log(error);
@@ -31,7 +32,6 @@ getData: async () => {
     //console.table(data);
     //* si j'ai des données...alors je les affiche
     if(data.length){
-
     tpl.setColumnTemplate(data);
 
         app.handleDragAndDrop();
@@ -66,6 +66,7 @@ getLastCreatedCard: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
+            console.table(data);
             console.log('SUCCESS - GET LAST CREATED CARD')
         }
     } catch (error){
@@ -105,6 +106,7 @@ console.log('getLastCreatedColumn');
          response = await fetch(apiRootUrl, fetchOptions);
          data = await response.json();
          if(response.status === 200){
+            console.table(data);
              console.log('SUCCESS - GET LAST CREATED COLUMN')
          }
      } catch (error){
@@ -130,7 +132,6 @@ console.log('getLastCreatedColumn');
 postCard: async () => {
 console.log('postCard');
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
-    console.log(firstColumnid);
     
     const cardData = { 
         "task_title": "",
@@ -150,7 +151,7 @@ console.log('postCard');
         },
         body: JSON.stringify(cardData)
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
         console.log('SUCCESS - POST CARD')
     }
     //const data = await response.json();
@@ -174,7 +175,7 @@ postColumn: async () => {
         },
         body: JSON.stringify(columnData)
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
         console.log('SUCCESS - POST COLUMN')
     }
     //const data = await response.json();
