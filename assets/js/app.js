@@ -5,7 +5,8 @@ init:()=> {
   app.allListeners();   
 },
 
-// TODO handleCountBackLogCards n'est plus utilisé, à supprimer ou gérer autrement
+// * LISTENERS * //
+
 allListeners:()=> {
 
   window.addEventListener('load', () => {
@@ -30,6 +31,8 @@ allListeners:()=> {
   });
 
 },
+
+// * ACTIONS * //
 
 handlePatchColumnName:() => {
   const column = document.querySelectorAll('.column');
@@ -119,7 +122,6 @@ handleDeleteCard:() => {
     button.addEventListener('click', (event) => {
       api.deleteCard(event.target.closest('div').getAttribute('id'));
       event.target.closest('div').remove();
-      app.handleCountBackLogCards();
       app.updateAllCardsNumberAndColumnName();
     });
   });
@@ -128,11 +130,9 @@ handleDeleteCard:() => {
 handleTaskDone:() => {
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
-  if(event.target.checked) {
     const cardId = event.target.closest('div').getAttribute('id');
     const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-
-
+  if(event.target.checked) {
         // hide colors btns on check action
         app.handleHideColorsBtnsOnDoneCards();
         event.target.closest('div').classList.add('task--done');
@@ -142,17 +142,7 @@ handleTaskDone:() => {
         input.disabled = true;
 
         // PATCH CARD
-        api.patchCard(
-          cardId, 
-          null,
-          null,
-          done = true,
-          null,
-          null,
-          null,
-          null,
-          columnId
-        );
+        api.patchCard(cardId, {"task_done": true}, columnId);
       });
     } else {
           event.target.closest('div').classList.remove('task--done');
@@ -165,17 +155,7 @@ handleTaskDone:() => {
           });
 
           // PATCH CARD
-          api.patchCard(
-            cardId, 
-            null,
-            null,
-            done = false,
-            null,
-            null,
-            null,
-            null,
-            columnId
-          );
+          api.patchCard(cardId, {"task_done": false}, columnId);
         }
    });
   });
@@ -207,15 +187,6 @@ handleDesableCheckBoxOnEmptyCard:() => {
   });
 },
 
-headerCardColors:() => {
-  section = app.createElement('section', 'card--colors', null);
-  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--default' ,''));
-  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--red' ,''));
-  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--orange' ,''));
-  section.appendChild(app.createInputElement('button', 'submit', 'color_button', 'card--color--blue' ,''));
-  
-  return section;
-},
 
 handleChangeCardColor:() => {
     document.getElementsByName('color_button').forEach(button => {
@@ -228,17 +199,7 @@ handleChangeCardColor:() => {
       const cardId = event.target.closest('div').getAttribute('id')
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       const cardColor = event.target.closest('div').getAttribute('card_color');
-      api.patchCard(
-        cardId,
-        null, 
-        null, 
-        null, 
-        null, 
-        null,  
-        cardColor,
-        null, 
-        columnId
-       );
+      api.patchCard(cardId, {"card_color" : cardColor}, columnId);
     });
   });
 },
@@ -278,14 +239,6 @@ handleGetColumnName:() => {
 
 },
 
-handleCountBackLogCards:() => {
-  const newCardColumn = document.querySelectorAll('.new--card--section');
-  newCardColumn.forEach(card => {
-    const count = card.querySelectorAll('.draggable--card').length;
-    count > 1 ? card.querySelector('.card--count').innerText= `${count} CARDS IN BACKLOG` : card.querySelector('.card--count').innerText = `${count} CARD IN BACKLOG`;
-  });
-},
-
 handleDragAndDrop: () => {
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
@@ -293,32 +246,20 @@ handleDragAndDrop: () => {
   draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', (event) => {
         event.target.classList.add('dragging');
-        app.handleCountBackLogCards();
     });
         draggable.addEventListener('dragend', (event) => {
         draggable.classList.remove('dragging');
 
-        app.handleCountBackLogCards();
         app.updateAllCardsNumberAndColumnName();
 
         // //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
         column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
-        columnId = event.target.parentElement.getAttribute('id');
+        const columnId = event.target.parentElement.getAttribute('id');
       
-        // //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
-          api.patchCard(
-            cardId, 
-            null, 
-            null, 
-            null, 
-            column_number, 
-            card_number, 
-            null, 
-            null,
-            columnId
-          ); 
+        //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
+        api.patchCard(cardId, {"column_number" : column_number, "card_number" : card_number}, columnId); 
     });
   });
 
@@ -361,66 +302,7 @@ handleNewColumnSetNumber:() => {
   }
 },
 
-updateAllCardsColumnNumberOnDeleteColumn:() => {
-  const columns = document.querySelectorAll('.cards--dropzone');
-  columns.forEach(column => {
-    const cards = column.querySelectorAll('.draggable--card');
-    cards.forEach(card => {
-      let columnId = card.closest(".cards--dropzone").getAttribute('id');
-      
-      card.setAttribute('column_number', column.getAttribute('column_number'));
-      let cardId = card.getAttribute('id');
-      let column_number = card.getAttribute('column_number');
-
-      //console.log('cardId', cardId)
-      //console.log('column_number', column_number)
-      //console.log('columnId' , columnId)
-      if(columnId && cardId && column_number) {
-      api.patchCard(
-        cardId,
-        null,
-        null,
-        null,
-        column_number,
-        null,
-        null,
-        null,
-        columnId
-      );
-      }
-    });
-  });
-},
-
-//* UTILS
-
-createElement:(tag, className, textContent) => {
-  const element = document.createElement(tag);
-  element.classList.add(className);
-  element.innerText = textContent;
-
-  return element;
-},
-
-// inputType pour le type de l'input par exemple text, checkbox, submit, file etc...
-// attribute pour préciser le type de l'input par exemple (submit)
-// eg : app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title')
-createInputElement:(input, inputType, inputName, className, placeHolder) => {
-  const element = document.createElement(input);
-  element.setAttribute('type', inputType);
-  element.setAttribute('name', inputName);
-  element.classList.add(className);
-  element.placeholder = placeHolder;
-
-  return element;
-},
-
-appendElementToQuerySelector:(element, querySelector) => {
-  const appendTo = document.querySelector(querySelector);
-  appendTo.appendChild(element);
-
-  return appendTo;
-},
+// * UTILS * //
 
 updateAllCardsNumberAndColumnName:() => {
   const columns = document.querySelectorAll('.cards--dropzone');
@@ -441,17 +323,30 @@ updateAllCardsNumberAndColumnName:() => {
         
         api.patchCard(
             cardId, 
-            null,
-            null,
-            null,
-            null,
-            cardNumber, 
-            null,
-            null,
+            {"card_number" : cardNumber},
             columnId
           );
       });
     }
+  });
+},
+
+updateAllCardsColumnNumberOnDeleteColumn:() => {
+  const columns = document.querySelectorAll('.cards--dropzone');
+  columns.forEach(column => {
+    const cards = column.querySelectorAll('.draggable--card');
+    
+    cards.forEach(card => {
+      card.setAttribute('column_number', column.getAttribute('column_number'));
+      const columnId = card.closest(".cards--dropzone").getAttribute('id');
+      const cardId = card.getAttribute('id');
+      const column_number = card.getAttribute('column_number');
+
+      if(columnId && cardId && column_number) {
+          api.patchCard(cardId, {"column_number" : column_number}, columnId);
+      }
+
+    });
   });
 },
 
@@ -491,15 +386,6 @@ toggleFullScreenMode:(event) => {
       document.exitFullscreen();
     }, 200); 
   }
-},
-
-setCardContent:() => {
-  const cardContent = app.createElement('section', 'card--content', ''); 
-  cardContent.appendChild(app.createInputElement('input', 'text', 'task_title',  'card--title', 'Title'));
-  cardContent.appendChild(app.createInputElement('textarea', '', 'task_content', 'card--text', 'Description'));
-  cardContent.appendChild(app.createInputElement('input', 'checkbox', 'task_status', 'card--checkox', ''));
-  
-  return cardContent;
 },
 
 };
