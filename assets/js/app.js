@@ -372,7 +372,7 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
   });
 },
 
-// y c'est la position de l'élment déplacé sur l'axe horizontal
+// y c'est la position de l'élément déplacé sur l'axe horizontal
 // positionne l'élément déplacé au dessous ou au dessus du plus proche élément de la liste
 getDragAfterElement:(column, y_position) => {
 
