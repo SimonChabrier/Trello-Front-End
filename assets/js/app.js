@@ -2,15 +2,14 @@ const app = {
 
 init:()=> {
   console.log('Trello start success !');
+  api.getData(); 
   app.allListeners();   
 },
 
 // * LISTENERS * //
 
 allListeners:()=> {
-
   window.addEventListener('load', () => {
-    api.getData(); 
     app.handleGetThemeStatusFromLocalStorage();
   });
 
@@ -22,6 +21,29 @@ allListeners:()=> {
       api.postCard();      
   });
 
+  // TODO cibler les titres des Task problème ici ils ne sont pas encore créés
+  // Timeout est la solution temporaire
+  setTimeout(() => {
+
+    document.querySelectorAll('.card--title').forEach(card => {
+        card.addEventListener('blur', (event) => {
+        app.handlePatchCardTitle(event);
+        });
+    });
+
+
+  // TODO cibler les textareas problème ici ils ne sont pas encore créés
+  // Timeout est la solution temporaire
+
+  const textareas = document.getElementsByTagName('textarea');
+    Array.from(textareas).forEach(textarea => {
+        textarea.addEventListener('blur', (event) => {
+        app.handlePatchCardContent(event);
+        });
+    });
+
+  }, 1000);
+  
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
   });
@@ -32,6 +54,22 @@ allListeners:()=> {
 
 },
 
+// * INIT ALL APP ACTIONS * //
+
+initAllAppActions:()=> {
+    app.handleDragAndDrop();
+    app.handleDeleteColumn();
+    app.handleDeleteCard();
+    app.handleChangeCardColor();
+    app.handleDesableCheckBoxOnEmptyCard();
+    app.handleTaskDone();
+    app.handleDisableDragOnActiveInputs();
+    app.handleHideColorsBtnsOnDoneCards();
+    app.handleGetColumnName();
+    app.updateAllCardsNumberAndColumnName();
+    app.handleNewColumnSetNumber();
+},
+
 // * ACTIONS * //
 
 handlePatchColumnName:() => {
@@ -39,8 +77,31 @@ handlePatchColumnName:() => {
   column.forEach(column => {
       const columnId = column.getAttribute('id');
       const columnName = column.querySelector('.column--name').value;
+
+      // PATCH COLUMN NAME
       api.patchColumnName(columnId, columnName);
   });
+},
+
+
+handlePatchCardTitle:(event) => {
+
+  const cardId = event.target.closest('.draggable--card').getAttribute('id');
+  const cardTitle = event.target.value;
+  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+    
+    // PATCH CARD TITLE
+    api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
+},
+
+handlePatchCardContent:(event) => {
+
+  const cardId = event.target.closest('.draggable--card').getAttribute('id');
+  const cardContent = event.target.value;
+  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+    
+    // PATCH CARD CONTENT
+    api.patchCard(cardId, {"task_content": cardContent}, columnId);
 },
 
 handleToggleTheme:() => {
@@ -110,7 +171,7 @@ handleDeleteColumn:()=> {
       event.target.closest('div').remove();
       //* je met à jour le numéro des colonnes
       app.handleNewColumnSetNumber();
-      //* je met à jour le numéro des cartes avec API patch
+      //* je met à jour le numéro des cartes -> API PATCH
       app.updateAllCardsColumnNumberOnDeleteColumn();
     });
   });
@@ -199,6 +260,8 @@ handleChangeCardColor:() => {
       const cardId = event.target.closest('div').getAttribute('id')
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       const cardColor = event.target.closest('div').getAttribute('card_color');
+
+      // PATCH CARD
       api.patchCard(cardId, {"card_color" : cardColor}, columnId);
     });
   });
@@ -230,16 +293,16 @@ handleGetColumnName:() => {
 
         // update column name on blur event
         column.addEventListener('blur', (event) => {
-        api.patchColumn(event.target.closest('div').getAttribute('id'), event.target.closest('div').getAttribute('column_name'))
+
+        // PATCH COLUMN
+        api.patchColumn(event.target.closest('div').getAttribute('id'), 
+        event.target.closest('div').getAttribute('column_name'))
       }
     );
   });
-
-    
-
 },
 
-handleDragAndDrop: () => {
+handleDragAndDrop:() => {
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
   
@@ -252,13 +315,13 @@ handleDragAndDrop: () => {
 
         app.updateAllCardsNumberAndColumnName();
 
-        // //* On traite la sauvegarde des données de la carte
+        //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
         column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
         const columnId = event.target.parentElement.getAttribute('id');
       
-        //* On sauvegarde les données de la carte dans la base de données à la fin du drag and drop
+        // PATCH CARD
         api.patchCard(cardId, {"column_number" : column_number, "card_number" : card_number}, columnId); 
     });
   });
@@ -321,11 +384,8 @@ updateAllCardsNumberAndColumnName:() => {
         const cardId = card.getAttribute('id');
         const cardNumber = card.getAttribute('card_number');
         
-        api.patchCard(
-            cardId, 
-            {"card_number" : cardNumber},
-            columnId
-          );
+        // PATCH CARD
+        api.patchCard(cardId, {"card_number" : cardNumber}, columnId);
       });
     }
   });
@@ -343,6 +403,8 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
       const column_number = card.getAttribute('column_number');
 
       if(columnId && cardId && column_number) {
+
+          // PATCH CARD
           api.patchCard(cardId, {"column_number" : column_number}, columnId);
       }
 
@@ -350,7 +412,7 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
   });
 },
 
-// y c'est la position de l'élment déplacé sur l'axe horizontal
+// y c'est la position de l'élément déplacé sur l'axe horizontal
 // positionne l'élément déplacé au dessous ou au dessus du plus proche élément de la liste
 getDragAfterElement:(column, y_position) => {
 
