@@ -10,7 +10,6 @@ init:()=> {
 
 allListeners:()=> {
   window.addEventListener('load', () => {
-    
     app.handleGetThemeStatusFromLocalStorage();
   });
 
@@ -22,25 +21,27 @@ allListeners:()=> {
       api.postCard();      
   });
 
-  // TODO cibler les textareas problème ici ils ne sont pas encore créés
+  // TODO cibler les titres des Task problème ici ils ne sont pas encore créés
   // Timeout est la solution temporaire
   setTimeout(() => {
-  document.querySelectorAll('.card--title').forEach(card => {
-      card.addEventListener('blur', (event) => {
-      app.handlePatchCardTitle(event);
-      });
-  });
-  }, 1000);
+
+    document.querySelectorAll('.card--title').forEach(card => {
+        card.addEventListener('blur', (event) => {
+        app.handlePatchCardTitle(event);
+        });
+    });
+
 
   // TODO cibler les textareas problème ici ils ne sont pas encore créés
   // Timeout est la solution temporaire
-  setTimeout(() => {
+
   const textareas = document.getElementsByTagName('textarea');
-  for (let i = 0; i < textareas.length; i++) {
-    textareas[i].addEventListener('blur', (event) => {
-      app.handlePatchCardContent(event);
+    Array.from(textareas).forEach(textarea => {
+        textarea.addEventListener('blur', (event) => {
+        app.handlePatchCardContent(event);
+        });
     });
-  }
+
   }, 1000);
   
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -84,7 +85,7 @@ handlePatchColumnName:() => {
 
 
 handlePatchCardTitle:(event) => {
-  console.log(event.target.value);
+
   const cardId = event.target.closest('.draggable--card').getAttribute('id');
   const cardTitle = event.target.value;
   const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
@@ -94,7 +95,7 @@ handlePatchCardTitle:(event) => {
 },
 
 handlePatchCardContent:(event) => {
-  console.log(event.target.value);
+
   const cardId = event.target.closest('.draggable--card').getAttribute('id');
   const cardContent = event.target.value;
   const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
