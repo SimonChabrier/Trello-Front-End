@@ -407,7 +407,7 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
           // PATCH CARD
           api.patchCard(cardId, {"column_number" : column_number}, columnId);
       }
-
+      
     });
   });
 },
