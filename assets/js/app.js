@@ -300,9 +300,6 @@ handleGetColumnName:() => {
       }
     );
   });
-
-    
-
 },
 
 handleDragAndDrop: () => {
