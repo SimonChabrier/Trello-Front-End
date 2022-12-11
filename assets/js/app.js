@@ -302,7 +302,7 @@ handleGetColumnName:() => {
   });
 },
 
-handleDragAndDrop: () => {
+handleDragAndDrop:() => {
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
   
@@ -407,7 +407,7 @@ updateAllCardsColumnNumberOnDeleteColumn:() => {
           // PATCH CARD
           api.patchCard(cardId, {"column_number" : column_number}, columnId);
       }
-      
+
     });
   });
 },
