@@ -4,10 +4,6 @@ body {
     transition: all .2s ease;
 }
 
-textarea {
-    white-space: pre-wrap;
-}
-
 .light--theme {
     background-color: whitesmoke;
     transition: all .2s ease;
