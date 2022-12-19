@@ -115,7 +115,6 @@ handleGetThemeStatusFromLocalStorage:() => {
    
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
         dropzone.classList.add('light--column--theme'); 
-        dropzone.style.backgroundColor = 'red';
       });
 
   } else {
