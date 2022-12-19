@@ -4,6 +4,7 @@ init:()=> {
   console.log('Trello start success !');
   api.getData(); 
   app.allListeners();
+  
 },
 
 // * LISTENERS * //
@@ -12,11 +13,6 @@ allListeners:()=> {
 
   console.log('allListeners');
 
-  window.addEventListener('load', () => {
-    app.handleGetThemeStatusFromLocalStorage();
-    
-  });
-
   document.getElementById('create_column_btn').addEventListener('click', () => { 
       api.postColumn();
   });
@@ -24,20 +20,6 @@ allListeners:()=> {
   document.getElementById('create_card_btn').addEventListener('click', () => {     
       api.postCard();      
   });
-
-  // document.querySelectorAll('.card--title').forEach(card => {
-  //     card.addEventListener('blur', (event) => {
-  //     app.handlePatchCardTitle(event);
-  //     });
-  // });
-
-  // const textareas = document.getElementsByTagName('textarea');
-  //   Array.from(textareas).forEach(textarea => {
-  //       textarea.addEventListener('blur', (event) => {
-  //       app.handlePatchCardContent(event);
-  //       });
-  //   });
-
   
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
@@ -66,6 +48,7 @@ initAllAppActions:()=> {
     app.handleNewColumnSetNumber();
     app.handlePatchCardTitle();
     app.handlePatchCardContent();
+    app.handleGetThemeStatusFromLocalStorage();
 },
 
 // * ACTIONS * //
@@ -123,16 +106,23 @@ handleToggleTheme:() => {
 
 handleGetThemeStatusFromLocalStorage:() => {
   const theme = localStorage.getItem('theme_status');
+
   if (theme === 'light') {
+
       document.body.classList.add('light--theme');
       document.querySelector('.header').classList.toggle('light--theme--header');
-      document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
-          dropzone.classList.add('light--column--theme');
-          document.getElementById('dark_mode_switch').checked = true;
+      document.getElementById('dark_mode_switch').checked = true;
+   
+      document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
+        dropzone.classList.add('light--column--theme'); 
+        dropzone.style.backgroundColor = 'red';
       });
+
   } else {
+    console.log('dark');
       document.body.classList.remove('light--theme');
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
+          console.log(dropzone);
           dropzone.classList.remove('light--column--theme');
           document.getElementById('dark_mode_switch').checked = false;
       });
@@ -255,7 +245,6 @@ handleDesableCheckBoxOnEmptyCard:() => {
     });
   });
 },
-
 
 handleChangeCardColor:() => {
     document.getElementsByName('color_button').forEach(button => {
