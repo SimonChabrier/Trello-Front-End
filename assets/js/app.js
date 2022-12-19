@@ -3,14 +3,19 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   api.getData(); 
-  app.allListeners();   
+  app.initAllAppActions(); 
+  app.allListeners();
 },
 
 // * LISTENERS * //
 
 allListeners:()=> {
+
+  console.log('allListeners');
+
   window.addEventListener('load', () => {
     app.handleGetThemeStatusFromLocalStorage();
+    
   });
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
@@ -21,19 +26,11 @@ allListeners:()=> {
       api.postCard();      
   });
 
-  // TODO cibler les titres des Task problème ici ils ne sont pas encore créés
-  // Timeout est la solution temporaire
-  setTimeout(() => {
-
-    document.querySelectorAll('.card--title').forEach(card => {
-        card.addEventListener('blur', (event) => {
-        app.handlePatchCardTitle(event);
-        });
-    });
-
-
-  // TODO cibler les textareas problème ici ils ne sont pas encore créés
-  // Timeout est la solution temporaire
+  document.querySelectorAll('.card--title').forEach(card => {
+      card.addEventListener('blur', (event) => {
+      app.handlePatchCardTitle(event);
+      });
+  });
 
   const textareas = document.getElementsByTagName('textarea');
     Array.from(textareas).forEach(textarea => {
@@ -42,7 +39,6 @@ allListeners:()=> {
         });
     });
 
-  }, 1000);
   
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
@@ -57,6 +53,7 @@ allListeners:()=> {
 // * INIT ALL APP ACTIONS * //
 
 initAllAppActions:()=> {
+  console.log('initAllAppActions');
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
@@ -68,6 +65,7 @@ initAllAppActions:()=> {
     app.handleGetColumnName();
     app.updateAllCardsNumberAndColumnName();
     app.handleNewColumnSetNumber();
+    app.allListeners();
 },
 
 // * ACTIONS * //

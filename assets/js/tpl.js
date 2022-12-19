@@ -88,8 +88,8 @@ setNewCardTemplate: (card) => {
         // cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
         // cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
         firstColumn.appendChild(cardTemplate);
+        
         //firstColumn.getElementsByTagName("input")[0].appendChild(cardTemplate);
-  
 },
 
 // CONSTRUCTION D'UNE NOUVELLE CARTE
