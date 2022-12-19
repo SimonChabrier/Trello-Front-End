@@ -59,10 +59,10 @@ handlePatchTextareasHeight:() => {
       console.log('change');
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-      const textareaHeight = event.target.style.height;
-      const textAreaCleanValue = textareaHeight.replace('px', '');
-    
-      const cardData = { "textarea_height": textAreaCleanValue };
+      const textareaHeight = event.target.style.height.replace('px', '');    
+      const cardData = { "textarea_height": textareaHeight };
+
+      // PATCH CARD TEXTAREA HEIGHT
       api.patchCard(cardId, cardData, columnId);
     });
   });
