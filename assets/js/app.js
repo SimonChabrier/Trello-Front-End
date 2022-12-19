@@ -47,9 +47,26 @@ initAllAppActions:()=> {
     app.handlePatchCardTitle();
     app.handlePatchCardContent();
     app.handleGetThemeStatusFromLocalStorage();
+    app.handlePatchTextareasHeight();
 },
 
 // * ACTIONS * //
+
+handlePatchTextareasHeight:() => {
+  const textareas = document.getElementsByTagName('textarea');
+  Array.from(textareas).forEach(textarea => {
+    textarea.addEventListener('mouseup', (event) => {
+      console.log('change');
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      const textareaHeight = event.target.style.height;
+      const textAreaCleanValue = textareaHeight.replace('px', '');
+    
+      const cardData = { "textarea_height": textAreaCleanValue };
+      api.patchCard(cardId, cardData, columnId);
+    });
+  });
+},
 
 handlePatchColumnName:() => {
   const column = document.querySelectorAll('.column');
