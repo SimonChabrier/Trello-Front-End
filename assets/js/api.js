@@ -23,7 +23,7 @@ getData: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-            console.table(data);
+            //console.table(data);
             console.log('GET ALL DATAS SUCCESS');
         }
     } catch (error){
@@ -53,7 +53,7 @@ getLastCreatedCard: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-            console.table(data);
+            //console.table(data);
             console.log('SUCCESS - GET LAST CREATED CARD')
         }
     } catch (error){
@@ -81,7 +81,7 @@ getLastCreatedColumn: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-        console.table(data);
+        //console.table(data);
             console.log('SUCCESS - GET LAST CREATED COLUMN')
         }
     } catch (error){

@@ -11,8 +11,6 @@ init:()=> {
 
 allListeners:()=> {
 
-  console.log('allListeners');
-
   document.getElementById('create_column_btn').addEventListener('click', () => { 
       api.postColumn();
   });
@@ -34,7 +32,7 @@ allListeners:()=> {
 // * INIT ALL APP ACTIONS * //
 
 initAllAppActions:()=> {
-  console.log('initAllAppActions');
+
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
@@ -118,7 +116,7 @@ handleGetThemeStatusFromLocalStorage:() => {
       });
 
   } else {
-    console.log('dark');
+
       document.body.classList.remove('light--theme');
       document.getElementById('dark_mode_switch').checked = false;
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
