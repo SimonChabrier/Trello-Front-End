@@ -3,7 +3,6 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   api.getData(); 
-  app.initAllAppActions(); 
   app.allListeners();
 },
 
@@ -26,18 +25,18 @@ allListeners:()=> {
       api.postCard();      
   });
 
-  document.querySelectorAll('.card--title').forEach(card => {
-      card.addEventListener('blur', (event) => {
-      app.handlePatchCardTitle(event);
-      });
-  });
+  // document.querySelectorAll('.card--title').forEach(card => {
+  //     card.addEventListener('blur', (event) => {
+  //     app.handlePatchCardTitle(event);
+  //     });
+  // });
 
-  const textareas = document.getElementsByTagName('textarea');
-    Array.from(textareas).forEach(textarea => {
-        textarea.addEventListener('blur', (event) => {
-        app.handlePatchCardContent(event);
-        });
-    });
+  // const textareas = document.getElementsByTagName('textarea');
+  //   Array.from(textareas).forEach(textarea => {
+  //       textarea.addEventListener('blur', (event) => {
+  //       app.handlePatchCardContent(event);
+  //       });
+  //   });
 
   
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
@@ -65,7 +64,8 @@ initAllAppActions:()=> {
     app.handleGetColumnName();
     app.updateAllCardsNumberAndColumnName();
     app.handleNewColumnSetNumber();
-    app.allListeners();
+    app.handlePatchCardTitle();
+    app.handlePatchCardContent();
 },
 
 // * ACTIONS * //
@@ -81,25 +81,35 @@ handlePatchColumnName:() => {
   });
 },
 
+handlePatchCardTitle:() => {
 
-handlePatchCardTitle:(event) => {
+    document.querySelectorAll('.card--title').forEach(card => {
 
-  const cardId = event.target.closest('.draggable--card').getAttribute('id');
-  const cardTitle = event.target.value;
-  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-    
-    // PATCH CARD TITLE
+    card.addEventListener('blur', (event) => {
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const cardTitle = event.target.value;
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      
+      // PATCH CARD TITLE
     api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
+    });
+  }); 
 },
 
-handlePatchCardContent:(event) => {
+handlePatchCardContent:() => {
 
-  const cardId = event.target.closest('.draggable--card').getAttribute('id');
-  const cardContent = event.target.value;
-  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-    
-    // PATCH CARD CONTENT
-    api.patchCard(cardId, {"task_content": cardContent}, columnId);
+  const textareas = document.getElementsByTagName('textarea');
+
+  Array.from(textareas).forEach(textarea => {
+    textarea.addEventListener('blur', (event) => {
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const cardContent = event.target.value;
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+        
+      // PATCH CARD CONTENT
+      api.patchCard(cardId, {"task_content": cardContent}, columnId);
+    });
+  });
 },
 
 handleToggleTheme:() => {
