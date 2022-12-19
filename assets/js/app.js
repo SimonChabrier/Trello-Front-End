@@ -120,10 +120,9 @@ handleGetThemeStatusFromLocalStorage:() => {
   } else {
     console.log('dark');
       document.body.classList.remove('light--theme');
+      document.getElementById('dark_mode_switch').checked = false;
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
-          console.log(dropzone);
           dropzone.classList.remove('light--column--theme');
-          document.getElementById('dark_mode_switch').checked = false;
       });
   }
 },
