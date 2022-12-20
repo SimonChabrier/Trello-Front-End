@@ -3,15 +3,13 @@ const app = {
 init:()=> {
   console.log('Trello start success !');
   api.getData(); 
-  app.allListeners();   
+  app.allListeners();
+  
 },
 
 // * LISTENERS * //
 
 allListeners:()=> {
-  window.addEventListener('load', () => {
-    app.handleGetThemeStatusFromLocalStorage();
-  });
 
   document.getElementById('create_column_btn').addEventListener('click', () => { 
       api.postColumn();
@@ -20,29 +18,6 @@ allListeners:()=> {
   document.getElementById('create_card_btn').addEventListener('click', () => {     
       api.postCard();      
   });
-
-  // TODO cibler les titres des Task problème ici ils ne sont pas encore créés
-  // Timeout est la solution temporaire
-  setTimeout(() => {
-
-    document.querySelectorAll('.card--title').forEach(card => {
-        card.addEventListener('blur', (event) => {
-        app.handlePatchCardTitle(event);
-        });
-    });
-
-
-  // TODO cibler les textareas problème ici ils ne sont pas encore créés
-  // Timeout est la solution temporaire
-
-  const textareas = document.getElementsByTagName('textarea');
-    Array.from(textareas).forEach(textarea => {
-        textarea.addEventListener('blur', (event) => {
-        app.handlePatchCardContent(event);
-        });
-    });
-
-  }, 1000);
   
   document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
       app.toggleFullScreenMode(event);
@@ -57,6 +32,7 @@ allListeners:()=> {
 // * INIT ALL APP ACTIONS * //
 
 initAllAppActions:()=> {
+
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
@@ -68,9 +44,29 @@ initAllAppActions:()=> {
     app.handleGetColumnName();
     app.updateAllCardsNumberAndColumnName();
     app.handleNewColumnSetNumber();
+    app.handlePatchCardTitle();
+    app.handlePatchCardContent();
+    app.handleGetThemeStatusFromLocalStorage();
+    app.handlePatchTextareasHeight();
 },
 
 // * ACTIONS * //
+
+handlePatchTextareasHeight:() => {
+  const textareas = document.getElementsByTagName('textarea');
+  Array.from(textareas).forEach(textarea => {
+    textarea.addEventListener('mouseup', (event) => {
+      console.log('change');
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      const textareaHeight = event.target.style.height.replace('px', '');    
+      const cardData = { "textarea_height": textareaHeight };
+
+      // PATCH CARD TEXTAREA HEIGHT
+      api.patchCard(cardId, cardData, columnId);
+    });
+  });
+},
 
 handlePatchColumnName:() => {
   const column = document.querySelectorAll('.column');
@@ -83,25 +79,35 @@ handlePatchColumnName:() => {
   });
 },
 
+handlePatchCardTitle:() => {
 
-handlePatchCardTitle:(event) => {
+    document.querySelectorAll('.card--title').forEach(card => {
 
-  const cardId = event.target.closest('.draggable--card').getAttribute('id');
-  const cardTitle = event.target.value;
-  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-    
-    // PATCH CARD TITLE
+    card.addEventListener('blur', (event) => {
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const cardTitle = event.target.value;
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+      
+      // PATCH CARD TITLE
     api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
+    });
+  }); 
 },
 
-handlePatchCardContent:(event) => {
+handlePatchCardContent:() => {
 
-  const cardId = event.target.closest('.draggable--card').getAttribute('id');
-  const cardContent = event.target.value;
-  const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-    
-    // PATCH CARD CONTENT
-    api.patchCard(cardId, {"task_content": cardContent}, columnId);
+  const textareas = document.getElementsByTagName('textarea');
+
+  Array.from(textareas).forEach(textarea => {
+    textarea.addEventListener('blur', (event) => {
+      const cardId = event.target.closest('.draggable--card').getAttribute('id');
+      const cardContent = event.target.value;
+      const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
+        
+      // PATCH CARD CONTENT
+      api.patchCard(cardId, {"task_content": cardContent}, columnId);
+    });
+  });
 },
 
 handleToggleTheme:() => {
@@ -115,18 +121,23 @@ handleToggleTheme:() => {
 
 handleGetThemeStatusFromLocalStorage:() => {
   const theme = localStorage.getItem('theme_status');
+
   if (theme === 'light') {
+
       document.body.classList.add('light--theme');
       document.querySelector('.header').classList.toggle('light--theme--header');
-      document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
-          dropzone.classList.add('light--column--theme');
-          document.getElementById('dark_mode_switch').checked = true;
+      document.getElementById('dark_mode_switch').checked = true;
+   
+      document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
+        dropzone.classList.add('light--column--theme'); 
       });
+
   } else {
+
       document.body.classList.remove('light--theme');
+      document.getElementById('dark_mode_switch').checked = false;
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
           dropzone.classList.remove('light--column--theme');
-          document.getElementById('dark_mode_switch').checked = false;
       });
   }
 },
@@ -247,7 +258,6 @@ handleDesableCheckBoxOnEmptyCard:() => {
     });
   });
 },
-
 
 handleChangeCardColor:() => {
     document.getElementsByName('color_button').forEach(button => {

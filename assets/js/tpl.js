@@ -43,7 +43,7 @@ setCardTemplate: (cards, colName) => {
         cardTemplate.querySelector('.draggable--card').setAttribute('card_number', card.card_number);
 
         cardTemplate.querySelector('.card--title').setAttribute('value', card.task_title);
-        cardTemplate.querySelector('.card--text').innerText = card.task_content;
+        cardTemplate.querySelector('.card--text').innerHTML = `${card.task_content}`;
         cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
         cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;
        
@@ -88,8 +88,8 @@ setNewCardTemplate: (card) => {
         // cardTemplate.querySelector('.card--text').style.height = `${card.textarea_height}px`;
         // cardTemplate.querySelector('.card--number').innerText = `${colName} Card - N° ${card.card_number}`;   
         firstColumn.appendChild(cardTemplate);
+        
         //firstColumn.getElementsByTagName("input")[0].appendChild(cardTemplate);
-  
 },
 
 // CONSTRUCTION D'UNE NOUVELLE CARTE

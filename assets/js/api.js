@@ -9,10 +9,10 @@ init: () => {
 //* OK
 getData: async () => {
 
-    //const location = window.location.origin;
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
     const endPoint = '/api/tasks';
-    //const apiRootUrl = location + endPoint;
-    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+    const apiRootUrl = uri + endPoint;
 
     let fetchOptions = {
         method: 'GET',
@@ -23,7 +23,7 @@ getData: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-            console.table(data);
+            //console.table(data);
             console.log('GET ALL DATAS SUCCESS');
         }
     } catch (error){
@@ -39,10 +39,10 @@ getData: async () => {
 //* OK
 getLastCreatedCard: async () => {
 
-    //const location = window.location.origin;
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
     const endPoint = '/api/tasks/last';
-    //const apiRootUrl = location + endPoint;
-    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+    const apiRootUrl = uri + endPoint;
 
     let fetchOptions = {
         method: 'GET',
@@ -53,7 +53,7 @@ getLastCreatedCard: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-            console.table(data);
+            //console.table(data);
             console.log('SUCCESS - GET LAST CREATED CARD')
         }
     } catch (error){
@@ -67,10 +67,10 @@ getLastCreatedCard: async () => {
 //* OK
 getLastCreatedColumn: async () => {
 
-    //const location = window.location.origin;
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
     const endPoint = '/api/columns/last';
-    //const apiRootUrl = location + endPoint;
-    const apiRootUrl = 'https://127.0.0.1:8000' + endPoint;
+    const apiRootUrl = uri + endPoint;
 
     let fetchOptions = {
         method: 'GET',
@@ -81,7 +81,7 @@ getLastCreatedColumn: async () => {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
         if(response.status === 200){
-        console.table(data);
+        //console.table(data);
             console.log('SUCCESS - GET LAST CREATED COLUMN')
         }
     } catch (error){
@@ -95,6 +95,10 @@ getLastCreatedColumn: async () => {
 //* OK
 postCard: async () => {
 
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    const endPoint = '/api/tasks/';
+
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
     
     const cardData = { 
@@ -107,7 +111,7 @@ postCard: async () => {
         "textarea_height": "150"
     };
 
-    const response = await fetch('https://127.0.0.1:8000/api/tasks/' + firstColumnid, {
+    const response = await fetch(uri + endPoint + firstColumnid, {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -124,12 +128,16 @@ postCard: async () => {
 //* OK
 postColumn: async () => {    
 
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    const endPoint = '/api/column';
+
     const columnData = { 
         "column_name": "",
 		"column_number": 1
     };
 
-    const response = await fetch('https://127.0.0.1:8000/api/column', {
+    const response = await fetch(uri + endPoint, {
         method: 'POST', 
         mode: 'cors',
         headers: {
@@ -145,10 +153,13 @@ postColumn: async () => {
 },
 
 //* OK 
-patchCard: async (cardId, cardData, columnId) => {        
+patchCard: async (cardId, cardData, columnId) => {       
+    
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
 
     if(cardData){
-    const response = await fetch('https://127.0.0.1:8000/api/' + columnId + '/task/' + cardId, {
+    const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
         method: 'PATCH', 
         headers: {
             'Content-Type': 'application/json'
@@ -166,11 +177,15 @@ patchCard: async (cardId, cardData, columnId) => {
 //* OK
 patchColumn: async (id, columnName) => {  
 
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    const endPoint = '/api/column/';
+
     const columnData = { 
         "column_name": columnName,
     };
 
-    const response = await fetch('https://127.0.0.1:8000/api/column/' + id, {
+    const response = await fetch(uri + endPoint + id, {
         method: 'PATCH', 
         headers: {
             'Content-Type': 'application/json'
@@ -186,9 +201,13 @@ patchColumn: async (id, columnName) => {
 },
 
 //* OK
-deleteCard: async (id) => {                               
+deleteCard: async (id) => {               
+    
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    const endPoint = '/api/task/';
 
-    await fetch('https://127.0.0.1:8000/api/task/' + id, {
+    await fetch(uri + endPoint + id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -208,9 +227,13 @@ deleteCard: async (id) => {
 },
 
 //* OK
-deleteColumns: async (id) => {                                          
+deleteColumns: async (id) => {        
+    
+    let uri = window.location.origin;
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    const endPoint = '/api/column/';
 
-    await fetch('https://127.0.0.1:8000/api/column/' + id, {
+    await fetch(uri + endPoint + id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
