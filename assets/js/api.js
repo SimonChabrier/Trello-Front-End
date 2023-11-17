@@ -9,11 +9,11 @@ init: () => {
 //* OK
 getData: async () => {
 
-    uri = 'https://trello.simschab.cloud';
-    const endPoint = '/api/tasks';
-    const apiRootUrl = uri + endPoint;
-    console.log(apiRootUrl);
-    //const apiRootUrl = "https://127.0.0.1:8000/api/tasks";
+    // uri = 'https://trello.simschab.cloud';
+    // const endPoint = '/api/tasks';
+    // const apiRootUrl = uri + endPoint;
+    // console.log(apiRootUrl);
+    const apiRootUrl = "https://trello.simschab.cloud/api/tasks";
 
     console.log(apiRootUrl);
 
