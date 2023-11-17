@@ -10,9 +10,12 @@ init: () => {
 getData: async () => {
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/tasks';
-    const apiRootUrl = uri + endPoint;
+    // const apiRootUrl = uri + endPoint;
+    const apiRootUrl = "https://127.0.0.1:8000/api/tasks";
+
+    console.log(apiRootUrl);
 
     let fetchOptions = {
         method: 'GET',
@@ -22,6 +25,7 @@ getData: async () => {
     try {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
+        console.log(response.status);
         if(response.status === 200){
             //console.table(data);
             console.log('GET ALL DATAS SUCCESS');
@@ -40,7 +44,7 @@ getData: async () => {
 getLastCreatedCard: async () => {
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/tasks/last';
     const apiRootUrl = uri + endPoint;
 
@@ -68,7 +72,7 @@ getLastCreatedCard: async () => {
 getLastCreatedColumn: async () => {
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/columns/last';
     const apiRootUrl = uri + endPoint;
 
@@ -96,7 +100,7 @@ getLastCreatedColumn: async () => {
 postCard: async () => {
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/tasks/';
 
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
@@ -129,7 +133,7 @@ postCard: async () => {
 postColumn: async () => {    
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/column';
 
     const columnData = { 
@@ -156,7 +160,7 @@ postColumn: async () => {
 patchCard: async (cardId, cardData, columnId) => {       
     
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
 
     if(cardData){
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
@@ -178,7 +182,7 @@ patchCard: async (cardId, cardData, columnId) => {
 patchColumn: async (id, columnName) => {  
 
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/column/';
 
     const columnData = { 
@@ -204,7 +208,7 @@ patchColumn: async (id, columnName) => {
 deleteCard: async (id) => {               
     
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/task/';
 
     await fetch(uri + endPoint + id, {
@@ -230,7 +234,7 @@ deleteCard: async (id) => {
 deleteColumns: async (id) => {        
     
     let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.fr';
+    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
     const endPoint = '/api/column/';
 
     await fetch(uri + endPoint + id, {
