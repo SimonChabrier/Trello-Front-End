@@ -1,5 +1,4 @@
 const api = {
-
 init: () => {
     console.log('data init');
     //? API FETCH EXEMPLES
@@ -9,11 +8,9 @@ init: () => {
 //* OK
 getData: async () => {
 
-    // uri = 'https://trello.simschab.cloud';
-    // const endPoint = '/api/tasks';
-    // const apiRootUrl = uri + endPoint;
-    // console.log(apiRootUrl);
-    const apiRootUrl = "https://trello.simschab.cloud/api/tasks";
+    const uri = "https://trello.simschab.cloud";
+    const endPoint = "/api/tasks";
+    const apiRootUrl = uri + endPoint;
 
     console.log(apiRootUrl);
 
@@ -43,8 +40,7 @@ getData: async () => {
 //* OK
 getLastCreatedCard: async () => {
 
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/tasks/last';
     const apiRootUrl = uri + endPoint;
 
@@ -71,8 +67,7 @@ getLastCreatedCard: async () => {
 //* OK
 getLastCreatedColumn: async () => {
 
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/columns/last';
     const apiRootUrl = uri + endPoint;
 
@@ -99,8 +94,7 @@ getLastCreatedColumn: async () => {
 //* OK
 postCard: async () => {
 
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/tasks/';
 
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
@@ -132,8 +126,7 @@ postCard: async () => {
 //* OK
 postColumn: async () => {    
 
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/column';
 
     const columnData = { 
@@ -159,8 +152,7 @@ postColumn: async () => {
 //* OK 
 patchCard: async (cardId, cardData, columnId) => {       
     
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
 
     if(cardData){
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
@@ -181,8 +173,7 @@ patchCard: async (cardId, cardData, columnId) => {
 //* OK
 patchColumn: async (id, columnName) => {  
 
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/column/';
 
     const columnData = { 
@@ -207,8 +198,7 @@ patchColumn: async (id, columnName) => {
 //* OK
 deleteCard: async (id) => {               
     
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/task/';
 
     await fetch(uri + endPoint + id, {
@@ -233,8 +223,7 @@ deleteCard: async (id) => {
 //* OK
 deleteColumns: async (id) => {        
     
-    let uri = window.location.origin;
-    uri.search('127') ? uri = 'https://127.0.0.1:8000' : uri = 'https://trello.simschab.cloud';
+    const uri = "https://trello.simschab.cloud";
     const endPoint = '/api/column/';
 
     await fetch(uri + endPoint + id, {
