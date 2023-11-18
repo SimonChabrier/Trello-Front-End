@@ -1,8 +1,8 @@
 const jwt = {
     token: null,
     isLoggedIn: false,
-    //uri: "https://127.0.0.1:8000/auth",
-    uri: "https://trello.simschab.cloud/auth",
+    uri: "https://127.0.0.1:8000/auth",
+    //uri: "https://trello.simschab.cloud/auth",
 
     // listen to login button click event
     init: () => {
@@ -52,8 +52,8 @@ const jwt = {
                 jwt.saveTokenToLocalStorage(responseData.token);
                 document.querySelector('.loginForm').style.display = 'none';
                 document.getElementById('logoutButton').style.display = 'block';
-                jwt.checkToken();
-                return true;
+                return jwt.checkToken(); // true
+
             } else {
                 console.log('Authentication failed:', response.status);
                 const responseBody = await response.json();
