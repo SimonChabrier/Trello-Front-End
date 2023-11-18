@@ -1,7 +1,7 @@
 const api = {
 
-uri: "https://trello.simschab.cloud",
-//uri: "https://127.0.0.1:8000",
+//uri: "https://trello.simschab.cloud",
+uri: "https://127.0.0.1:8000",
 
 init: () => {
     console.log('api init');
@@ -70,7 +70,7 @@ getLastCreatedCard: async () => {
     }
     
     tpl.setNewCardTemplate(data);
-    //app.initAllAppActions();
+    app.initAllAppActions();
 },
 
 //* OK
