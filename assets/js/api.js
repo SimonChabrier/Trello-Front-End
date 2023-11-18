@@ -1,6 +1,10 @@
 const api = {
+
+//uri: "https://trello.simschab.cloud",
+uri: "https://127.0.0.1:8000",
+
 init: () => {
-    console.log('data init');
+    console.log('api init');
     //? API FETCH EXEMPLES
     // https://github.com/SimonChabrier/bikeManagementSystem/blob/main/public/assets/js/inventoryForm.js
 },
@@ -8,16 +12,17 @@ init: () => {
 //* OK
 getData: async () => {
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = "/api/tasks";
     const apiRootUrl = uri + endPoint;
-
-    console.log(apiRootUrl);
 
     let fetchOptions = {
         method: 'GET',
         mode: 'cors',
-        cache: 'no-cache'
+        cache: 'no-cache',
+        headers: {
+            'Authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
+        }
     };
     try {
         response = await fetch(apiRootUrl, fetchOptions);
@@ -26,11 +31,12 @@ getData: async () => {
         if(response.status === 200){
             //console.table(data);
             console.log('GET ALL DATAS SUCCESS');
+            //app.initAllAppActions(true);
         }
     } catch (error){
         console.log(error);
     }
-    // si j'ai des données...alors je les affiche
+    // si j'ai des données...alors je les affiche et j'init les actions
     if(data.length){
         tpl.setColumnTemplate(data);
         app.initAllAppActions();
@@ -40,14 +46,17 @@ getData: async () => {
 //* OK
 getLastCreatedCard: async () => {
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/tasks/last';
     const apiRootUrl = uri + endPoint;
 
     let fetchOptions = {
         method: 'GET',
         mode: 'cors',
-        cache: 'no-cache'
+        cache: 'no-cache',
+        headers: {
+            'Authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
+        }
     };
     try {
         response = await fetch(apiRootUrl, fetchOptions);
@@ -61,20 +70,23 @@ getLastCreatedCard: async () => {
     }
     
     tpl.setNewCardTemplate(data);
-    app.initAllAppActions();
+    //app.initAllAppActions();
 },
 
 //* OK
 getLastCreatedColumn: async () => {
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/columns/last';
     const apiRootUrl = uri + endPoint;
 
     let fetchOptions = {
         method: 'GET',
         mode: 'cors',
-        cache: 'no-cache'
+        cache: 'no-cache',
+        headers: {
+            'Authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
+        }
     };
     try {
         response = await fetch(apiRootUrl, fetchOptions);
@@ -88,13 +100,13 @@ getLastCreatedColumn: async () => {
     }
      
     tpl.setNewColumnTemplate(data);
-    app.initAllAppActions();
+    //app.initAllAppActions();
 },
 
 //* OK
 postCard: async () => {
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/tasks/';
 
     const firstColumnid = document.querySelectorAll('.cards--dropzone')[0].getAttribute('id');
@@ -112,7 +124,8 @@ postCard: async () => {
     const response = await fetch(uri + endPoint + firstColumnid, {
         method: 'POST', 
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: JSON.stringify(cardData)
     });
@@ -126,7 +139,7 @@ postCard: async () => {
 //* OK
 postColumn: async () => {    
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/column';
 
     const columnData = { 
@@ -138,7 +151,8 @@ postColumn: async () => {
         method: 'POST', 
         mode: 'cors',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: JSON.stringify(columnData)
     });
@@ -152,13 +166,15 @@ postColumn: async () => {
 //* OK 
 patchCard: async (cardId, cardData, columnId) => {       
     
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
 
     if(cardData){
+    // @Route("/{column}/task/{task}", name="api_patch_task", methods={"PATCH"})
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
         method: 'PATCH', 
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: JSON.stringify(cardData)
     });
@@ -173,7 +189,7 @@ patchCard: async (cardId, cardData, columnId) => {
 //* OK
 patchColumn: async (id, columnName) => {  
 
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/column/';
 
     const columnData = { 
@@ -183,7 +199,8 @@ patchColumn: async (id, columnName) => {
     const response = await fetch(uri + endPoint + id, {
         method: 'PATCH', 
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: JSON.stringify(columnData)
     });
@@ -198,14 +215,15 @@ patchColumn: async (id, columnName) => {
 //* OK
 deleteCard: async (id) => {               
     
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/task/';
 
     await fetch(uri + endPoint + id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: null
     })
@@ -223,14 +241,15 @@ deleteCard: async (id) => {
 //* OK
 deleteColumns: async (id) => {        
     
-    const uri = "https://trello.simschab.cloud";
+    const uri = api.uri;
     const endPoint = '/api/column/';
 
     await fetch(uri + endPoint + id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer ' + jwt.getTokenFromLocalStorage()
         },
         body: null
     })
@@ -247,4 +266,4 @@ deleteColumns: async (id) => {
 
 }   
 
-document.addEventListener('DOMContentLoaded', api.init);
+//document.addEventListener('DOMContentLoaded', api.init);

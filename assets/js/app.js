@@ -1,38 +1,59 @@
 const app = {
 
 init:()=> {
-  console.log('Trello start success !');
-  api.getData(); 
+    // logout
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      jwt.logOut();
+  });
+
+  // login starts actions
+  if(jwt.isLoggedIn) {
   app.allListeners();
-  
+  api.getData(); 
+  app.initAllAppActions();   
+  } else {
+    console.log('not logged in');
+  }
 },
 
 // * LISTENERS * //
 
-allListeners:()=> {
+ clickColumnHandler: () => {
+  api.postColumn();
+},
 
-  document.getElementById('create_column_btn').addEventListener('click', () => { 
-      api.postColumn();
-  });
+ clickCardHandler: () => {
+  api.postCard();
+},
 
-  document.getElementById('create_card_btn').addEventListener('click', () => {     
-      api.postCard();      
-  });
-  
-  document.getElementById('fullscreen_switch').addEventListener('change', (event) => {
-      app.toggleFullScreenMode(event);
-  });
+ changeFullScreenHandler: (event) => {
+  app.toggleFullScreenMode(event);
+},
 
-  document.querySelector('#dark_mode_switch').addEventListener('change', () => {
-      app.handleToggleTheme();  
-  });
+ changeDarkModeHandler: () => {
+  app.handleToggleTheme();
+},
 
+allListeners: () => {
+  console.log('allListeners');
+  document.getElementById('create_column_btn').addEventListener('click', app.clickColumnHandler);
+  document.getElementById('create_card_btn').addEventListener('click', app.clickCardHandler);
+  document.getElementById('fullscreen_switch').addEventListener('change', app.changeFullScreenHandler);
+  document.querySelector('#dark_mode_switch').addEventListener('change', app.changeDarkModeHandler);
+},
+
+clearAllListeners: () => {
+  console.log('removeEventListener');
+  document.getElementById('create_column_btn').removeEventListener('click', app.clickColumnHandler);
+  document.getElementById('create_card_btn').removeEventListener('click', app.clickCardHandler);
+  document.getElementById('fullscreen_switch').removeEventListener('change', app.changeFullScreenHandler);
+  document.querySelector('#dark_mode_switch').removeEventListener('change', app.changeDarkModeHandler);
 },
 
 // * INIT ALL APP ACTIONS * //
 
-initAllAppActions:()=> {
 
+initAllAppActions: () => {
     app.handleDragAndDrop();
     app.handleDeleteColumn();
     app.handleDeleteCard();
@@ -200,6 +221,7 @@ handleDeleteCard:() => {
 },
 
 handleTaskDone:() => {
+
   document.querySelectorAll('.card--checkox').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
     const cardId = event.target.closest('div').getAttribute('id');
@@ -312,7 +334,8 @@ handleGetColumnName:() => {
   });
 },
 
-handleDragAndDrop:() => {
+handleDragAndDrop: function (bool) {
+
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
   
@@ -334,6 +357,7 @@ handleDragAndDrop:() => {
         // PATCH CARD
         api.patchCard(cardId, {"column_number" : column_number, "card_number" : card_number}, columnId); 
     });
+  
   });
 
   columns.forEach(column => {
@@ -462,6 +486,6 @@ toggleFullScreenMode:(event) => {
 
 };
 
-document.addEventListener('DOMContentLoaded', app.init); 
+//document.addEventListener('DOMContentLoaded', app.init); 
 
 
