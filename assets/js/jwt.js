@@ -15,8 +15,8 @@ const jwt = {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const data = {
-            email: "simonchabrier@yahoo.fr",
-            password: "password"
+            email: email,
+            password: password
         };
         return JSON.stringify(data);
     },
@@ -25,7 +25,7 @@ const jwt = {
         console.log('logOut');
         jwt.token = null;
         localStorage.removeItem('token');
-        document.querySelector('.loginForm').style.display = 'block';
+        document.querySelector('.loginForm').style.display = 'flex';
         jwt.isLoggedIn = false;
         app.clearAllListeners();
         document.querySelector('.page').style.display = 'none';
@@ -55,6 +55,8 @@ const jwt = {
                 return true;
             } else {
                 console.log('Authentication failed:', response.status);
+                const responseBody = await response.json();
+                document.getElementById('errorLogin').innerText = await responseBody.message;
                 return false;
             }
         } catch (error) {
@@ -78,7 +80,7 @@ const jwt = {
             console.log('No token found');
             // displau login form
             jwt.isLoggedIn = false;
-            document.querySelector('.loginForm').style.display = 'block';
+            document.querySelector('.loginForm').style.display = 'flex';
             return false;
         } else {
             console.log('Token found:', storedToken);
