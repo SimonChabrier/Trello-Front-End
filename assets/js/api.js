@@ -4,7 +4,7 @@ uri: "https://trello.simschab.cloud",
 //uri: "https://127.0.0.1:8000",
 
 init: () => {
-    console.log('api init');
+    //console.log('api init');
     //? API FETCH EXEMPLES
     // https://github.com/SimonChabrier/bikeManagementSystem/blob/main/public/assets/js/inventoryForm.js
 },
@@ -29,12 +29,12 @@ getData: async () => {
         data = await response.json();
         //console.log(response.status);
         if(response.status === 200){
-            console.table(data);
-            console.log('GET ALL DATAS SUCCESS');
+            //console.table(data);
+            //console.log('GET ALL DATAS SUCCESS');
             //app.initAllAppActions(true);
         }
     } catch (error){
-        console.log(error);
+        //console.log(error);
     }
     // si j'ai des données...alors je les affiche et j'init les actions
     if(data.length){
@@ -63,10 +63,10 @@ getLastCreatedCard: async () => {
         data = await response.json();
         if(response.status === 200){
             //console.table(data);
-            console.log('SUCCESS - GET LAST CREATED CARD')
+            //console.log('SUCCESS - GET LAST CREATED CARD')
         }
     } catch (error){
-        console.log(error);
+        //console.log(error);
     }
     
     tpl.setNewCardTemplate(data);
@@ -93,10 +93,10 @@ getLastCreatedColumn: async () => {
         data = await response.json();
         if(response.status === 200){
         //console.table(data);
-            console.log('SUCCESS - GET LAST CREATED COLUMN')
+            //console.log('SUCCESS - GET LAST CREATED COLUMN')
         }
     } catch (error){
-        console.log(error);
+        //console.log(error);
     }
      
     tpl.setNewColumnTemplate(data);
@@ -130,7 +130,7 @@ postCard: async () => {
         body: JSON.stringify(cardData)
     });
     if (response.status === 201) {
-        console.log('SUCCESS - POST CARD')
+        //console.log('SUCCESS - POST CARD')
     }
     //const data = await response.json();
     api.getLastCreatedCard();
@@ -165,15 +165,15 @@ postColumn: async () => {
 
 //* OK 
 patchCard: async (cardId, cardData, columnId) => {       
-    console.log('patchCard');
-    console.log(cardId, 'id de la carte');
-    console.log(cardData, 'données de la carte');
-    console.log(columnId,'id de la colonne');
+    //console.log('patchCard');
+    //console.log(cardId, 'id de la carte');
+    //console.log(cardData, 'données de la carte');
+    //console.log(columnId,'id de la colonne');
     //return;
     const uri = api.uri;
 
     if(cardData){
-        console.log('cardData is not empty');
+        //console.log('cardData is not empty');
 
     // @Route("/{column}/task/{task}", name="api_patch_task", methods={"PATCH"})
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
@@ -188,9 +188,10 @@ patchCard: async (cardId, cardData, columnId) => {
         // console.table(data);
         if (response.status === 200) {
             console.log('PATCH CARD SUCCESS')
+            const data = await response.json( );
+            console.table(data);
         } else {
-            let response = await response.json();
-            console.log('PATCH CARD FAILED', response)
+            console.log('PATCH CARD FAILED', response.status)
         }
     }
 },
@@ -222,7 +223,7 @@ patchColumn: async (id, columnName) => {
     // const data = await response.json( ); 
     // console.table(data);
     if (response.status === 200) {
-        console.log('PATCH COLUMN SUCCESS')
+        //console.log('PATCH COLUMN SUCCESS')
     }
 },
 
@@ -243,7 +244,7 @@ deleteCard: async (id) => {
     })
     .then(response => {
         if(response.status == 200){
-        console.log('DELETE CARD SUCCESS')
+        //console.log('DELETE CARD SUCCESS')
         //return response.json( )
         }
     })
@@ -269,7 +270,7 @@ deleteColumns: async (id) => {
     })
     .then(response => {
         if(response.status == 200){
-        console.log('DLETE COLUMN SUCESS')
+        //console.log('DLETE COLUMN SUCESS')
         //return response.json()
         }
     })

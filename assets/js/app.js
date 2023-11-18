@@ -477,17 +477,19 @@ toggleFullScreenMode:(event) => {
   }
 },
 
-removeAllScriptsSpecialCharacters:(string) => {
-  secureString =  string.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '').
-  replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
-  // si c'est vide c'est que c'est un script ou un caractère spécial donc on retourne un message d'erreur
-  if(secureString === '') {
-    secureString = "OUpss tentative d'injection de code"
-    return alert('Vous ne pouvez pas utiliser de caractères spéciaux');
+removeAllScriptsSpecialCharacters : (string) => {
+  const secureString = string.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '').
+    replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+
+  // Si c'est vide, c'est qu'il s'agit d'un script ou d'un caractère spécial, donc on retourne un message d'erreur
+  if (secureString === '') {
+    alert('Vous ne pouvez pas utiliser de caractères spéciaux');
+    return false;
   } else {
     return secureString;
   }
 },
+
 
 };
 
