@@ -33,7 +33,9 @@ setCardTemplate: (cards, colName) => {
     //* méthode obligatoire pour associer les cartes à la bonne colonne
     app.handleNewColumnSetNumber();
     
-    
+    // order cards by card_number ASC - convert to int cause card_number is a string and compare int with int 
+    // to not have 1, 10, 11, 12, 2, 3, 4, 5, 6, 7, 8, 9 in sort result but have results as : 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    cards.sort((a, b) => (parseInt(a.card_number) > parseInt(b.card_number)) ? 1 : -1);
     // j'utilise ? pour dire que si cards existe alors je fais le forEach (optionnal chaining)
     cards?.forEach(card => {
         const cardTemplate = document.getElementById("card_template").content.cloneNode(true);

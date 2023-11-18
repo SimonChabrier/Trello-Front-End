@@ -63,26 +63,24 @@ initAllAppActions: () => {
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
-    app.updateAllCardsNumberAndColumnName();
+    app.handleGetThemeStatusFromLocalStorage();
     app.handleNewColumnSetNumber();
     app.handlePatchCardTitle();
     app.handlePatchCardContent();
-    app.handleGetThemeStatusFromLocalStorage();
     app.handlePatchTextareasHeight();
+    // pas besoin au départ car les cartes sont créées avec un numéro
+    // app.updateAllCardsNumberAndColumnName();
 },
 
 // * ACTIONS * //
 
 handlePatchTextareasHeight:() => {
-  const textareas = document.getElementsByTagName('textarea');
-  Array.from(textareas).forEach(textarea => {
+    Array.from(document.getElementsByTagName('textarea')).forEach(textarea => {
     textarea.addEventListener('mouseup', (event) => {
-      console.log('change');
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       const textareaHeight = event.target.style.height.replace('px', '');    
       const cardData = { "textarea_height": textareaHeight };
-
       // PATCH CARD TEXTAREA HEIGHT
       api.patchCard(cardId, cardData, columnId);
     });
@@ -90,47 +88,41 @@ handlePatchTextareasHeight:() => {
 },
 
 handlePatchColumnName:() => {
-  const column = document.querySelectorAll('.column');
-  column.forEach(column => {
-      const columnId = column.getAttribute('id');
-      const columnName = column.querySelector('.column--name').value;
-
+  Array.from(document.querySelectorAll('.column--name')).forEach(columnName => {
+    columnName.addEventListener('blur', (event) => {
+      const columnId = event.target.closest('.column').getAttribute('id');
+      const columnName = event.target.value;
       // PATCH COLUMN NAME
       api.patchColumnName(columnId, columnName);
   });
+});
 },
 
 handlePatchCardTitle:() => {
-
     document.querySelectorAll('.card--title').forEach(card => {
-
     card.addEventListener('blur', (event) => {
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
       const cardTitle = event.target.value;
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-      
       // PATCH CARD TITLE
-    api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
+      api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
     });
   }); 
 },
 
 handlePatchCardContent:() => {
-
-  const textareas = document.getElementsByTagName('textarea');
-
-  Array.from(textareas).forEach(textarea => {
+  Array.from(document.getElementsByTagName('textarea')).forEach(textarea => {
     textarea.addEventListener('blur', (event) => {
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
       const cardContent = event.target.value;
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
-        
       // PATCH CARD CONTENT
       api.patchCard(cardId, {"task_content": cardContent}, columnId);
     });
   });
 },
 
+// * INTERFACE * //
 handleToggleTheme:() => {
   document.body.classList.toggle('light--theme');
   document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
@@ -142,19 +134,14 @@ handleToggleTheme:() => {
 
 handleGetThemeStatusFromLocalStorage:() => {
   const theme = localStorage.getItem('theme_status');
-
   if (theme === 'light') {
-
       document.body.classList.add('light--theme');
       document.querySelector('.header').classList.toggle('light--theme--header');
       document.getElementById('dark_mode_switch').checked = true;
-   
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => { 
         dropzone.classList.add('light--column--theme'); 
       });
-
   } else {
-
       document.body.classList.remove('light--theme');
       document.getElementById('dark_mode_switch').checked = false;
       document.querySelectorAll('.cards--dropzone').forEach(dropzone => {
@@ -170,7 +157,6 @@ handleDisableDragOnActiveInputs:()=> {
   const columns = document.querySelectorAll('.draggable--column, .new--card--section');
   
   inputs.forEach(input => {
-    
     input.addEventListener('focus', () => {
       cards.forEach(card => {
         card.setAttribute('draggable', 'false');
@@ -195,7 +181,10 @@ handleDeleteColumn:()=> {
   const buttons = document.querySelectorAll('.delete--column');
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
-      //TODO Avertir l'utilisateur qu'il va supprimer une colonne avec des cartes...
+      if(event.target.closest('div').querySelectorAll('.draggable--card').length > 0) {
+        alert('Vous ne pouvez pas supprimer une colonne avec des cartes');
+        return;
+      }
       //* je récupère l'id de la colonne cliquée pour la supprimer dans la BDD
       const columId = event.target.closest('div').getAttribute('id');
       api.deleteColumns(columId);
@@ -214,6 +203,10 @@ handleDeleteCard:() => {
   buttons.forEach(button => {
     button.addEventListener('click', (event) => {
       api.deleteCard(event.target.closest('div').getAttribute('id'));
+      // demande de confirmation de suppression
+      if(!confirm('Voulez-vous vraiment supprimer cette carte ?')) {
+        return;
+      }
       event.target.closest('div').remove();
       app.updateAllCardsNumberAndColumnName();
     });
@@ -322,8 +315,6 @@ handleGetColumnName:() => {
       }
       app.updateAllCardsNumberAndColumnName();
       });
-
-        // update column name on blur event
         column.addEventListener('blur', (event) => {
 
         // PATCH COLUMN
@@ -334,7 +325,7 @@ handleGetColumnName:() => {
   });
 },
 
-handleDragAndDrop: function (bool) {
+handleDragAndDrop: function () {
 
   const draggables = document.querySelectorAll('.draggable--card');
   const columns = document.querySelectorAll('.cards--dropzone');
@@ -416,8 +407,7 @@ updateAllCardsNumberAndColumnName:() => {
       cards.forEach(card => {
         const columnId = card.parentElement.getAttribute('id');
         const cardId = card.getAttribute('id');
-        const cardNumber = card.getAttribute('card_number');
-        
+        let cardNumber = card.getAttribute('card_number');
         // PATCH CARD
         api.patchCard(cardId, {"card_number" : cardNumber}, columnId);
       });

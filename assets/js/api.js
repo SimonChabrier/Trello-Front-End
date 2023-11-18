@@ -1,7 +1,7 @@
 const api = {
 
-//uri: "https://trello.simschab.cloud",
-uri: "https://127.0.0.1:8000",
+uri: "https://trello.simschab.cloud",
+//uri: "https://127.0.0.1:8000",
 
 init: () => {
     console.log('api init');
@@ -168,6 +168,10 @@ patchCard: async (cardId, cardData, columnId) => {
     
     const uri = api.uri;
 
+    // cardtId to int 
+    cardId = parseInt(cardId);
+    columnId = parseInt(columnId);
+
     if(cardData){
     // @Route("/{column}/task/{task}", name="api_patch_task", methods={"PATCH"})
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
@@ -188,6 +192,8 @@ patchCard: async (cardId, cardData, columnId) => {
 
 //* OK
 patchColumn: async (id, columnName) => {  
+
+    id = parseInt(id);
 
     const uri = api.uri;
     const endPoint = '/api/column/';
