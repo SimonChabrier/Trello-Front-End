@@ -29,7 +29,7 @@ getData: async () => {
         data = await response.json();
         //console.log(response.status);
         if(response.status === 200){
-            //console.table(data);
+            console.table(data);
             console.log('GET ALL DATAS SUCCESS');
             //app.initAllAppActions(true);
         }
@@ -172,10 +172,6 @@ patchCard: async (cardId, cardData, columnId) => {
     //return;
     const uri = api.uri;
 
-    // cardtId to int 
-    //cardId = parseInt(cardId);
-    //columnId = parseInt(columnId);
-
     if(cardData){
         console.log('cardData is not empty');
 
@@ -203,6 +199,9 @@ patchCard: async (cardId, cardData, columnId) => {
 patchColumn: async (id, columnName) => {  
 
     id = parseInt(id);
+
+    columnName = app.removeAllScriptsSpecialCharacters(columnName);
+    columnName = columnName.trim();
 
     const uri = api.uri;
     const endPoint = '/api/column/';

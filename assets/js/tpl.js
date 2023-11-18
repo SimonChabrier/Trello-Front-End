@@ -73,7 +73,7 @@ setCardTemplate: (cards, colName) => {
 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
-// CONSTRUCTION D'UNE NOUVELLE COLONNE
+// CONSTRUCTION D'UNE NOUVELLE CARTE
 setNewCardTemplate: (card) => {
 
     const cardTemplate = document.getElementById("card_template").content.cloneNode(true);
@@ -94,7 +94,7 @@ setNewCardTemplate: (card) => {
         //firstColumn.getElementsByTagName("input")[0].appendChild(cardTemplate);
 },
 
-// CONSTRUCTION D'UNE NOUVELLE CARTE
+// CONSTRUCTION D'UNE NOUVELLE COLONNE
 setNewColumnTemplate: (column) => {
 
     // je récupère le nombre de colonne qui démarrera à 1 en ajoutant + 1 

@@ -62,7 +62,7 @@ initAllAppActions: () => {
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
-    app.updateAllCardsNumberAndColumnName(); // ici il faudrait le faire que pour le dom sinon je repasse par la BDD pour rien
+    //app.updateAllCardsNumberAndColumnName(); // ici il faudrait le faire que pour le dom sinon je repasse par la BDD pour rien
     app.handleNewColumnSetNumber();
     app.handlePatchCardTitle();
     app.handlePatchCardContent();
@@ -89,7 +89,8 @@ handlePatchColumnName:() => {
   Array.from(document.querySelectorAll('.column--name')).forEach(columnName => {
     columnName.addEventListener('blur', (event) => {
       const columnId = event.target.closest('.column').getAttribute('id');
-      const columnName = event.target.value;
+      let columnName = event.target.value;
+      columnName = app.removeAllScriptsSpecialCharacters(columnName);
       // PATCH COLUMN NAME
       api.patchColumnName(columnId, columnName);
   });
@@ -100,7 +101,9 @@ handlePatchCardTitle:() => {
     document.querySelectorAll('.card--title').forEach(card => {
     card.addEventListener('blur', (event) => {
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
-      const cardTitle = event.target.value;
+      let cardTitle = event.target.value;
+      cardTitle = app.removeAllScriptsSpecialCharacters(cardTitle);
+
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       // PATCH CARD TITLE
       api.patchCard(cardId, {"tasktitle": cardTitle}, columnId);
@@ -112,7 +115,9 @@ handlePatchCardContent:() => {
   Array.from(document.getElementsByTagName('textarea')).forEach(textarea => {
     textarea.addEventListener('blur', (event) => {
       const cardId = event.target.closest('.draggable--card').getAttribute('id');
-      const cardContent = event.target.value;
+      let cardContent = event.target.value;
+      cardContent = app.removeAllScriptsSpecialCharacters(cardContent);
+
       const columnId = event.target.closest('.cards--dropzone').getAttribute('id');
       // PATCH CARD CONTENT
       api.patchCard(cardId, {"task_content": cardContent}, columnId);
@@ -469,6 +474,18 @@ toggleFullScreenMode:(event) => {
     setTimeout(() => {
       document.exitFullscreen();
     }, 200); 
+  }
+},
+
+removeAllScriptsSpecialCharacters:(string) => {
+  secureString =  string.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '').
+  replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+  // si c'est vide c'est que c'est un script ou un caractère spécial donc on retourne un message d'erreur
+  if(secureString === '') {
+    secureString = "OUpss tentative d'injection de code"
+    return alert('Vous ne pouvez pas utiliser de caractères spéciaux');
+  } else {
+    return secureString;
   }
 },
 
