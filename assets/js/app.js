@@ -62,13 +62,12 @@ initAllAppActions: () => {
     app.handleDisableDragOnActiveInputs();
     app.handleHideColorsBtnsOnDoneCards();
     app.handleGetColumnName();
-    app.handleGetThemeStatusFromLocalStorage();
+    app.updateAllCardsNumberAndColumnName();
     app.handleNewColumnSetNumber();
     app.handlePatchCardTitle();
     app.handlePatchCardContent();
+    app.handleGetThemeStatusFromLocalStorage();
     app.handlePatchTextareasHeight();
-    // pas besoin au départ car les cartes sont créées avec un numéro
-    //app.updateAllCardsNumberAndColumnName();
 },
 
 // * ACTIONS * //
@@ -335,17 +334,12 @@ handleDragAndDrop: function () {
         draggable.addEventListener('dragend', (event) => {
         draggable.classList.remove('dragging');
         // get event.target column number
-        let column_number = event.target.parentElement.getAttribute('column_number');
-        app.updateAllCardsNumberAndColumnName(column_number);
-
+        //let column_number = event.target.parentElement.getAttribute('column_number');
         //* On traite la sauvegarde des données de la carte
         cardId = event.target.getAttribute('id');
-        column_number = event.target.parentElement.getAttribute('column_number');
         card_number = event.target.getAttribute('card_number');
         const columnId = event.target.parentElement.getAttribute('id');
-      
-        // PATCH CARD
-        api.patchCard(cardId, {"column_number" : column_number, "card_number" : card_number}, columnId); 
+        app.updateAllCardsNumberAndColumnName();  
     });
   
   });
@@ -392,55 +386,78 @@ handleNewColumnSetNumber:() => {
 // * UTILS * //
 
 // * ICI IL FAUT RECUPERER LA COLONNE QUI A ETE MODIFIEE ET PATCHER LES CARTES DE CETTE COLONNE UNIQUEMENT
-updateAllCardsNumberAndColumnName:(column_number = null) => {
-  console.log('updateAllCardsNumberAndColumnName');
-  const currentColumnNumber = column_number;
-  let cardsColumns = document.querySelectorAll('.cards--dropzone');
-  if(currentColumnNumber) {
-  cardsColumns = Array.from(cardsColumns).filter(column => column.getAttribute('column_number') == currentColumnNumber);
-  cardsColumns.forEach(column => {
-    // on change le numéro de la carte en fonction de sa position dans la colonne
-    let cards = column.querySelectorAll('.draggable--card');
-    for(let i = 0; i < cards.length; i++) {
-      cards[i].setAttribute('card_number', i + 1);
-      cards[i].setAttribute('column_number', column.getAttribute('column_number'));
-      column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
-      cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
-      cards = Array.from(cards).filter(card => card.getAttribute('column_number') == column.getAttribute('column_number'));
-      console.log('cards', cards.length);
-      api.patchCard(cards[i].getAttribute('id'), {"card_number" : cards[i].getAttribute('card_number')}, currentColumnNumber);
-    }
+updateAllCardsNumberAndColumnName:() => {
+
+
+  // on met à jour toute les cartes pour mettre à jour leur colonne et leur numéro de carte dans la colonne
+  const cards = document.querySelectorAll('.draggable--card');
+  cards.forEach(card => {
+    card.setAttribute('card_number', card.getAttribute('card_number'));
+    card.setAttribute('column_number', card.closest('.cards--dropzone').getAttribute('column_number'));
+    card.closest('.cards--dropzone').getAttribute('column_name') == null ? card.closest('.cards--dropzone').setAttribute('column_name', 'TODO') : true;
+    card.querySelector('.card--number').innerText = `${card.closest('.cards--dropzone').getAttribute('column_name')} Card - N° ${card.getAttribute('card_number')}`;
+
+    const cardId = card.getAttribute('id');
+    const cardData = {
+      "card_number" : card.getAttribute('card_number'),
+      "column_number" : card.getAttribute('column_number')
+    };
+    const columnId = card.closest(".cards--dropzone").getAttribute('id');
+    // PATCH CARD
+    api.patchCard(cardId, cardData , columnId);
   });
-  } else {
-    const columns = document.querySelectorAll('.cards--dropzone');
-    columns.forEach(column => {  
-      let cards = column.querySelectorAll('.draggable--card');
-      console.log(cards.length);
-      for(let i = 0; i < cards.length; i++) {
-        cards[i].setAttribute('card_number', i + 1);
-        cards[i].setAttribute('column_number', column.getAttribute('column_number'));
-        column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
-        cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
-        cards = Array.from(cards).filter(card => card.getAttribute('column_number') == column.getAttribute('column_number'));
-        console.log('cards', cards.length);
-        
-        cards.forEach(card => {
-          // on ne patche que les cartes de la colonne qui vient d'être modifiée
-          if(card.getAttribute('column_number') == column.getAttribute('column_number')) {
-            const columnId = card.parentElement.getAttribute('id');
-            const cardId = card.getAttribute('id');
-            let cardNumber = card.getAttribute('card_number');
-            // PATCH CARD
-            api.patchCard(cardId, {"card_number" : cardNumber}, columnId);
-          }
-        });
-      }
-    });
-  }
+
+
+
+  // const currentColumnNumber = column_number;
+  // let cardsColumns = document.querySelectorAll('.cards--dropzone');
+  // // id de la colonne qui vient d'être modifiée
+  // let columnId = cardsColumns[currentColumnNumber - 1].getAttribute('id');
+  
+  // // if(currentColumnNumber !== null) {
+  //   // on récupère uniquement la colonne qui vient d'être modifiée
+  //   columnToPatch = Array.from(cardsColumns).filter(column => column.getAttribute('column_number') == currentColumnNumber);
+  //   columnToPatch.forEach(column => {
+  //     // on change le numéro de la carte en fonction de sa position dans la colonne
+  //     let cards = column.querySelectorAll('.draggable--card');
+
+  //     for(let i = 0; i < cards.length; i++) {
+  //       cards[i].setAttribute('card_number', i + 1);
+  //       cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+  //       column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+  //       cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`;
+
+  //       let cardId = cards[i].getAttribute('id');
+  //       let cardData = { 
+  //         "card_number" : cards[i].getAttribute('card_number'), 
+  //         "column_number" : cards[i].getAttribute('column_number') 
+  //       };
+  //       // patch card
+  //       api.patchCard(cardId, cardData , columnId);
+
+  //       // recalculer les nouveaux numéros de cartes pour toutees les autres cartes sauf celle de la colonne modifiée
+  //       let otherCards = Array.from(cardsColumns).filter(column => column.getAttribute('column_number') != currentColumnNumber);
+  //       otherCards.forEach(column => {
+  //         let cards = column.querySelectorAll('.draggable--card');
+  //           for(let i = 0; i < cards.length; i++) {
+  //             cards[i].setAttribute('card_number', i + 1);
+  //             cards[i].setAttribute('column_number', column.getAttribute('column_number'));
+  //             column.getAttribute('column_name') == null ? column.setAttribute('column_name', 'TODO') : true;
+  //             cards[i].querySelector('.card--number').innerText = `${column.getAttribute('column_name')} Card - N° ${cards[i].getAttribute('card_number')}`; // patch car
+
+  //             let cardId = cards[i].getAttribute('id');
+  //             let cardData = {
+  //               "card_number" : cards[i].getAttribute('card_number'),
+  //               "column_number" : cards[i].getAttribute('column_number')
+  //             };
+  //             let columnId = cards[i].closest(".cards--dropzone").getAttribute('id');
+  //             // patch card
+  //             api.patchCard(cardId, cardData , columnId);
+  //         }
+  //       });
+  //   }
+  // });
 },
-
-
-
 
 updateAllCardsColumnNumberOnDeleteColumn:() => {
   const columns = document.querySelectorAll('.cards--dropzone');

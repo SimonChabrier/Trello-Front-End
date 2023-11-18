@@ -27,7 +27,7 @@ getData: async () => {
     try {
         response = await fetch(apiRootUrl, fetchOptions);
         data = await response.json();
-        console.log(response.status);
+        //console.log(response.status);
         if(response.status === 200){
             //console.table(data);
             console.log('GET ALL DATAS SUCCESS');
@@ -100,7 +100,7 @@ getLastCreatedColumn: async () => {
     }
      
     tpl.setNewColumnTemplate(data);
-    //app.initAllAppActions();
+    app.initAllAppActions();
 },
 
 //* OK
@@ -165,14 +165,20 @@ postColumn: async () => {
 
 //* OK 
 patchCard: async (cardId, cardData, columnId) => {       
-    
+    console.log('patchCard');
+    console.log(cardId, 'id de la carte');
+    console.log(cardData, 'données de la carte');
+    console.log(columnId,'id de la colonne');
+    //return;
     const uri = api.uri;
 
     // cardtId to int 
-    cardId = parseInt(cardId);
-    columnId = parseInt(columnId);
+    //cardId = parseInt(cardId);
+    //columnId = parseInt(columnId);
 
     if(cardData){
+        console.log('cardData is not empty');
+
     // @Route("/{column}/task/{task}", name="api_patch_task", methods={"PATCH"})
     const response = await fetch(uri + '/api/' + columnId + '/task/' + cardId, {
         method: 'PATCH', 
@@ -186,6 +192,9 @@ patchCard: async (cardId, cardData, columnId) => {
         // console.table(data);
         if (response.status === 200) {
             console.log('PATCH CARD SUCCESS')
+        } else {
+            let response = await response.json();
+            console.log('PATCH CARD FAILED', response)
         }
     }
 },

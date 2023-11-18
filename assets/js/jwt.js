@@ -84,7 +84,7 @@ const jwt = {
             document.querySelector('.loginForm').style.display = 'flex';
             return false;
         } else {
-            console.log('Token found:', storedToken);
+            //console.log('Token found:', storedToken);
             document.querySelector('.loginForm').style.display = 'none';
             jwt.isLoggedIn = true;
             // récupère les datas si on rafrachit la page
