@@ -410,9 +410,9 @@ handleNewColumnSetNumber:() => {
           const cardId = card.getAttribute('id');
           const cardNumber = card.getAttribute('card_number');
           const columnNumber = card.getAttribute('column_number');
-          
+          console.log(columnNumber);
           // PATCH CARD
-          api.patchCard(cardId, {"card_number" : cardNumber, "columnNumber" : columnNumber }, columnId);
+          api.patchCard(cardId, {"card_number" : cardNumber, "column_number" : columnNumber }, columnId);
         });
       }
     });
